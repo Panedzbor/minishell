@@ -1,13 +1,16 @@
-#include "minishell.h"
+#include "includes/minishell.h"
 
 int	main(void)
 {
-	char *r;
+	char *input;
+	char **result;
 	while (1)
 	{
-		r = readline("Minishell: ");
-		//TODO: delete printf. 
-		printf("%s\n", r);
+		input = readline("Minishell: ");
+		result = ft_split(input, ' ');
+		printf("Command: %s\n", result[0]);
+		printf("Additional: %s\n", result[1]);
+		printf("Second Additional: %s\n", result[2]);
 	}
 	return (0);
 }

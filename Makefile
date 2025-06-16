@@ -1,40 +1,41 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -lreadline
+CFLAGS = -g -Wall -Wextra -Werror -I includes
+LRDFLAGS = -lreadline
+#LFLAGS = -L includes/libft -lft
 #-I includes
- 
-SRC_DIR = srcs
+
+#SRC_DIR = srcs
 OBJ_DIR = objs
-#LIBFT_DIR = includes/libft
-#LIBFT = $(LIBFT_DIR)/libft.a
+LIBFT = includes/libft/libft.a
 
-#OBJ_DIRS = $(OBJ_DIR) $(OBJ_DIR)/$(SRC_DIR)
+SRCS = main.c
 
-SRCS = main.c 
- 
+OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
-#OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
+all: $(LIBFT) $(NAME)
 
-all: $(NAME)
+$(LIBFT):
+	$(MAKE) -C includes/libft
 
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
 
-#$(OBJ_DIRS):
-#	@mkdir -p $@
+$(NAME): $(OBJ_DIR) $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LRDFLAGS) -o $(NAME)
 
-$(NAME): $(SRCS)
-	$(CC) $(CFLAGS) -o $(NAME) $(SRCS)
-
-#$(OBJ_DIR)/%.o: %.c
-#	@mkdir -p $(dir $@)
-#	$(CC) $(CFLAGS) -c $< -o $@
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(MAKE) clean
+	$(MAKE) clean -C includes/libft
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
+	$(MAKE) fclean -C includes/libft
 	rm -f $(NAME)
-	$(MAKE) fclean
 
 re: fclean all
 

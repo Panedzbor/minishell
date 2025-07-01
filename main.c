@@ -8,9 +8,11 @@ int	main(void)
 	{
 		input = readline("Minishell: ");
 		result = ft_split(input, ' ');
-		printf("Command: %s\n", result[0]);
-		printf("Additional: %s\n", result[1]);
-		printf("Second Additional: %s\n", result[2]);
+		node* node = create_node(result[0]);
+		node->next = create_node(result[1]);
+		ft_printf("INFO: %s: node1 \n", node->data);
+		ft_printf("INFO: %s: node2 \n", node->next->data);
+		validate_command(node);
 	}
 	return (0);
 }

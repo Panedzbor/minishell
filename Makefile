@@ -10,7 +10,7 @@ LRDFLAGS = -lreadline
 OBJ_DIR = objs
 LIBFT = includes/libft/libft.a
 
-SRCS = main.c
+SRCS = main.c srcs/node_functions.c
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 

@@ -11,6 +11,8 @@ typedef struct s_node
 } node;
 
 node *create_node(char *data);
+void	add_node(node **head, char* data);
 void validate_command(node* node);
+node	*split_to_nodes(char *input);
 
 #endif

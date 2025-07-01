@@ -2,7 +2,9 @@
 
 node *create_node(char *data)
 {
-	node *new_node = (node *)malloc(sizeof(node));
+	node *new_node;
+
+	new_node = (node *)malloc(sizeof(node));
 	if (!new_node)
 		return (NULL);
 	new_node->data = data;
@@ -10,27 +12,22 @@ node *create_node(char *data)
 	return new_node;
 }
 
-void validate_command(node* node)
-{
-	char *command;
 
-	command = node->data;
-	if (!ft_strncmp(command, "echo", 5))
+void	add_node(node **head, char* data)
+{
+	node	*new_node;
+	node	*temp;
+
+	new_node = create_node(data);
+	if (!new_node)
+		return ;
+	if (*head == NULL)
 	{
-		ft_printf("%s\n", node->next->data);
+		*head = new_node;
+		return ;
 	}
-	else if (!ft_strncmp(command, "cd", 3))
-		ft_printf("%s: found\n", command);
-	else if (!ft_strncmp(command, "pwd", 4))
-		ft_printf("%s: found\n", command);
-	else if (!ft_strncmp(command, "export", 7))
-		ft_printf("%s: found\n", command);
-	else if (!ft_strncmp(command, "unset", 6))
-		ft_printf("%s: found\n", command);
-	else if (!ft_strncmp(command, "env", 4))
-		ft_printf("%s: found\n", command);
-	else if (!ft_strncmp(command, "exit", 5))
-		ft_printf("%s: found\n", command);
-	else
-		ft_printf("%s: command not found\n", command);
+	temp = *head;
+	while (temp->next != NULL)
+		temp = temp->next;
+	temp->next = new_node;
 }

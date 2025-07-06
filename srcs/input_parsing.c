@@ -52,7 +52,7 @@ void validate_command(node* node)
 	else if (!ft_strncmp(command, "unset", 6))
 		ft_printf("%s: found\n", command);
 	else if (!ft_strncmp(command, "env", 4))
-		ft_printf("%s: found\n", command);
+		env();
 	else if (!ft_strncmp(command, "exit", 5))
 		ft_printf("%s: found\n", command);
 	else

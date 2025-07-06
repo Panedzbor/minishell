@@ -8,6 +8,7 @@ int	main(void)
 	while (1)
 	{
 		input = readline("Minishell: ");
+		add_history((const char*)input);
 		if (!input)
 			continue ;
 		node = split_to_nodes(input);

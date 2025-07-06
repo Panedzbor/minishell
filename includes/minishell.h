@@ -4,6 +4,10 @@
 # include "libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include "get_next_line.h"
+# include <unistd.h>
+# include <fcntl.h>
+
 
 typedef struct s_node
 {

@@ -18,7 +18,11 @@ typedef struct s_node
 node *create_node(char *data);
 void	add_node(node **head, char* data);
 void validate_command(node* node);
-node	*split_to_nodes(char *input);
+node	*split_to_nodes(char *str, char delimiter);
 void    env(void);
+char *seach_env_var(char *var_name);
 
+
+//test
+void test_list_data(node *test_node);
 #endif

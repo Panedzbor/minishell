@@ -31,3 +31,37 @@ void	add_node(node **head, char* data)
 		temp = temp->next;
 	temp->next = new_node;
 }
+
+/*static void	free_split(char **splitted)
+{
+	int	i;
+
+	i = 0;
+	while (splitted[i])
+	{
+		free (splitted[i]);
+		i++;
+	}
+	free (splitted[i]);
+	free (splitted);
+}*/
+
+node	*split_to_nodes(char *str, char delimiter)
+{
+	char	**splitted;
+	node	*first_node;
+	int		i;
+
+	first_node = NULL;
+	splitted = ft_split(str, delimiter);
+	if (!splitted)
+		return (NULL);
+	i = 0;
+	while (splitted[i])
+	{
+		add_node(&first_node, splitted[i]);
+		i++;
+	}
+	//free_split(splitted);
+	return (first_node);
+}

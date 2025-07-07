@@ -7,6 +7,7 @@
 # include "get_next_line.h"
 # include <unistd.h>
 # include <fcntl.h>
+# include <dirent.h>
 
 
 typedef struct s_node
@@ -15,14 +16,14 @@ typedef struct s_node
     struct s_node* next;
 } node;
 
-node *create_node(char *data);
+node    *create_node(char *data);
 void	add_node(node **head, char* data);
-void validate_command(node* node);
+void    validate_command(node* node);
 node	*split_to_nodes(char *str, char delimiter);
 void    env(void);
-char *seach_env_var(char *var_name);
-
+char    *seach_env_var(char *var_name);
+void    call_external_command(char *name);
 
 //test
-void test_list_data(node *test_node);
+void    test_list_data(node *test_node);
 #endif

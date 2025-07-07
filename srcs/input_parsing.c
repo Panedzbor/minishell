@@ -23,5 +23,5 @@ void validate_command(node* node)
 	else if (!ft_strncmp(command, "exit", 5))
 		ft_printf("%s: found\n", command);
 	else
-		ft_printf("%s: command not found\n", command);
+		call_external_command(command);
 }

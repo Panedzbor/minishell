@@ -25,6 +25,7 @@ char    *seach_env_var(char *var_name);
 void    call_external_command(char *name);
 void    cd(const char *path);
 char *pwd(void);
+void echo(t_node *node);
 
 //test
 void    test_list_data(t_node *test_node);

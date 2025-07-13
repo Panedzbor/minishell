@@ -1,7 +1,7 @@
 #include "../includes/minishell.h"
 
 
-void validate_command(node* node)
+void validate_command(t_node* node)
 {
 	char *command;
 

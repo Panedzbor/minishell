@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void test_list_data(node *test_node)
+void test_list_data(t_node *test_node)
 {
 	int i;
 

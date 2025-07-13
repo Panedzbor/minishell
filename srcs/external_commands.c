@@ -4,7 +4,7 @@ static char *find_command(char *name, char *path)
 {
     DIR *command_dir;
     struct dirent *info_dir;
-    
+
     command_dir = opendir(path);
     if(!command_dir)
         return (NULL);
@@ -22,7 +22,7 @@ static char *find_command(char *name, char *path)
 void call_external_command(char *name)
 {
     char    *result;
-    node    *path_node;
+    t_node    *path_node;
     char    *path;
 
     path = getenv("PATH");

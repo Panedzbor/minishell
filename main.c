@@ -3,7 +3,7 @@
 int	main(void)
 {
 	char *input;
-	node	*inp_node;
+	t_node	*inp_node;
 
 	while (1)
 	{

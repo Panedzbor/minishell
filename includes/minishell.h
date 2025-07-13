@@ -14,16 +14,16 @@ typedef struct s_node
 {
     char* data;
     struct s_node* next;
-} node;
+} t_node;
 
-node    *create_node(char *data);
-void	add_node(node **head, char* data);
-void    validate_command(node* node);
-node	*split_to_nodes(char *str, char delimiter);
+t_node    *create_node(char *data);
+void	add_node(t_node **head, char* data);
+void    validate_command(t_node* node);
+t_node	*split_to_nodes(char *str, char delimiter);
 void    env(void);
 char    *seach_env_var(char *var_name);
 void    call_external_command(char *name);
 
 //test
-void    test_list_data(node *test_node);
+void    test_list_data(t_node *test_node);
 #endif

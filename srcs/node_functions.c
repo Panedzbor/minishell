@@ -1,10 +1,10 @@
 #include "../includes/minishell.h"
 
-node *create_node(char *data)
+t_node *create_node(char *data)
 {
-	node *new_node;
+	t_node *new_node;
 
-	new_node = (node *)malloc(sizeof(node));
+	new_node = (t_node *)malloc(sizeof(t_node));
 	if (!new_node)
 		return (NULL);
 	new_node->data = data;
@@ -13,10 +13,10 @@ node *create_node(char *data)
 }
 
 
-void	add_node(node **head, char* data)
+void	add_node(t_node **head, char* data)
 {
-	node	*new_node;
-	node	*temp;
+	t_node	*new_node;
+	t_node	*temp;
 
 	new_node = create_node(data);
 	if (!new_node)
@@ -46,10 +46,10 @@ void	add_node(node **head, char* data)
 	free (splitted);
 }*/
 
-node	*split_to_nodes(char *str, char delimiter)
+t_node	*split_to_nodes(char *str, char delimiter)
 {
 	char	**splitted;
-	node	*first_node;
+	t_node	*first_node;
 	int		i;
 
 	first_node = NULL;

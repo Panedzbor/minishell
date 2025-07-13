@@ -11,9 +11,14 @@ void validate_command(t_node* node)
 		ft_printf("%s\n", node->next->data);
 	}
 	else if (!ft_strncmp(command, "cd", 3))
-		ft_printf("%s: found\n", command);
+	{
+		if (node->next)
+			cd(node->next->data);
+		else
+			cd(NULL);
+	}
 	else if (!ft_strncmp(command, "pwd", 4))
-		ft_printf("%s: found\n", command);
+		printf("%s\n", pwd());
 	else if (!ft_strncmp(command, "export", 7))
 		ft_printf("%s: found\n", command);
 	else if (!ft_strncmp(command, "unset", 6))

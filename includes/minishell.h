@@ -23,6 +23,8 @@ t_node	*split_to_nodes(char *str, char delimiter);
 void    env(void);
 char    *seach_env_var(char *var_name);
 void    call_external_command(char *name);
+void    cd(const char *path);
+char *pwd(void);
 
 //test
 void    test_list_data(t_node *test_node);

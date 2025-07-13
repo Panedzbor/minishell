@@ -7,9 +7,7 @@ void validate_command(t_node* node)
 
 	command = node->data;
 	if (!ft_strncmp(command, "echo", 5))
-	{
-		ft_printf("%s\n", node->next->data);
-	}
+		echo(node);
 	else if (!ft_strncmp(command, "cd", 3))
 	{
 		if (node->next)

@@ -1,25 +1,24 @@
 #include "../includes/minishell.h"
 
-static char *find_command(char *name, char *path)
+static char *find_command2(DIR *command_dir, char *cmd, char *path)
 {
-    DIR *command_dir;
-    struct dirent *info_dir;
     char *full_path;
     char *temp;
+    struct dirent *info_dir;
 
-    command_dir = opendir(path);
-    if(!command_dir)
-        return (NULL);
     info_dir = readdir(command_dir);
-    while(info_dir != NULL)
+    while(info_dir)
     {
-        if (ft_strlen(name) != ft_strlen(info_dir->d_name))
+        if (ft_strlen(cmd) != ft_strlen(info_dir->d_name))
+        {
+            info_dir = readdir(command_dir);
             continue ;
-        if(!ft_strncmp(name, info_dir->d_name, ft_strlen(name)))
+        }
+        if(!ft_strncmp(cmd, info_dir->d_name, ft_strlen(cmd)))
         {
             temp = ft_strjoin(path, "/");
+            full_path = ft_strjoin(temp, cmd);
             free(temp);
-            full_path = ft_strjoin(temp, name);
             return (full_path);
         }
         info_dir = readdir(command_dir);
@@ -27,16 +26,31 @@ static char *find_command(char *name, char *path)
     return (NULL);
 }
 
-t_node    *save_paths(void)
+static char *find_command(char *cmd, char *path)
 {
-    char    *path;
-    t_node  *path_node;
+    DIR *command_dir;
+    char *result;
 
-    path = getenv("PATH");
-    if(!path)
-        return ;
-    path_node = split_to_nodes(path, ':');
-    return (path_node);
+    command_dir = opendir(path);
+    if(!command_dir)
+        return (NULL);
+    result = find_command2(command_dir, cmd, path);
+    closedir(command_dir);
+    return (result);
+}
+
+char    **save_paths(void)
+{
+    char    *path_str;
+    char    **path_list;
+
+    path_str = getenv("PATH");
+    if(!path_str)
+        return (NULL);
+    path_list = ft_split(path_str, ':');
+    /*if (!path_list)
+        return (NULL);*/ // not needed
+    return (path_list);
 }
 
 size_t  count_elements_for_argv(t_node *inp_node)
@@ -54,50 +68,43 @@ size_t  count_elements_for_argv(t_node *inp_node)
     return (i);
 }
 
-void assign_values_to_argv(t_node *inp_node, char **argv, size_t len_argv)
-{
-    *argv = ft_calloc(len_argv, sizeof(char *));
-}
 
-char **fill_process_argv(t_node *inp_node)
+pid_t subprocess(void)
 {
-    char *argv;
-    size_t len_argv;
-
-    while(!check_operator(inp_node->data))
-    {
-        len_argv = count_elements_for_argv(inp_node);
-        assign_values_to_argv(inp_node, &argv, len_argv);
-    }
-}
-
-void call_external_command(char *name, t_node *inp_node)
-{
-    char    *result;
-    t_node    *path_node;
     pid_t   pid;
 
     pid = fork();
-    if (pid != 0)
-        check_process(pid);
-    else
-    {
-        path_node = save_paths();
-        if(!path_node)
-            return ;
-        while(path_node)
-        {
-            result = find_command(name, path_node->data);
-            if(result != NULL)
-            {
+    if (!pid)
+        return (0);
+    check_process(pid);
+    return (pid);
+}
 
-                char *argv[] = {name, NULL};
+void call_external_command(char **command/*char *name, t_node *inp_node*/)
+{
+    char    *full_path;
+    char    **path_list;
+    size_t  i;
+
+    if (!subprocess())
+    {
+        path_list = save_paths();
+        if(!path_list)
+            return ;
+        i = 0;
+        while(path_list[i])
+        {
+            full_path = find_command(command[0], path_list[i]);
+            if(full_path)
+            {
                 char *envp[] = {NULL}; //TODO
-                execve(result, argv, envp);
+                execve(full_path, command, envp);
                 exit (1);
             }
-            path_node = path_node->next;
+            i++;
         }
-        ft_printf("%s: command not found\n", name);
+        ft_printf("%s: command not found\n", command[0]);
     }
 }
+
+

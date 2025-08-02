@@ -8,6 +8,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <dirent.h>
+# include <sys/wait.h>
 
 
 typedef struct s_node
@@ -26,6 +27,8 @@ void    call_external_command(char *name);
 void    cd(const char *path);
 char *pwd(void);
 void echo(t_node *node);
+void check_process(pid_t pid);
+int	check_operator(char *token);
 
 //test
 void    test_list_data(t_node *test_node);

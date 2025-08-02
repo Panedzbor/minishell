@@ -3,7 +3,8 @@
 int	main(void)
 {
 	char *input;
-	t_node	*inp_node;
+	char	**splitted;
+	t_node	*first_node;
 
 	while (1)
 	{
@@ -11,11 +12,14 @@ int	main(void)
 		add_history((const char*)input);
 		if (!input)
 			continue ;
-		inp_node = split_to_nodes(input, ' ');
-		test_list_data(inp_node);
-		validate_command(inp_node);
+		splitted = split_input(input);
+		first_node = create_cmd_list(splitted);
+		//test_list_data(first_node);
+		validate_command(first_node);
 	}
 	return (0);
 }
+
+
 
 

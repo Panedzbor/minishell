@@ -18,31 +18,24 @@ char *pwd(void)
 	return (getcwd(buf, size));
 }
 
-void echo(t_node *node)
+void echo(char **command) // TODO: 1) echo "omg bro" 2) echo -n: remove space
 {
-	bool newline;
+	size_t i;
 
-	newline = true;
-	if (node->next == NULL)
+	if (!command[1])
 	{
 		printf("\n");
-		return;
+		return ;
 	}
-	if (!ft_strncmp(node->next->data, "-n", 3))
-	{
-		if (node->next->next == NULL)
-			return ;
-		node = node->next->next;
-		newline = false;
-	}
+	if (!ft_strncmp(command[1], "-n", 3))
+		i = 2;
 	else
-		node = node->next;
-	while (node->next)
+		i = 1;
+	while (command[i])
 	{
-		printf("%s ", node->data);
-		node = node->next;
+		printf("%s ", command[i]);
+		i++;
 	}
-	printf("%s", node->data);
-	if (newline)
+	if (ft_strncmp(command[1], "-n", 3))
 		printf("\n");
 }

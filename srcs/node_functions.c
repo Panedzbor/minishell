@@ -1,24 +1,26 @@
 #include "../includes/minishell.h"
 
-t_node *create_node(char *data)
+t_node *create_node(char *command)
 {
 	t_node *new_node;
 
 	new_node = (t_node *)malloc(sizeof(t_node));
 	if (!new_node)
 		return (NULL);
-	new_node->data = data;
+	new_node->command = ft_split(command, ' ');
+	if (!new_node->command)
+		return (NULL);
 	new_node->next = NULL;
-	return new_node;
+	return (new_node);
 }
 
 
-void	add_node(t_node **head, char* data)
+void	add_node_to_list(t_node **head, char *command)
 {
 	t_node	*new_node;
 	t_node	*temp;
 
-	new_node = create_node(data);
+	new_node = create_node(command);
 	if (!new_node)
 		return ;
 	if (*head == NULL)
@@ -46,20 +48,20 @@ void	add_node(t_node **head, char* data)
 	free (splitted);
 }*/
 
-t_node	*split_to_nodes(char *str, char delimiter)
+t_node	*create_cmd_list(char **commands)
 {
-	char	**splitted;
+	/*char	**splitted;*/
 	t_node	*first_node;
 	int		i;
 
 	first_node = NULL;
-	splitted = ft_split(str, delimiter);
+	/*splitted = ft_split(str, delimiter);
 	if (!splitted)
-		return (NULL);
+		return (NULL);*/
 	i = 0;
-	while (splitted[i])
+	while (commands[i])
 	{
-		add_node(&first_node, splitted[i]);
+		add_node_to_list(&first_node, commands[i]);
 		i++;
 	}
 	//free_split(splitted);

@@ -12,3 +12,15 @@ void test_list_data(t_node *test_node)
 		i++;
 	}
 }
+void print_tokens(t_token *head)
+{
+	int i;
+
+	i = 1;
+    while (head)
+    {
+        printf("Token: %d Value: %s Type: %d\n", i , head->value, head->token_type);
+        head = head->next;
+		i++;
+    }
+}

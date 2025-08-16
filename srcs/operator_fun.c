@@ -10,7 +10,7 @@ int is_symbol_oper(char c)
 }
 static int check_double(char *str)
 {
-	if (*str++)
+	if (str[0] && str [1])
 	{
 		if (str[0] == str[1])
 			return (1);
@@ -19,7 +19,7 @@ static int check_double(char *str)
 }
 static int check_triple(char *str)
 {
-	if (*(str + 1) && *(str + 2))
+	if (str[1] && str[2])
 	{
 		if (str[1] == str[0] && str[2] == str[0])
 		{
@@ -47,10 +47,6 @@ static t_token_type get_token_type(char *str)
 		return TOKEN_REDIRECT_IN;
 	if (ft_strncmp(str, ">", 1) == 0 && str[1] == '\0')
 		return TOKEN_REDIRECT_OUT;
-	if (ft_strncmp(str, "(", 1) == 0 && str[1] == '\0')
-		return TOKEN_PAREN_LEFT;
-	if (ft_strncmp(str, ")", 1) == 0 && str[1] == '\0')
-		return TOKEN_PAREN_RIGH;
 	return TOKEN_WORD;
 }
 
@@ -59,23 +55,25 @@ void tokenize_operator(char **str, t_token **token_list)
 	char *ptr;
 	char op[3];
 	int len;
-	
+
 	len = 0;
 	ptr = *str;
-	 if (check_triple(ptr))
-        return;
-	if (check_double(ptr))
-    {
-        op[0] = ptr[0];
-        op[1] = ptr[1];
-        add_token(token_list, op, get_token_type(op));
-        len = 2;
-    }
-	else if (is_symbol_oper(ptr[0]) || ptr[0] == '(' || ptr[0] == ')')
-    {
-        op[0] = ptr[0];
-        add_token(token_list, op, get_token_type(op));
-        len = 1;
-    }
+	if (check_triple(ptr))
+		return;
+	else if (check_double(ptr))
+	{
+		op[0] = ptr[0];
+		op[1] = ptr[1];
+		op[2] = '\0';
+		add_token(token_list, op, get_token_type(op));
+		len = 2;
+	}
+	else
+	{
+		op[0] = ptr[0];
+		op[1] = '\0';
+		add_token(token_list, op, get_token_type(op));
+		len = 1;
+	}
 	*str = ptr + len;
 }

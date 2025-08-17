@@ -14,7 +14,6 @@ t_node *create_node(char *command)
 	return (new_node);
 }
 
-
 void	add_node_to_list(t_node **head, char *command)
 {
 	t_node	*new_node;

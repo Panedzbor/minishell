@@ -20,7 +20,7 @@ int	main(void)
 		if (!analyze_parenthesis(tokens, 0))
 			printf("Error\n");
 		test_anal_parent(tokens);
-		/* tree =  *//* fill_tree(tokens, NULL); */
+		/* tree =  */fill_tree(tokens, NULL);
 		//splitted = split_input(input);
 		//first_node = create_cmd_list(splitted);
 		//test_list_data(first_node);

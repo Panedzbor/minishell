@@ -18,7 +18,7 @@ typedef struct s_node
 } t_node;
 //delete
 
-typedef enum e_type_node
+typedef enum e_node_type
 {
 	NODE_AND,
 	NODE_COMMAND,
@@ -28,8 +28,9 @@ typedef enum e_type_node
 	NODE_REDIRECT_IN_MANUAL,  //<<
 	NODE_REDIRECT_OUT,		  //>
 	NODE_REDIRECT_OUT_APPEND, //>>
-	NODE_SUBSHELL
-} t_type_node;
+	NODE_SUBSHELL,
+	NODE_WORDS
+} t_node_type;
 
 typedef enum e_token_type
 {
@@ -89,12 +90,18 @@ void    echo(char **command);
 void    check_process(pid_t pid);
 int     check_operator(char *token);
 char    **split_input(char *input);
-void fill_tree(t_token *start, t_token *end);
-void divide_input(t_token *start, t_token *end, t_token **left, t_token **right);
-void find_lowest_priority(t_token *start, t_token *end);
+t_tree_node *fill_tree(t_token *start, t_token *end);
+t_token *divide_input(t_token *start, t_token *end, t_token **left, t_token **right);
+t_token *find_lowest_priority(t_token *start, t_token *end);
 void init_prior(t_priora *prior);
 int get_token_priority(t_token_type type, t_priora priority_map);
 t_token *analyze_parenthesis(t_token *tokens, int parenth_open);
+t_token *check_closed_parenths(t_token *last, int parenth_open);
+t_token *find_list_end(t_token *start);
+t_node_type define_node_type(t_token_type tt);
+t_token *subshell_trim(t_token *start, t_token *end, t_token **left);
+void check_if_word_sequence(t_token **priora, t_token **priora_end);
+void assign_value_to_argv(t_tree_node *node, t_token *token);
 
 //test
 void    test_list_data(t_node *test_node);

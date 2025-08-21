@@ -60,7 +60,7 @@ typedef struct s_token
 
 typedef struct s_tree_node
 {
-	t_token_type type;
+	t_node_type type;
 	char **argv;
 	//char *file_name;
 	struct s_tree_node *left;
@@ -93,6 +93,7 @@ char    **split_input(char *input);
 t_tree_node *fill_tree(t_token *start, t_token *end);
 t_token *divide_input(t_token *start, t_token *end, t_token **left, t_token **right);
 t_token *find_lowest_priority(t_token *start, t_token *end);
+t_tree_node *create_tree_node(t_token *token);
 void init_prior(t_priora *prior);
 int get_token_priority(t_token_type type, t_priora priority_map);
 t_token *analyze_parenthesis(t_token *tokens, int parenth_open);
@@ -107,5 +108,10 @@ void assign_value_to_argv(t_tree_node *node, t_token *token);
 void    test_list_data(t_node *test_node);
 void	print_tokens(t_token *head);
 void    test_anal_parent(t_token *token);
+void draw_tree(t_tree_node *tree);
+void print_line(t_tree_node *tree, int max_nodes_line, int field, int level, int deth);
+void save_nodes(t_tree_node *tree, int target_level, int current_level, t_tree_node **print_arr, int *index);
+char *get_symbol(t_tree_node *node);
+int count_tree_depth(t_tree_node *node, int curlevel);
 
 #endif

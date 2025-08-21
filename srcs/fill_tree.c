@@ -9,8 +9,8 @@ t_tree_node *fill_tree(t_token *start, t_token *end)
 
     if (!start)
         return (NULL);
-    ft_bzero(left_branch, 2);
-    ft_bzero(right_branch, 2);
+    ft_bzero(left_branch, 2 * sizeof(t_token *));
+    ft_bzero(right_branch, 2 * sizeof(t_token *));
     if (!end)
         end = find_list_end(start);
     parent = divide_input(start, end, left_branch, right_branch);
@@ -47,7 +47,7 @@ void assign_value_to_argv(t_tree_node *node, t_token *token)
         count++;
         temp = temp->next;
     }
-    node->argv = (char **)ft_calloc(count, sizeof(char *));
+    node->argv = (char **)ft_calloc(count + 1, sizeof(char *));
     if (!node->argv)
         printf ("Error!\n");
     count = 0;
@@ -56,6 +56,12 @@ void assign_value_to_argv(t_tree_node *node, t_token *token)
         node->argv[count++] = token->value;
         token = token->next;
     }
+    node->argv[count] = NULL;
+    /* for (printf("assign_val_to_argv: "), count = 0; node->argv[count]; count++)
+    {
+        printf("%s ", node->argv[count]);
+    }
+    printf("\n"); */
 }
 
 t_node_type define_node_type(t_token_type tt)
@@ -88,6 +94,7 @@ t_token *find_list_end(t_token *start)
     current = start;
     while (current->next->token_type != TOKEN_END_OF_LIST)
         current = current->next;
+    // printf("find list end: %s\n", current->value);
     return (current);
 }
 
@@ -132,11 +139,15 @@ void check_if_word_sequence(t_token **priora, t_token **priora_end)
     if ((*priora)->token_type == TOKEN_WORD)
     {
         temp = *priora;
-        while ((*priora)->prev->priority == (*priora)->priority)
+        while ((*priora)->prev && (*priora)->prev->priority == (*priora)->priority)
             *priora = (*priora)->prev;
     }
-    if (!temp && *priora != temp)
+    if (temp && *priora != temp)
         *priora_end = temp;
+    // printf("check if word sequence: %s", (*priora)->value);
+    //if (*priora_end)
+    //    printf(" - %s", (*priora_end)->value);
+    //printf("\n");
 }
 
 t_token *find_lowest_priority(t_token *start, t_token *end)
@@ -154,9 +165,11 @@ t_token *find_lowest_priority(t_token *start, t_token *end)
             lowest = current;
         current = current->next;
     }
+    if (start == end)
+        lowest = start;
     if (current->priority <= lowest->priority)
         lowest = current;
-    /* printf("%s - %d - %ld\n", lowest->value, lowest->token_type, lowest->priority); */
+    // printf("find lowest priority: %s - %d - %ld\n", lowest->value, lowest->token_type, lowest->priority);
     return (lowest);
 }
 
@@ -212,7 +225,7 @@ t_token *analyze_parenthesis(t_token *tokens, int parenth_open)
         }
         current = current->next;
     }
-    return (check_closed_pareths(current, parenth_open));
+    return (check_closed_parenths(current, parenth_open));
 }
 
 t_token *check_closed_parenths(t_token *last, int parenth_open)

@@ -1,5 +1,6 @@
 #include "includes/minishell.h"
 
+
 int	main(void)
 {
 	char *input;
@@ -16,11 +17,12 @@ int	main(void)
 		if (!input)
 			continue ;
 		tokens = lexer(input);
-		print_tokens(tokens);
+		//print_tokens(tokens);
 		if (!analyze_parenthesis(tokens, 0))
 			printf("Error\n");
-		test_anal_parent(tokens);
-		/* tree =  */fill_tree(tokens, NULL);
+		//test_anal_parent(tokens);
+		tree = fill_tree(tokens, NULL);
+		draw_tree(tree);
 		//splitted = split_input(input);
 		//first_node = create_cmd_list(splitted);
 		//test_list_data(first_node);
@@ -28,7 +30,3 @@ int	main(void)
 	}
 	return (0);
 }
-
-
-
-

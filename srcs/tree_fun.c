@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-t_tree_node *new_node(t_type_node type)
+t_tree_node *new_node(t_node_type type)
 {
 	t_tree_node *node = malloc(sizeof(t_tree_node));
 	// add free

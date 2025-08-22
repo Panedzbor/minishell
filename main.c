@@ -17,7 +17,7 @@ int	main(void)
 		if (!input)
 			continue ;
 		tokens = lexer(input);
-		//print_tokens(tokens);
+		print_tokens(tokens);
 		if (!analyze_parenthesis(tokens, 0))
 			printf("Error\n");
 		//test_anal_parent(tokens);

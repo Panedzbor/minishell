@@ -2,9 +2,10 @@
 #include <math.h>
 
 static void print_branches(t_tree_node **print_arr, t_tree_node **print_arr_prev, int prev_start, int prev_offset, int nodes_cur_line);
-static void save_matrix(t_tree_node *tree, int depth, int width, t_tree_node *matrix[depth][width]);
-static void save_matrix_val(t_tree_node *tree, int level, int depth, int width, t_tree_node *matrix[depth][width], int *index_state);
-static void print_matrix(int depth, int width, t_tree_node *matrix[depth][width]);
+static void save_matrix(t_tree_node *tree, int depth, int width, t_tree_node *matrix[][width]);
+static void save_matrix_val(t_tree_node *tree, int level, int depth, int width, t_tree_node *matrix[][width], int *index_state);
+static void print_matrix(int depth, int width, t_tree_node *matrix[][width]);
+static void print_line(t_tree_node *tree, int max_nodes_line, int field, int level, int depth, t_tree_node *matrix[][max_nodes_line]);
 
 void draw_tree(t_tree_node *tree)
 {
@@ -14,34 +15,34 @@ void draw_tree(t_tree_node *tree)
 
 	depth = count_tree_depth(tree, 0);/* printf("depth: %d\n", depth); */
 	width = (int)pow(2, depth);/* printf("width: %d\n", width); */
-	t_tree_node *matrix[depth][width];
-	
+	t_tree_node *matrix[depth + 1][width];
+
 	save_matrix(tree, depth, width, matrix);
 	print_matrix(depth, width, matrix);
 
 
-	/* for (int level = 0; level <= depth; level++)
-		print_line(tree, width, field, level, depth); */
-    
-	
+	for (int level = 0; level <= depth; level++)
+		print_line(tree, width, field, level, depth, matrix);
+
+
    /*  if (tree->left->right)
         printf("%d\n", tree->left->right->type);
     else
         printf("no\n"); */
 }
 
-static void save_matrix(t_tree_node *tree, int depth, int width, t_tree_node *matrix[depth][width])
+static void save_matrix(t_tree_node *tree, int depth, int width, t_tree_node *matrix[][width])
 {
 	for (int i = 0; i <= depth; i++)
 		ft_bzero(matrix[i], sizeof(t_tree_node *) * width);
 
 	int index_state[depth + 1];
-	ft_bzero(index_state, sizeof(int) * (depth + 1)); 
+	ft_bzero(index_state, sizeof(int) * (depth + 1));
 
 	save_matrix_val(tree, 0, depth, width, matrix, index_state);
 }
 
-static void save_matrix_val(t_tree_node *tree, int level, int depth, int width, t_tree_node *matrix[depth][width], int *index_state)
+static void save_matrix_val(t_tree_node *tree, int level, int depth, int width, t_tree_node *matrix[][width], int *index_state)
 {
 	if (!tree)
 		return ;
@@ -69,7 +70,7 @@ static void save_matrix_val(t_tree_node *tree, int level, int depth, int width, 
 	}
 }
 
-static void print_matrix(int depth, int width, t_tree_node *matrix[depth][width])
+static void print_matrix(int depth, int width, t_tree_node *matrix[][width])
 {
 	for (int i = 0; i <= depth; i++)
 	{
@@ -85,17 +86,20 @@ static void print_matrix(int depth, int width, t_tree_node *matrix[depth][width]
 	}
 }
 
-void print_line(t_tree_node *tree, int max_nodes_line, int field, int level, int depth)
+static void print_line(t_tree_node *tree, int max_nodes_line, int field, int level, int depth, t_tree_node *matrix[][max_nodes_line])
 {
-	t_tree_node *print_arr[max_nodes_line + 1];
+	/*t_tree_node *print_arr[max_nodes_line + 1];
 	t_tree_node *print_arr_prev[max_nodes_line + 1];
-	
+
 	ft_bzero(print_arr, sizeof(t_tree_node *) * (max_nodes_line));
-	ft_bzero(print_arr_prev, sizeof(t_tree_node *) * (max_nodes_line));
+	ft_bzero(print_arr_prev, sizeof(t_tree_node *) * (max_nodes_line));*/
 
-	
 
-	
+	t_tree_node **print_arr = matrix[level];
+	t_tree_node **print_arr_prev;
+	if (level)
+		print_arr_prev = matrix[level - 1];
+
 
 	int width = max_nodes_line * field;/* printf("line width: %d\n", width); */
 	int nodes_cur_line = (int)pow(2, level);/* printf("nodes: %d\n", nodes_cur_line); */
@@ -109,9 +113,9 @@ void print_line(t_tree_node *tree, int max_nodes_line, int field, int level, int
 		start = field;
 		offset = field;
 	} */
-	
-	int index = 0;
-	save_nodes(tree, level, 0, print_arr, &index);
+
+	/*int index = 0;
+	save_nodes(tree, level, 0, print_arr, &index);*/
     /* printf("nodes cur line:");
     for (int y = 0; y < nodes_cur_line; y++)
     {
@@ -123,12 +127,12 @@ void print_line(t_tree_node *tree, int max_nodes_line, int field, int level, int
     printf("\n");
 	if (level)
 	{
-		index = 0;
-        save_nodes(tree, level - 1, 0, print_arr_prev, &index);
+		/*index = 0;*/
+        /*save_nodes(tree, level - 1, 0, print_arr_prev, &index);*/
         print_branches(print_arr, print_arr_prev, prev_start, prev_offset, nodes_cur_line);
 	}
-	
-	
+
+
 	if (print_arr[0])
 		printf("%*.*s", start, start, get_symbol(print_arr[0]));
 	else
@@ -138,11 +142,11 @@ void print_line(t_tree_node *tree, int max_nodes_line, int field, int level, int
 		if (print_arr[i])
 			printf("%*.*s", offset, offset, get_symbol(print_arr[i]));
 		else
-			printf("%*.*s", offset, offset, "_");	
+			printf("%*.*s", offset, offset, "_");
 	}
 	printf("\n");
 
-	
+
 
 	prev_start = start;
 	prev_offset = offset;
@@ -157,7 +161,7 @@ static void print_branches(t_tree_node **print_arr, t_tree_node **print_arr_prev
     int fslash, bslash;
     int i = 0;
     int prev_i = 0;
-    
+
     if (print_arr[i])
     {
         fslash = prev_start - ft_strlen(get_symbol(print_arr_prev[prev_i]));
@@ -187,7 +191,7 @@ static void print_branches(t_tree_node **print_arr, t_tree_node **print_arr_prev
         else if (i > 1)
             printf("%*.*s", prev_offset + 1, prev_offset + 1, ".");
         //i++;
-        
+
     }
     printf("\n");
 }
@@ -252,7 +256,7 @@ int count_tree_depth(t_tree_node *node, int curlevel)
 {
 	int minlevel = curlevel;
 	int temp_level = 0;
-	
+
 	if (node->left)
 	{
 		minlevel = count_tree_depth(node->left, curlevel + 1);

@@ -109,7 +109,6 @@ void    test_list_data(t_node *test_node);
 void	print_tokens(t_token *head);
 void    test_anal_parent(t_token *token);
 void draw_tree(t_tree_node *tree);
-void print_line(t_tree_node *tree, int max_nodes_line, int field, int level, int deth);
 void save_nodes(t_tree_node *tree, int target_level, int current_level, t_tree_node **print_arr, int *index);
 char *get_symbol(t_tree_node *node);
 int count_tree_depth(t_tree_node *node, int curlevel);

@@ -103,10 +103,23 @@ static void print_line(t_tree_node *tree, int max_nodes_line, int field, int lev
     static int prev_start;
 	static int prev_offset;
 
-	if (level)
-		print_branches(print_arr, print_arr_prev, prev_start, prev_offset, nodes_cur_line, file);
+	char slashes[width + 1];
+	init_slashes_str(slashes, width + 1);
+
+	//if (level)
+	//	print_branches(print_arr, print_arr_prev, prev_start, prev_offset, nodes_cur_line, file);
 	if (print_arr[0])
+	{
 		fprintf(file, "%*.*s", start, start, get_symbol(print_arr[0]));
+		int len = (int)ft_strlen(get_symbol(print_arr[0]));
+		int fslash = start - len;
+		int bslash = fslash + len + 1;
+		if (print_arr[0]->left)
+		{
+			slashes[fslash] = '/';
+		}
+		//if (print_arr[bslash]->)
+	}
 	else
 		fprintf(file, "%*.*s", start, start, "_");
 	for (int i = 1; i < nodes_cur_line; i++)
@@ -123,56 +136,87 @@ static void print_line(t_tree_node *tree, int max_nodes_line, int field, int lev
 }
 
 
-
+static void init_slashes(char *str, int len)
+{
+	for (int i = 0; i < len - 1; i++)
+		str[i] = ' ';
+	str[len] = '\0';
+}
 
 
 static void print_branches(t_tree_node **print_arr, t_tree_node **print_arr_prev, int prev_start, int prev_offset, int nodes_cur_line, FILE *file)
 {
-    int fslash, bslash;
-    int i = 0;
+    int fslash = -1, bslash = -1;
+    //int i = 0;
     int prev_i = 0;
 	int prev_len = 0;
 
-    if (print_arr[i])
-    {
-        prev_len = ft_strlen(get_symbol(print_arr_prev[prev_i]));
-		fslash = prev_start - prev_len;
-        /* bslash = ft_strlen(get_symbol(print_arr_prev[0])) + 1; */
-        fprintf(file, "%*.*s", fslash, fslash, "/");
-        /* printf("%*.*s", bslash, bslash, "\\"); */
-    }
-    else
-        fprintf(file, "%*.*s", prev_start - prev_len, prev_start - prev_len, ";");
-    i++;
-    for (; i < nodes_cur_line; i++)
-    {
-        if (i % 2 == 0)
-            prev_i++;
-		//printf("%d", prev_i);fflush(stdout);
-		if (print_arr_prev[prev_i])
-			prev_len = ft_strlen(get_symbol(print_arr_prev[prev_i]));
-        if (print_arr[i])
-        {
-            fslash = prev_offset - prev_len - 1;
-            bslash = prev_len + 1;
-            if (i % 2 == 0)
-                fprintf(file, "%*.*s", fslash, fslash, "/");
-            else
-            {
-                fprintf(file, "%*.*s", bslash, bslash, "\\");
-                //prev_i++;
-            }
-        }
-        else
-        {
-			if (i % 2 != 0)
-				fprintf(file, "%*.*s", prev_len + 1, prev_len + 1, ".");
+	for (int i = 0; i < nodes_cur_line; i++)
+	{
+		if (i && i % 2 == 0)
+			prev_i++;
+		if (print_arr[i])
+		{
+			prev_len = (int)ft_strlen(get_symbol(print_arr_prev[prev_i]));
+			if (i % 2 == 0)
+			{
+				fslash = print_arr_prev[prev_i] - prev_len - 1;
+				fprintf(file, "%*.*s", fslash, fslash, "/");
+			}
 			else
-				fprintf(file, "%*.*s", prev_offset + 1, prev_offset + 1, ",");
+			{
+				bslash = prev_len + 1;
+				fprintf(file, "%*.*s", bslash, bslash, "\\");
+			}
 		}
-        //i++;
+		else
+		{
+			if (print_arr_prev[prev_i])
+			{
 
-    }
+			}
+		}
+	}
+    //if (print_arr[i])
+    //{
+    //    prev_len = ft_strlen(get_symbol(print_arr_prev[prev_i]));
+	//	fslash = prev_start - prev_len;
+    //    /* bslash = ft_strlen(get_symbol(print_arr_prev[0])) + 1; */
+    //    fprintf(file, "%*.*s", fslash, fslash, "/");
+    //    /* printf("%*.*s", bslash, bslash, "\\"); */
+    //}
+    //else
+    //    fprintf(file, "%*.*s", prev_start - prev_len, prev_start - prev_len, ";");
+    //i++;
+    //for (; i < nodes_cur_line; i++)
+    //{
+    //    if (i % 2 == 0)
+    //        prev_i++;
+	//	//printf("%d", prev_i);fflush(stdout);
+	//	if (print_arr_prev[prev_i])
+	//		prev_len = ft_strlen(get_symbol(print_arr_prev[prev_i]));
+    //    if (print_arr[i])
+    //    {
+    //        fslash = prev_offset - prev_len - 1;
+    //        bslash = prev_len + 1;
+    //        if (i % 2 == 0)
+    //            fprintf(file, "%*.*s", fslash, fslash, "/");
+    //        else
+    //        {
+    //            fprintf(file, "%*.*s", bslash, bslash, "\\");
+    //            //prev_i++;
+    //        }
+    //    }
+    //    else
+    //    {
+	//		if (i % 2 != 0)
+	//			fprintf(file, "%*.*s", prev_len + 1, prev_len + 1, ".");
+	//		else
+	//			fprintf(file, "%*.*s", prev_offset + 1, prev_offset + 1, ",");
+	//	}
+    //    //i++;
+
+    //}
     fprintf(file, "\n");
 }
 

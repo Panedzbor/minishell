@@ -1,11 +1,11 @@
 #include "includes/minishell.h"
 
+
 int	main(void)
 {
 	char *input;
-	t_token *token = NULL;
-	//char	**splitted;
-	//t_node	*first_node;
+	t_token *tokens;
+	t_tree_node *tree;
 
 	while (1)
 	{
@@ -13,16 +13,12 @@ int	main(void)
 		add_history((const char*)input);
 		if (!input)
 			continue ;
-		token = lexer(input);
-		print_tokens(token);
-		//splitted = split_input(input);
-		//first_node = create_cmd_list(splitted);
-		//test_list_data(first_node);
-		//validate_command(first_node);
+		tokens = lexer(input);
+		test_print_tokens(tokens);
+		if (!analyze_parenthesis(tokens, 0))
+			printf("Error\n");
+		tree = fill_tree(tokens, NULL);
+		draw_tree(tree);
 	}
 	return (0);
 }
-
-
-
-

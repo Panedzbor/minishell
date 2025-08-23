@@ -2,7 +2,8 @@ NAME = minishell
 
 CC = cc
 CFLAGS = -g -Wall -Wextra -Werror -I includes
-LRDFLAGS = -lreadline
+TFLAGS = -g -Wall -Wextra -I includes
+LRDFLAGS = -lreadline -lm
 #LFLAGS = -L includes/libft -lft
 #-I includes
 
@@ -23,8 +24,12 @@ $(LIBFT):
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
+
 $(NAME): $(OBJ_DIR) $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LRDFLAGS) -o $(NAME)
+
+test: CFLAGS = $(TFLAGS)
+test: clean $(LIBFT) $(NAME)
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)

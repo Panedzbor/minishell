@@ -39,3 +39,29 @@ int get_token_priority(t_token_type type, t_priora priority_map)
     }
     return (-1);
 }
+
+void init_token_priority(t_priora *prior)
+{
+    prior->type[0] = TOKEN_AND;
+    prior->value[0] = 1;
+    prior->type[1] = TOKEN_OR;
+    prior->value[1] = 1;
+    prior->type[2] = TOKEN_PIPE;
+    prior->value[2] = 2;
+    prior->type[3] = TOKEN_REDIRECT_IN;
+    prior->value[3] = 3;
+    prior->type[4] = TOKEN_REDIRECT_IN_MANUAL;
+    prior->value[4] = 3;
+    prior->type[5] = TOKEN_REDIRECT_OUT;
+    prior->value[5] = 3;
+    prior->type[6] = TOKEN_REDIRECT_OUT_APPEND;
+    prior->value[6] = 3;
+    prior->type[7] = TOKEN_PAREN_LEFT;
+    prior->value[7] = 4;
+    prior->type[8] = TOKEN_PAREN_RIGH;
+    prior->value[8] = 4;
+    prior->type[9] = TOKEN_WORD;
+    prior->value[9] = 5;
+    prior->type[10] = TOKEN_END_OF_LIST;
+    prior->value[10] = -1;
+}

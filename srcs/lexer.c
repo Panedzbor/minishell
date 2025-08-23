@@ -1,5 +1,5 @@
 #include "../includes/minishell.h"
-int is_parenth(char c)
+static int is_parenth(char c)
 {
     if ((c == '(') || (c == ')'))
         return (1);
@@ -68,7 +68,7 @@ t_token *lexer(char *input)
     char *ptr;
     t_priora priority_map;
 
-    init_prior(&priority_map);
+    init_token_priority(&priority_map);
     token_list = NULL;
     ptr = input;
     while (*ptr)

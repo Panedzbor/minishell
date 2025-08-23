@@ -50,7 +50,7 @@ static t_token_type get_token_type(char *str)
 	return TOKEN_WORD;
 }
 
-void tokenize_operator(char **str, t_token **token_list)
+void tokenize_operator(char **str, t_token **token_list, t_priora priority_map)
 {
 	char *ptr;
 	char op[3];
@@ -65,14 +65,14 @@ void tokenize_operator(char **str, t_token **token_list)
 		op[0] = ptr[0];
 		op[1] = ptr[1];
 		op[2] = '\0';
-		add_token(token_list, op, get_token_type(op));
+		add_token(token_list, op, get_token_type(op), priority_map);
 		len = 2;
 	}
 	else
 	{
 		op[0] = ptr[0];
 		op[1] = '\0';
-		add_token(token_list, op, get_token_type(op));
+		add_token(token_list, op, get_token_type(op), priority_map);
 		len = 1;
 	}
 	*str = ptr + len;

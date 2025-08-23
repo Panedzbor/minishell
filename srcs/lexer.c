@@ -28,19 +28,19 @@ static int is_word(char c, char *quote)
         return (0);
     return (1);
 }
-void tokenize_parenth(char **str, t_token **token_list)
+void tokenize_parenth(char **str, t_token **token_list, t_priora priority_map)
 {
     char *ptr;
 
     ptr = *str;
     if (ptr[0] == '(')
-        add_token(token_list, "(", TOKEN_PAREN_LEFT);
+        add_token(token_list, "(", TOKEN_PAREN_LEFT, priority_map);
     else
-        add_token(token_list, ")", TOKEN_PAREN_RIGH);
+        add_token(token_list, ")", TOKEN_PAREN_RIGH, priority_map);
     *str = ptr + 1;
 }
 
-static void tokenize_word(char **str, t_token **token_list)
+static void tokenize_word(char **str, t_token **token_list, t_priora priority_map)
 {
     char *start;
     char *result;
@@ -57,7 +57,7 @@ static void tokenize_word(char **str, t_token **token_list)
         printf("quote error\n"); // TODO: function for errors
     if (result)
     {
-        add_token(token_list, result, TOKEN_WORD);
+        add_token(token_list, result, TOKEN_WORD, priority_map);
         free(result);
     }
 }
@@ -66,7 +66,9 @@ t_token *lexer(char *input)
 {
     t_token *token_list;
     char *ptr;
+    t_priora priority_map;
 
+    init_prior(&priority_map);
     token_list = NULL;
     ptr = input;
     while (*ptr)
@@ -77,11 +79,12 @@ t_token *lexer(char *input)
             continue;
         }
         else if (is_symbol_oper(*ptr))
-            tokenize_operator(&ptr, &token_list);
+            tokenize_operator(&ptr, &token_list, priority_map);
         else if (is_parenth(*ptr))
-            tokenize_parenth(&ptr, &token_list);
+            tokenize_parenth(&ptr, &token_list, priority_map);
         else
-            tokenize_word(&ptr, &token_list);
+            tokenize_word(&ptr, &token_list, priority_map);
     }
-    return token_list;
+    add_token(&token_list, NULL, TOKEN_END_OF_LIST, priority_map);
+    return (token_list);
 }

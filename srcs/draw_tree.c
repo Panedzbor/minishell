@@ -125,13 +125,13 @@ static void print_line(t_tree_node *tree, int max_nodes_line, int field, int lev
 		}
 	}
 	else
-		fprintf(file, "%*.*s", start, start, "_");fflush(file);
+		{fprintf(file, "%*.*s", start, start, "_");fflush(file);}
 	for (int i = 1; i < nodes_cur_line; i++)
 	{
 		if (print_arr[i])
 		{
 			fprintf(file, "%*.*s", offset, offset, get_symbol(print_arr[i]));fflush(file);
-			int len = (int)ft_strlen(get_symbol(print_arr[0]));
+			int len = (int)ft_strlen(get_symbol(print_arr[i]));
 			int fslash = start + i * offset - len - 1;
 			int bslash = fslash + len + 1;
 			if (print_arr[i]->left)
@@ -144,7 +144,7 @@ static void print_line(t_tree_node *tree, int max_nodes_line, int field, int lev
 			}
 		}
 		else
-			fprintf(file, "%*.*s", offset, offset, "_");fflush(file);
+			{fprintf(file, "%*.*s", offset, offset, "_");fflush(file);}
 	}
 
 	//for (int i = 1; i < nodes_cur_line; i++)

@@ -10,6 +10,7 @@ void add_token(t_token **head, char *value, t_token_type type, t_priora prior_ma
         return ;
     token->token_type = type;
     token->priority = get_token_priority(type, prior_map);
+    token->value = NULL;
     if (value)
         token->value = ft_strdup(value);
     token->next = NULL;

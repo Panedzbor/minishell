@@ -38,6 +38,7 @@ $(OBJ_DIR)/%.o: %.c
 clean:
 	$(MAKE) clean -C includes/libft
 	rm -rf $(OBJ_DIR)
+	rm -f $(wildcard *.txt)
 
 fclean: clean
 	$(MAKE) fclean -C includes/libft

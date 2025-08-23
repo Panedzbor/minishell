@@ -12,7 +12,7 @@ void test_list_data(t_node *test_node)
 		i++;
 	}
 }
-void print_tokens(t_token *head)
+void test_print_tokens(t_token *head)
 {
 	int i;
 
@@ -26,7 +26,7 @@ void print_tokens(t_token *head)
 }
 
 
-void    test_anal_parent(t_token *token)
+void    test_analyze_parent(t_token *token)
 {
 	t_token *current;
 	

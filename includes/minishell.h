@@ -106,8 +106,8 @@ void assign_value_to_argv(t_tree_node *node, t_token *token);
 
 //test
 void    test_list_data(t_node *test_node);
-void	print_tokens(t_token *head);
-void    test_anal_parent(t_token *token);
+void	test_print_tokens(t_token *head);
+void    test_analyze_parent(t_token *token);
 void draw_tree(t_tree_node *tree);
 void save_nodes(t_tree_node *tree, int target_level, int current_level, t_tree_node **print_arr, int *index);
 char *get_symbol(t_tree_node *node);

@@ -1,11 +1,11 @@
 #include "../includes/minishell.h"
 
 
-void validate_command(t_node* node)
+void validate_command(t_tree_node *node)
 {
 	char **cmd;
 
-	cmd = node->command;
+	cmd = node->argv;
 	if (!ft_strncmp(cmd[0], "echo", 5))
 		echo(cmd);
 	else if (!ft_strncmp(cmd[0], "cd", 3))

@@ -1,12 +1,13 @@
 #include "../includes/minishell.h"
 #include <math.h>
 
-static void print_branches(t_tree_node **print_arr, t_tree_node **print_arr_prev, int prev_start, int prev_offset, int nodes_cur_line, FILE *file);
 static void save_matrix(t_tree_node *tree, int depth, int width, t_tree_node *matrix[][width]);
 static void save_matrix_val(t_tree_node *tree, int level, int depth, int width, t_tree_node *matrix[][width], int *index_state);
-static void print_matrix(int depth, int width, t_tree_node *matrix[][width]);
-static void print_line(t_tree_node *tree, int max_nodes_line, int field, int level, int depth, t_tree_node *matrix[][max_nodes_line], FILE *file);
+//static void print_matrix(int depth, int width, t_tree_node *matrix[][width]);
+static void print_line(int max_nodes_line, int field, int level, int depth, t_tree_node *matrix[][max_nodes_line], FILE *file);
 static void init_slashes(char *str, int len);
+static char *get_symbol(t_tree_node *node);
+static int count_tree_depth(t_tree_node *node, int curlevel);
 
 void draw_tree(t_tree_node *tree)
 {
@@ -23,15 +24,9 @@ void draw_tree(t_tree_node *tree)
 	save_matrix(tree, depth, width, matrix);
 	//print_matrix(depth, width, matrix);
 
-
 	for (int level = 0; level <= depth; level++)
-		print_line(tree, width, field, level, depth, matrix, file);
+		print_line(width, field, level, depth, matrix, file);
 
-
-   /*  if (tree->left->right)
-        printf("%d\n", tree->left->right->type);
-    else
-        printf("no\n"); */
 	fclose(file);
 }
 
@@ -74,108 +69,59 @@ static void save_matrix_val(t_tree_node *tree, int level, int depth, int width, 
 	}
 }
 
-static void print_matrix(int depth, int width, t_tree_node *matrix[][width])
-{
-	for (int i = 0; i <= depth; i++)
-	{
-		int nodes_cur_line = (int)pow(2, i);
-		for (int j = 0; j < nodes_cur_line; j++)
-		{
-			if (matrix[i][j])
-				printf("%s ", get_symbol(matrix[i][j]));
-			else
-				printf("[_empt_] ");
-		}
-		printf("\n");
-	}
-}
+// *** DO NOT DELETE! ***
+// static void print_matrix(int depth, int width, t_tree_node *matrix[][width])
+// {
+// 	for (int i = 0; i <= depth; i++)
+// 	{
+// 		int nodes_cur_line = (int)pow(2, i);
+// 		for (int j = 0; j < nodes_cur_line; j++)
+// 		{
+// 			if (matrix[i][j])
+// 				printf("%s ", get_symbol(matrix[i][j]));
+// 			else
+// 				printf("[_empt_] ");
+// 		}
+// 		printf("\n");
+// 	}
+// }
+// *** DO NOT DELETE! ***
 
-static void print_line(t_tree_node *tree, int max_nodes_line, int field, int level, int depth, t_tree_node *matrix[][max_nodes_line], FILE *file)
+static void print_line(int max_nodes_line, int field, int level, int depth, t_tree_node *matrix[][max_nodes_line], FILE *file)
 {
 	t_tree_node **print_arr = matrix[level];
-	t_tree_node **print_arr_prev;
-	if (level)
-		print_arr_prev = matrix[level - 1];
 
 	int width = max_nodes_line * field;/* printf("line width: %d\n", width); */
 	int nodes_cur_line = (int)pow(2, level);/* printf("nodes: %d\n", nodes_cur_line); */
 	int start = (int)round((double)width / (nodes_cur_line * 2) + (double)field / 2);/* printf("start: %d\n", start); */
 	int offset = (int)round((start - (double)field / 2) * 2);/* printf("offset: %d\n", offset); */
-    static int prev_start;
-	static int prev_offset;
+	int space = start;
 
 	char slashes[width + 1];
 	init_slashes(slashes, width + 1);
-
-	//if (level)
-	//	print_branches(print_arr, print_arr_prev, prev_start, prev_offset, nodes_cur_line, file);
-	if (print_arr[0])
+	
+	for (int i = 0; i < nodes_cur_line; i++)
 	{
-		fprintf(file, "%*.*s", start, start, get_symbol(print_arr[0]));fflush(file);
-		int len = (int)ft_strlen(get_symbol(print_arr[0]));
-		int fslash = start - len - 1;
-		int bslash = fslash + len + 1;
-		if (print_arr[0]->left)
-		{
-			slashes[fslash] = '/';
-		}
-		if (print_arr[0]->right)
-		{
-			slashes[bslash] = '\\';
-		}
-	}
-	else
-		fprintf(file, "%*.*s", start, start, "_");fflush(file);
-	for (int i = 1; i < nodes_cur_line; i++)
-	{
+		if (i)
+			space = offset;
 		if (print_arr[i])
 		{
-			fprintf(file, "%*.*s", offset, offset, get_symbol(print_arr[i]));fflush(file);
-			int len = (int)ft_strlen(get_symbol(print_arr[0]));
+			fprintf(file, "%*.*s", space, space, get_symbol(print_arr[i]));
+			int len = (int)ft_strlen(get_symbol(print_arr[i]));
 			int fslash = start + i * offset - len - 1;
 			int bslash = fslash + len + 1;
 			if (print_arr[i]->left)
-			{
 				slashes[fslash] = '/';
-			}
 			if (print_arr[i]->right)
-			{
 				slashes[bslash] = '\\';
-			}
 		}
 		else
-			fprintf(file, "%*.*s", offset, offset, "_");fflush(file);
+			fprintf(file, "%*.*s", space, space, " ");
 	}
-
-	//for (int i = 1; i < nodes_cur_line; i++)
-	//{
-	//	if (print_arr[i])
-	//	{
-	//		fprintf(file, "%*.*s", offset, offset, get_symbol(print_arr[i]));
-	//		int len = (int)ft_strlen(get_symbol(print_arr[i]));
-	//		int fslash = start - len;
-	//		int bslash = fslash + len + 1;
-	//		if (print_arr[i]->left)
-	//		{
-	//			slashes[fslash] = '/';
-	//		}
-	//		if (print_arr[i]->right)
-	//		{
-	//			slashes[bslash] = '\\';
-	//		}
-	//	}
-	//	else
-	//		fprintf(file, "%*.*s", offset, offset, "_");
-	//}
-	fprintf(file, "\n");fflush(file);
-
+	fprintf(file, "\n");
+	
 	if (level < depth)
-	{
-		fprintf(file, "%s\n", slashes);fflush(file);
-	}
-
-	prev_start = start;
-	prev_offset = offset;
+		fprintf(file, "%s\n", slashes);
 }
 
 
@@ -186,105 +132,7 @@ static void init_slashes(char *str, int len)
 	str[len - 1] = '\0';
 }
 
-
-static void print_branches(t_tree_node **print_arr, t_tree_node **print_arr_prev, int prev_start, int prev_offset, int nodes_cur_line, FILE *file)
-{
-    int fslash = -1, bslash = -1;
-    //int i = 0;
-    int prev_i = 0;
-	int prev_len = 0;
-
-	for (int i = 0; i < nodes_cur_line; i++)
-	{
-		if (i && i % 2 == 0)
-			prev_i++;
-		if (print_arr[i])
-		{
-			prev_len = (int)ft_strlen(get_symbol(print_arr_prev[prev_i]));
-			if (i % 2 == 0)
-			{
-				//fslash = print_arr_prev[prev_i] - prev_len - 1;
-				fprintf(file, "%*.*s", fslash, fslash, "/");
-			}
-			else
-			{
-				bslash = prev_len + 1;
-				fprintf(file, "%*.*s", bslash, bslash, "\\");
-			}
-		}
-		else
-		{
-			if (print_arr_prev[prev_i])
-			{
-
-			}
-		}
-	}
-    //if (print_arr[i])
-    //{
-    //    prev_len = ft_strlen(get_symbol(print_arr_prev[prev_i]));
-	//	fslash = prev_start - prev_len;
-    //    /* bslash = ft_strlen(get_symbol(print_arr_prev[0])) + 1; */
-    //    fprintf(file, "%*.*s", fslash, fslash, "/");
-    //    /* printf("%*.*s", bslash, bslash, "\\"); */
-    //}
-    //else
-    //    fprintf(file, "%*.*s", prev_start - prev_len, prev_start - prev_len, ";");
-    //i++;
-    //for (; i < nodes_cur_line; i++)
-    //{
-    //    if (i % 2 == 0)
-    //        prev_i++;
-	//	//printf("%d", prev_i);fflush(stdout);
-	//	if (print_arr_prev[prev_i])
-	//		prev_len = ft_strlen(get_symbol(print_arr_prev[prev_i]));
-    //    if (print_arr[i])
-    //    {
-    //        fslash = prev_offset - prev_len - 1;
-    //        bslash = prev_len + 1;
-    //        if (i % 2 == 0)
-    //            fprintf(file, "%*.*s", fslash, fslash, "/");
-    //        else
-    //        {
-    //            fprintf(file, "%*.*s", bslash, bslash, "\\");
-    //            //prev_i++;
-    //        }
-    //    }
-    //    else
-    //    {
-	//		if (i % 2 != 0)
-	//			fprintf(file, "%*.*s", prev_len + 1, prev_len + 1, ".");
-	//		else
-	//			fprintf(file, "%*.*s", prev_offset + 1, prev_offset + 1, ",");
-	//	}
-    //    //i++;
-
-    //}
-    fprintf(file, "\n");
-}
-
-void save_nodes(t_tree_node *tree, int target_level, int current_level, t_tree_node **print_arr, int *index)
-{
-	t_tree_node *cur;
-
-	cur = tree;
-	if (current_level == target_level)
-	{
-		print_arr[*index] = cur;
-		(*index)++;
-		return ;
-	}
-	if (cur->left && current_level < target_level)
-		save_nodes(cur->left, target_level, current_level + 1, print_arr, index);
-	else if (!cur->left && current_level < target_level)
-		(*index)++;
-	if (cur->right && current_level < target_level)
-		save_nodes(cur->right, target_level, current_level + 1, print_arr, index);
-	else if (!cur->right && current_level < target_level)
-		(*index)++;
-}
-
-char *get_symbol(t_tree_node *node)
+static char *get_symbol(t_tree_node *node)
 {
 	char *str = "";
 
@@ -319,7 +167,7 @@ char *get_symbol(t_tree_node *node)
 	return NULL;
 }
 
-int count_tree_depth(t_tree_node *node, int curlevel)
+static int count_tree_depth(t_tree_node *node, int curlevel)
 {
 	int minlevel = curlevel;
 	int temp_level = 0;

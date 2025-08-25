@@ -78,7 +78,7 @@ void	add_token(t_token **head, char *value, t_token_type type, t_priora priority
 void	add_node_to_list(t_node **head, char* command);
 t_token *lexer(char *input);
 void	tokenize_operator(char **str, t_token **token_list, t_priora priority_map);
-void    validate_command(t_node* node);
+void    validate_command(t_tree_node* node);
 t_node	*create_cmd_list(char **data);
 void    env(void);
 char    *seach_env_var(char *var_name);
@@ -102,6 +102,7 @@ t_token *find_list_end(t_token *start);
 void check_if_word_sequence(t_token **priora, t_token **priora_end);
 //void assign_value_to_argv(t_tree_node *node, t_token *token);
 t_tree_node *parser(char *input);
+void execute_command_line(t_tree_node *node);
 
 //test
 void    test_list_data(t_node *test_node);

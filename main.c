@@ -14,13 +14,8 @@ int	main(void)
 		if (!input)
 			continue ;
 		tree = parser(input);
-		// tokens = lexer(input);
-		// test_print_tokens(tokens);
-		// if (!analyze_parenthesis(tokens, 0))
-		// 	printf("Error\n");
-		// tree = fill_tree(tokens, NULL);
-		draw_tree(tree);
 		//draw_tree(tree);
+		execute_command_line(tree);
 	}
 	return (0);
 }

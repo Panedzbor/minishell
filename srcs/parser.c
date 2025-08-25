@@ -6,7 +6,7 @@ t_tree_node *parser(char *input)
 	t_tree_node *tree;
 
 	tokens = lexer(input);
-	test_print_tokens(tokens);
+	//test_print_tokens(tokens);
 	if (!analyze_parenthesis(tokens, 0))
 		printf("Error\n");
 	tree = fill_tree(tokens, NULL);

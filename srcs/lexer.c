@@ -28,7 +28,7 @@ static int is_word(char c, char *quote)
         return (0);
     return (1);
 }
-void tokenize_parenth(char **str, t_token **token_list, t_priora priority_map)
+static void tokenize_parenth(char **str, t_token **token_list, t_priora priority_map)
 {
     char *ptr;
 

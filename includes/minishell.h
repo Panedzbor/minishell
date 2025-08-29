@@ -1,35 +1,14 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "libft/libft.h"
+# include <dirent.h>
+# include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "get_next_line/get_next_line.h"
-# include <unistd.h>
-# include <fcntl.h>
-# include <dirent.h>
 # include <sys/wait.h>
-
-//delete
-typedef struct s_node
-{
-    char **command;
-    struct s_node *next;
-} t_node;
-//delete
-
-typedef enum e_node_type
-{
-	NODE_AND,
-	NODE_COMMAND,
-	NODE_OR,
-	NODE_PIPE,
-	NODE_REDIRECT_IN,		  //<
-	NODE_REDIRECT_IN_MANUAL,  //<<
-	NODE_REDIRECT_OUT,		  //>
-	NODE_REDIRECT_OUT_APPEND, //>>
-	NODE_SUBSHELL,
-} t_node_type;
+# include <unistd.h>
+# include "get_next_line/get_next_line.h"
+# include "libft/libft.h"
 
 typedef enum e_token_type
 {
@@ -57,6 +36,25 @@ typedef struct s_token
 	struct s_token *prev;
 } t_token;
 
+typedef enum e_node_type
+{
+	NODE_AND,
+	NODE_COMMAND,
+	NODE_OR,
+	NODE_PIPE,
+	NODE_REDIRECT_IN,		  //<
+	NODE_REDIRECT_IN_MANUAL,  //<<
+	NODE_REDIRECT_OUT,		  //>
+	NODE_REDIRECT_OUT_APPEND, //>>
+	NODE_SUBSHELL,
+} t_node_type;
+
+typedef struct s_priorities
+{
+	t_token_type type[11];
+	int	value[11];
+} t_priora;
+
 typedef struct s_tree_node
 {
 	t_node_type type;
@@ -66,48 +64,37 @@ typedef struct s_tree_node
 	struct s_tree_node *right;
 } t_tree_node;
 
-typedef struct s_priorities
+typedef struct s_shell
 {
-	t_token_type type[11];
-	int	value[11];
-} t_priora;
+	char		**envp;
+	char		**local_vars;
+} t_shell;
 
-t_node    *create_node(char *command);
-int		is_symbol_oper(char с);
-void	add_token(t_token **head, char *value, t_token_type type, t_priora priority_map);
-void	add_node_to_list(t_node **head, char* command);
-t_token *lexer(char *input);
-void	tokenize_operator(char **str, t_token **token_list, t_priora priority_map);
-void    validate_command(t_tree_node* node);
-t_node	*create_cmd_list(char **data);
-void    env(void);
-char    *seach_env_var(char *var_name);
-void    call_external_command(char **command);
-void    cd(const char *path);
-char    *pwd(void);
-void    echo(char **command);
-void    check_process(pid_t pid);
-int     check_operator(char *token);
-char    **split_input(char *input);
-t_tree_node *fill_tree(t_token *start, t_token *end);
-t_token *divide_tokens(t_token *start, t_token *end, t_token **left, t_token **right);
-t_token *find_lowest_priority(t_token *start, t_token *end);
+void		add_token(t_token **head, char *value, t_token_type type, t_priora priority_map);
+t_token 	*analyze_parenthesis(t_token *tokens, int parenth_open);
+void    	call_external_command(char **command, t_shell *shell);
+void    	cd(const char *path);
+void		check_if_word_sequence(t_token **priora, t_token **priora_end);
+int     	check_operator(char *token);
+void    	check_process(pid_t pid);
 t_tree_node *create_tree_node(t_token *token);
-void init_token_priority(t_priora *prior);
-int get_token_priority(t_token_type type, t_priora priority_map);
-t_token *analyze_parenthesis(t_token *tokens, int parenth_open);
-t_token *find_list_end(t_token *start);
-//t_node_type define_node_type(t_token_type tt);
-//t_token *subshell_trim(t_token *start, t_token *end, t_token **left);
-void check_if_word_sequence(t_token **priora, t_token **priora_end);
-//void assign_value_to_argv(t_tree_node *node, t_token *token);
+t_token		*divide_tokens(t_token *start, t_token *end, t_token **left, t_token **right);
+void    	echo(char **command);
+void    	env(char ** envp);
+void		execute_command_line(t_tree_node *node, t_shell *shell);
+t_token		*find_lowest_priority(t_token *start, t_token *end);
+int			get_token_priority(t_token_type type, t_priora priority_map);
+char		*get_var_value(char *var_name, t_shell *shell);
+void		init_token_priority(t_priora *prior);
+int			is_symbol_oper(char с);
+t_token		*lexer(char *input);
 t_tree_node *parser(char *input);
-void execute_command_line(t_tree_node *node);
+char		*pwd(void);
+void		tokenize_operator(char **str, t_token **token_list, t_priora priority_map);
 
 //test
-void    test_list_data(t_node *test_node);
 void	test_print_tokens(t_token *head);
 void    test_analyze_parent(t_token *token);
-void draw_tree(t_tree_node *tree);
+void 	draw_tree(t_tree_node *tree);
 
 #endif

@@ -53,20 +53,20 @@ char    **save_paths(void)
     return (path_list);
 }
 
-size_t  count_elements_for_argv(t_node *inp_node)
-{
-    size_t i;
-    t_node  *next;
+// size_t  count_elements_for_argv(t_node *inp_node)
+// {
+//     size_t i;
+//     t_node  *next;
 
-    i = 1;
-    next = inp_node->next;
-    while (next)
-    {
-        i++;
-        next = inp_node->next;
-    }
-    return (i);
-}
+//     i = 1;
+//     next = inp_node->next;
+//     while (next)
+//     {
+//         i++;
+//         next = inp_node->next;
+//     }
+//     return (i);
+// }
 
 
 pid_t subprocess(void)
@@ -80,7 +80,7 @@ pid_t subprocess(void)
     return (pid);
 }
 
-void call_external_command(char **command/*char *name, t_node *inp_node*/)
+void call_external_command(char **command, t_shell *shell)
 {
     char    *full_path;
     char    **path_list;
@@ -97,8 +97,8 @@ void call_external_command(char **command/*char *name, t_node *inp_node*/)
             full_path = find_command(command[0], path_list[i]);
             if(full_path)
             {
-                char *envp[] = {NULL}; //TODO
-                execve(full_path, command, envp);
+                //char *envp[] = {NULL}; //TODO
+                execve(full_path, command, shell->envp);
                 exit (1);
             }
             i++;

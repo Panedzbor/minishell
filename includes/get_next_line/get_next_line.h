@@ -34,6 +34,5 @@ char	*get_next_line(int fd);
 void	gnl_init_struct(t_st *st, int fd);
 ssize_t	count_size(char *str);
 char	*erase_left(t_st *st);
-char *seach_env_var(char *var_name);
 
 #endif

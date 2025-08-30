@@ -86,5 +86,6 @@ t_token *lexer(char *input)
             tokenize_word(&ptr, &token_list, priority_map);
     }
     add_token(&token_list, NULL, TOKEN_END_OF_LIST, priority_map);
+    find_variable_assignments(token_list);
     return (token_list);
 }

@@ -48,6 +48,7 @@ typedef enum e_node_type
 	NODE_REDIRECT_OUT,		  //>
 	NODE_REDIRECT_OUT_APPEND, //>>
 	NODE_SUBSHELL,
+	NODE_VAR_ASSIGN
 } t_node_type;
 
 typedef struct s_priorities
@@ -84,7 +85,7 @@ void    	echo(char **command);
 void    	env(char ** envp);
 void		execute_command_line(t_tree_node *node, t_shell *shell);
 t_token		*find_lowest_priority(t_token *start, t_token *end);
-void		find_variable_assignments(t_token *token);
+void		find_variable_assignments(t_token **token);
 int			get_token_priority(t_token_type type, t_priora priority_map);
 char		*get_var_value(char *var_name, t_shell *shell);
 void		init_token_priority(t_priora *prior);

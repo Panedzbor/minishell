@@ -7,7 +7,7 @@ void test_print_tokens(t_token *head)
 	i = 1;
     while (head)
     {
-        printf("Token: %d Value: %s Type: %d Priority: %ld\n", i , head->value, head->token_type, head->priority);
+        printf("Token: %d Value: %s Type: %d Priority: %ld\n", i , head->value, head->token_type, head->priority);fflush(stdout);
         head = head->next;
 		i++;
     }

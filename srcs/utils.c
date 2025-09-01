@@ -1,17 +1,21 @@
 #include "../includes/minishell.h"
 
-void check_process(pid_t pid)
+int check_process(pid_t pid)
 {
+	int status;
+
 	if (pid < 0)
 	{
 		printf("Fork failed\n");
-		exit(1);
+		status = -1;
+		//exit(1);
 	}
 	else if (pid > 0)
 	{
-		wait(NULL);
-		return;
+		wait(&status);
+		status = WEXITSTATUS(status);
 	}
+	return (status);
 }
 
 int	check_operator(char *token)

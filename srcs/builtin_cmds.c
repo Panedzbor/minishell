@@ -1,31 +1,36 @@
 #include "minishell.h"
 
-void cd(const char *path)
+int cd(const char *path)
 {
 	if (!path)
 		path = getenv("HOME");
 	if (chdir(path))
+	{
 		printf("cd: %s: No such file or directory\n", path);
+		return (1);
+	}
+	return (0);
 }
 
-char *pwd(void)
+int pwd(void)
 {
 	char *buf;
 	size_t size;
 
 	buf = NULL;
 	size = 100;
-	return (getcwd(buf, size));
+	printf("%s\n", getcwd(buf, size));
+	return (0);
 }
 
-void echo(char **command) // TODO: 1) echo "omg bro" 2) echo -n: remove space
+int echo(char **command) // TODO: 1) echo "omg bro" 2) echo -n: remove space
 {
 	size_t i;
 
 	if (!command[1])
 	{
 		printf("\n");
-		return ;
+		return (0);
 	}
 	if (!ft_strncmp(command[1], "-n", 3))
 		i = 2;
@@ -38,4 +43,5 @@ void echo(char **command) // TODO: 1) echo "omg bro" 2) echo -n: remove space
 	}
 	if (ft_strncmp(command[1], "-n", 3))
 		printf("\n");
+	return (0);
 }

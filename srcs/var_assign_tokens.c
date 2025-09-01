@@ -11,19 +11,22 @@ static int detect_assignment(char *token)
 
 }
 
-static int delete_token(t_token **replace, t_token **head)
+static int delete_token(t_token **current, t_token **head)
 {
     t_token *to_del;
     
-    to_del = *replace;
-    *replace = (*replace)->next;
+    to_del = *current;
+    *current = to_del->next;
     if(to_del->prev)
     {
-        (*replace)->prev = to_del->prev;
-        (*replace)->prev->next = *replace;
+        (*current)->prev = to_del->prev;
+        (*current)->prev->next = *current;
     }
     else
-        *head = *replace;
+    {
+        *head = *current;
+        (*head)->prev = NULL;
+    }
     free(to_del->value);
     free(to_del);
     return (1);

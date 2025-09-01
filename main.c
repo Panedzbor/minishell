@@ -17,7 +17,7 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		tree = parser(input);
 		//draw_tree(tree);
-		//execute_command_line(tree, &shell);
+		execute_command_line(tree, &shell);
 	}
 	return (0);
 }

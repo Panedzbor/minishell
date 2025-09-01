@@ -69,42 +69,42 @@ char    **save_paths(void)
 // }
 
 
-pid_t subprocess(void)
+pid_t subprocess(int *status)
 {
     pid_t   pid;
 
     pid = fork();
     if (!pid)
         return (0);
-    check_process(pid);
+    *status = check_process(pid);
     return (pid);
 }
 
-void call_external_command(char **command, t_shell *shell)
+int call_external_command(char **command, t_shell *shell)
 {
     char    *full_path;
     char    **path_list;
     size_t  i;
-
-    if (!subprocess())
+    int     status;
+    
+    status = 0;
+    if (!subprocess(&status))
     {
         path_list = save_paths();
         if(!path_list)
-            return ;
+            return (-1);
         i = 0;
         while(path_list[i])
         {
             full_path = find_command(command[0], path_list[i]);
             if(full_path)
-            {
-                //char *envp[] = {NULL}; //TODO
                 execve(full_path, command, shell->envp);
-                exit (1);
-            }
             i++;
         }
         ft_printf("%s: command not found\n", command[0]);
+        exit(127);
     }
+    return (status);
 }
 
 

@@ -12,26 +12,13 @@ void    env(char **envp)
     }
 }
 
-char *get_var_value(char *var_name, t_shell *shell)
+void unset(char *var_name, t_shell *shell)
 {
-    size_t i;
-    size_t var_len;
-    char * variable;
-    size_t len;
+    char *local_str;
+    char *env_str;
     
-    variable = ft_strjoin(var_name, "=");
-    var_len = ft_strlen(variable);
-    i = 0;
-    while(shell->local_vars[i])
-    {
-        if (ft_strncmp(variable, shell->local_vars[i], var_len) == 0)
-        {
-            len = ft_strlen(shell->local_vars[i]) - var_len;
-            return(ft_substr(shell->local_vars[i], var_len, len));
-        }
-        i++;
-    }
-    return (NULL);
+    local_str = search_var(var_name, shell->local_vars);
+    if(local_str)
+        shell->local_vars = 
+    env_str = search_var(var_name, shell->envp);    
 }
-
-

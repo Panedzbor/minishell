@@ -2,12 +2,14 @@
 
 static void assign_value_to_argv(t_tree_node *node, t_token *token)
 {
+    t_token_type type;
     t_token *temp;
     size_t count;
 
+    type = token->token_type;
     temp = token;
     count = 0;
-    while (temp->token_type == TOKEN_WORD)
+    while (temp->token_type == type)
     {
         count++;
         temp = temp->next;
@@ -16,7 +18,7 @@ static void assign_value_to_argv(t_tree_node *node, t_token *token)
     if (!node->argv)
         printf ("Error!\n");
     count = 0;
-    while (token->token_type == TOKEN_WORD)
+    while (token->token_type == type)
     {
         node->argv[count++] = token->value;
         token = token->next;
@@ -63,7 +65,7 @@ t_tree_node *create_tree_node(t_token *token)
     if (!node)
         printf("Error!\n");
     node->type = define_node_type(token->token_type);
-    if (node->type == NODE_COMMAND)
+    if (node->type == NODE_COMMAND || node->type == NODE_VAR_ASSIGN)
         assign_value_to_argv(node, token);
     else
         node->argv = NULL;
@@ -77,7 +79,8 @@ t_token *divide_tokens(t_token *start, t_token *end, t_token **left, t_token **r
 
     priora_end = NULL;
     priora = find_lowest_priority(start, end);
-    check_if_word_sequence(&priora, &priora_end);
+    check_if_token_sequence(&priora, &priora_end, TOKEN_WORD);
+    check_if_token_sequence(&priora, &priora_end, TOKEN_VAR_ASSIGN);
     if (priora->token_type == TOKEN_PAREN_RIGH)
         return (subshell_trim(start, end, left));
     if (priora != start)

@@ -74,16 +74,16 @@ typedef struct s_shell
 
 void		add_token(t_token **head, char *value, t_token_type type, t_priora priority_map);
 t_token 	*analyze_parenthesis(t_token *tokens, int parenth_open);
-void    	call_external_command(char **command, t_shell *shell);
-void    	cd(const char *path);
+int    		call_external_command(char **command, t_shell *shell);
+int	    	cd(const char *path);
 void		check_if_token_sequence(t_token **priora, t_token **priora_end, t_token_type cur_token_type);
 int     	check_operator(char *token);
-void    	check_process(pid_t pid);
+int	    	check_process(pid_t pid);
 t_tree_node *create_tree_node(t_token *token);
 t_token		*divide_tokens(t_token *start, t_token *end, t_token **left, t_token **right);
-void    	echo(char **command);
+int	    	echo(char **command);
 void    	env(char ** envp);
-void		execute_command_line(t_tree_node *node, t_shell *shell);
+int			execute_command_line(t_tree_node *node, t_shell *shell);
 t_token		*find_lowest_priority(t_token *start, t_token *end);
 void		find_variable_assignments(t_token **token);
 int			get_token_priority(t_token_type type, t_priora priority_map);
@@ -92,7 +92,7 @@ void		init_token_priority(t_priora *prior);
 int			is_symbol_oper(char с);
 t_token		*lexer(char *input);
 t_tree_node *parser(char *input);
-char		*pwd(void);
+int			pwd(void);
 void		tokenize_operator(char **str, t_token **token_list, t_priora priority_map);
 
 //test

@@ -41,6 +41,8 @@ static t_node_type define_node_type(t_token_type tt)
         return (NODE_REDIRECT_OUT_APPEND);
     else if (tt == TOKEN_PAREN_LEFT)
         return (NODE_SUBSHELL);
+    else if (tt == TOKEN_VAR_ASSIGN)
+        return (NODE_VAR_ASSIGN);
     else if (tt == TOKEN_WORD)
         return (NODE_COMMAND);
     return (0);

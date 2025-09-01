@@ -29,5 +29,6 @@ void execute_command_line(t_tree_node *node, t_shell *shell)
         validate_command(node, shell);
     else if (node->type == NODE_PIPE)
         printf("PIPE\n");
-    //else if...
+    /* else if (node->type == NODE_VAR_ASSIGN)
+		assign_variable(node, shell); */
 }

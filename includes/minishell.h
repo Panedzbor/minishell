@@ -76,7 +76,7 @@ void		add_token(t_token **head, char *value, t_token_type type, t_priora priorit
 t_token 	*analyze_parenthesis(t_token *tokens, int parenth_open);
 void    	call_external_command(char **command, t_shell *shell);
 void    	cd(const char *path);
-void		check_if_word_sequence(t_token **priora, t_token **priora_end);
+void		check_if_token_sequence(t_token **priora, t_token **priora_end, t_token_type cur_token_type);
 int     	check_operator(char *token);
 void    	check_process(pid_t pid);
 t_tree_node *create_tree_node(t_token *token);

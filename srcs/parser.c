@@ -10,15 +10,15 @@ static t_token *find_list_end(t_token *start)
 	return (current);
 }
 
-void check_if_word_sequence(t_token **priora, t_token **priora_end)
+void check_if_token_sequence(t_token **priora, t_token **priora_end, t_token_type cur_token_type)
 {
 	t_token *temp;
 
 	temp = NULL;
-	if ((*priora)->token_type == TOKEN_WORD)
+	if ((*priora)->token_type == cur_token_type)
 	{
 		temp = *priora;
-		while ((*priora)->prev && (*priora)->prev->priority == (*priora)->priority)
+		while ((*priora)->prev && (*priora)->prev->token_type == cur_token_type)
 			*priora = (*priora)->prev;
 	}
 	if (temp && *priora != temp)
@@ -73,7 +73,7 @@ t_tree_node *parser(char *input)
 	t_tree_node *tree;
 
 	tokens = lexer(input);
-	//test_print_tokens(tokens);
+	test_print_tokens(tokens);
 	if (!analyze_parenthesis(tokens, 0))
 		printf("Error\n");
 	tree = fill_tree(tokens, NULL);

@@ -14,14 +14,34 @@ void env(char **envp)
 
 void unset(char *var_name, t_shell *shell)
 {
-	delete_var(var_name, shell->local_vars);
-	delete_var(var_name, shell->envp);
+	delete_var(var_name, &shell->local_vars);
+	delete_var(var_name, &shell->envp);
 }
-void export(char *var_name, t_shell *shell)
+void export(char *var_input, t_shell *shell)
 {
+	int i;
+	char *checker;
 	char *var;
 
-	var = search_var(*var_name, shell->local_vars);
-	if (var)
-		set_var(var, shell->envp);	
+	if (ft_strchr(var_input, '='))
+	{
+		set_var(var_input, &shell->local_vars);
+		set_var(var_input, &shell->envp);
+	}
+	else
+	{
+		i = search_var(var_input, shell->local_vars);
+		if (i >= 0)
+		{
+			var = shell->local_vars[i];
+			set_var(var, &shell->envp);
+		}
+		else
+		{
+			var = ft_strjoin(var_input, "=");
+			set_var(var, &shell->local_vars);
+			set_var(var, &shell->envp);
+			free(var);
+		}
+	}
 }

@@ -23,7 +23,7 @@ static void free_arr(char **arr)
 	}
 	free(arr);
 }
-char **extend_arr(char **arr, char *ext_str)
+char **extend_arr(char *ext_str, char **arr)
 {
 	char **result;
 	int str_count;
@@ -39,13 +39,13 @@ char **extend_arr(char **arr, char *ext_str)
 		result[i] = ft_strdup(arr[i]);
 		i++;
 	}
-	result[i] = ext_str;
+	result[i] = ft_strdup(ext_str);
 	result[i + 1] = NULL;
 	free_arr(arr);
 	return (result);
 }
 
-char **shorten_arr(char **arr, char *del_str)
+char **shorten_arr(char *del_str, char **arr)
 {
 	char **result;
 	int str_count;
@@ -62,7 +62,7 @@ char **shorten_arr(char **arr, char *del_str)
 		return (NULL);
 	while (arr[i])
 	{
-		if (ft_strncmp(arr[i], result, len) != 0)
+		if (ft_strncmp(arr[i], del_str, len) != 0)
 		{
 			result[j] = ft_strdup(arr[i]);
 			j++;

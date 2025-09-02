@@ -1,59 +1,85 @@
 #include "../includes/minishell.h"
 
-char *search_var(char *var_name, char **var_store)
+static char *check_name(char *var_name)
+{
+	char 	*name;
+	char	*variable;
+	size_t	var_len;
+
+	variable = ft_strchr(var_name, '=');
+	if(variable)
+	{
+		var_len = variable - var_name;
+		name = ft_substr(var_name, 0, var_len);
+		return name;
+	}
+	else
+		return ft_strdup(var_name);
+}
+
+int search_var(char *var_name, char **var_store)
 {
 	size_t	i;
 	size_t	var_len;
 	char	*variable;
+	char 	*name;
 
 	i = 0;
-	variable = ft_strjoin(var_name, "=");
+	name = check_name(var_name);
+	variable = ft_strjoin(name, "=");
 	var_len = ft_strlen(variable);
 	while (var_store[i])
 	{
 		if (ft_strncmp(variable, var_store[i], var_len) == 0)
 		{
 			free(variable);
-			return var_store[i];
+			free(name);
+			return i;
 		}
 		i++;
 	}
 	free(variable);
-	return NULL;
+	free(name);
+	return (-1);
 }
-
-void set_var(char *var_name, char **var_store)
-{
-	char	*result;
-
-	result = search_var(var_name, var_store);
-	if (!result)
-		*var_store = extend_arr(var_store, result);
-}
-
 char *get_var(char *var_name, char **var_store)
 {
 	size_t	var_len;
 	size_t	len;
 	char	*variable;
-	char	*result;
+	char    *result;
+    int     i;
 
-	variable = ft_strjoin(var_name, "=");
-	var_len = ft_strlen(variable);
-	result = search_var(var_name, var_store);
-	if (result)
+	var_len = ft_strlen(var_name) + 1;
+	i = search_var(var_name, var_store);
+	if (i >= 0)
 	{
-		len = ft_strlen(result) - var_len;
-		return (ft_substr(result, var_len, len));
+		len = ft_strlen(var_store[i]) - var_len;
+		result = (ft_substr(var_store[i], var_len, len));
+		return(result);
 	}
 	return (NULL);
 }
 
-void delete_var(char *var_name, char **var_store)
-{
-	char	*result;
+void set_var(char *variable, char ***var_store)
+{  
+    int i;
 
-	result = search_var(var_name, var_store);
-	if (result)
-		*var_store = shorten_arr(var_store, result);
+    i = search_var(variable, *var_store);
+    if(i >= 0)
+    {
+        free((*var_store)[i]);
+           (*var_store)[i] = ft_strdup(variable);
+    }
+    else
+        *var_store = extend_arr(variable, *var_store);
+}
+
+void delete_var(char *var_name, char ***var_store)
+{
+	int	i;
+
+	i = search_var(var_name, *var_store);
+	if (i >=0)
+		*var_store = shorten_arr((*var_store)[i], *var_store);
 }

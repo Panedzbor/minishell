@@ -85,7 +85,8 @@ t_token		*divide_tokens(t_token *start, t_token *end, t_token **left, t_token **
 int	    	echo(char **command);
 void    	env(char ** envp);
 int			execute_command_line(t_tree_node *node, t_shell *shell);
-char		**extend_arr(char **arr, char *ext_str);
+char		**extend_arr( char *ext_str, char **arr);
+void		export(char *var_input, t_shell *shell); //TODO change
 t_token		*find_lowest_priority(t_token *start, t_token *end);
 void		find_variable_assignments(t_token **token);
 int			get_token_priority(t_token_type type, t_priora priority_map);
@@ -99,10 +100,12 @@ char		*search_var(char *var_name, char **var_store);
 void		set_var(char *var_name, char **var_store);
 char		**shorten_arr(char **arr, char *del_str);
 void		tokenize_operator(char **str, t_token **token_list, t_priora priority_map);
+void		unset(char *var_name, t_shell *shell); //TODO change
 
 //test
-void	test_print_tokens(t_token *head);
 void    test_analyze_parent(t_token *token);
+void	test_print_tokens(t_token *head);
+void	test_print_shell_vars(t_shell *shell);
 void 	draw_tree(t_tree_node *tree);
 
 #endif

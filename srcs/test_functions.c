@@ -31,7 +31,7 @@ void test_print_shell_vars(t_shell *shell)
 {
     int i;
 
-    printf("\nLOCAL VARIABLES\n");
+    printf("\n--------------------LOCAL VARIABLES--------------------\n");
     if (shell->local_vars)
     {
         i = 0;
@@ -41,7 +41,8 @@ void test_print_shell_vars(t_shell *shell)
             i++;
         }
 	}
-	printf("\nENVIRONMENT VARIABLES\n");
+    printf("\n--------------------LOCAL VARIABLES--------------------\n");
+	printf("\n-----------------ENVIRONMENT VARIABLES-----------------\n");
     if (shell->envp)
     {
         i = 0;
@@ -51,4 +52,5 @@ void test_print_shell_vars(t_shell *shell)
             i++;
         }
     }
+    printf("\n-----------------ENVIRONMENT VARIABLES-----------------\n");
 }

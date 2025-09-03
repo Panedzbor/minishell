@@ -25,6 +25,8 @@ int search_var(char *var_name, char **var_store)
 	char 	*name;
 
 	i = 0;
+	if (!var_store)
+		return (-1);
 	name = check_name(var_name);
 	variable = ft_strjoin(name, "=");
 	var_len = ft_strlen(variable);
@@ -46,7 +48,6 @@ char *get_var(char *var_name, char **var_store)
 {
 	size_t	var_len;
 	size_t	len;
-	char	*variable;
 	char    *result;
     int     i;
 

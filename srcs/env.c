@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void env(char **envp)
+int env(char **envp)
 {
 	int i;
 
@@ -10,24 +10,27 @@ void env(char **envp)
 		printf("%s\n", envp[i]);
 		i++;
 	}
+	return (0);
 }
 
-void unset(char *var_name, t_shell *shell)
+int unset(char *var_name, t_shell *shell)
 {
 	delete_var(var_name, &shell->local_vars);
 	delete_var(var_name, &shell->envp);
+	return (0);
 }
-void export(char *var_input, t_shell *shell)
+static void add_var(char *var_input, t_shell *shell)
+{
+	set_var(var_input, &shell->local_vars);
+	set_var(var_input, &shell->envp);
+}
+int export(char *var_input, t_shell *shell)
 {
 	int i;
-	char *checker;
 	char *var;
 
 	if (ft_strchr(var_input, '='))
-	{
-		set_var(var_input, &shell->local_vars);
-		set_var(var_input, &shell->envp);
-	}
+		add_var(var_input, shell);
 	else
 	{
 		i = search_var(var_input, shell->local_vars);
@@ -39,9 +42,9 @@ void export(char *var_input, t_shell *shell)
 		else
 		{
 			var = ft_strjoin(var_input, "=");
-			set_var(var, &shell->local_vars);
-			set_var(var, &shell->envp);
+			add_var(var, shell);
 			free(var);
 		}
 	}
+	return (0);
 }

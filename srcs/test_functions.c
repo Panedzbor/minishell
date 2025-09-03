@@ -27,3 +27,30 @@ void    test_analyze_parent(t_token *token)
 		printf("%5ld ", current->priority);
 	printf("\n");
 }
+void test_print_shell_vars(t_shell *shell)
+{
+    int i;
+
+    printf("\n--------------------LOCAL VARIABLES--------------------\n");
+    if (shell->local_vars)
+    {
+        i = 0;
+        while (shell->local_vars[i])
+        {
+            printf("%s\n", shell->local_vars[i]);
+            i++;
+        }
+	}
+    printf("\n--------------------LOCAL VARIABLES--------------------\n");
+	printf("\n-----------------ENVIRONMENT VARIABLES-----------------\n");
+    if (shell->envp)
+    {
+        i = 0;
+        while (shell->envp[i])
+        {
+            printf("%s\n", shell->envp[i]);
+            i++;
+        }
+    }
+    printf("\n-----------------ENVIRONMENT VARIABLES-----------------\n");
+}

@@ -5,6 +5,8 @@ static int ft_strcount(char **arr)
 	int i;
 
 	i = 0;
+	if (!arr)
+		return (0);
 	while (arr[i])
 		i++;
 	return (i);
@@ -34,10 +36,13 @@ char **extend_arr(char *ext_str, char **arr)
 	if (!result)
 		return (NULL);
 	i = 0;
-	while (arr[i])
+	if (arr)
 	{
-		result[i] = ft_strdup(arr[i]);
-		i++;
+		while (arr[i])
+		{
+			result[i] = ft_strdup(arr[i]);
+			i++;
+		}
 	}
 	result[i] = ft_strdup(ext_str);
 	result[i + 1] = NULL;
@@ -67,7 +72,7 @@ char **shorten_arr(char *del_str, char **arr)
 			result[j] = ft_strdup(arr[i]);
 			j++;
 		}
-			i++;	
+		i++;
 	}
 	result[j] = NULL;
 	free_arr(arr);

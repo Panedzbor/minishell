@@ -13,9 +13,9 @@ static int validate_command(t_tree_node *node, t_shell *shell)
 	else if (!ft_strncmp(cmd[0], "pwd", 4))
 		status = pwd();
 	else if (!ft_strncmp(cmd[0], "export", 7))
-		ft_printf("%s: found\n", cmd[0]); //should return status
+		status = export(cmd[1], shell);
 	else if (!ft_strncmp(cmd[0], "unset", 6))
-		ft_printf("%s: found\n", cmd[0]); //should return status
+		status = unset(cmd[1], shell);
 	else if (!ft_strncmp(cmd[0], "env", 4))
 		env(shell->envp); //should return status
 	else if (!ft_strncmp(cmd[0], "exit", 5))

@@ -70,7 +70,7 @@ void set_var(char *variable, char ***var_store)
     if(i >= 0)
     {
         free((*var_store)[i]);
-           (*var_store)[i] = ft_strdup(variable);
+        (*var_store)[i] = ft_strdup(variable);
     }
     else
         *var_store = extend_arr(variable, *var_store);

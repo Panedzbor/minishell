@@ -4,6 +4,7 @@ int check_process(pid_t pid)
 {
 	int status;
 
+	status = 0;
 	if (pid < 0)
 	{
 		printf("Fork failed\n");

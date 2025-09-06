@@ -32,7 +32,7 @@ char **extend_arr(char *ext_str, char **arr)
 	int i;
 
 	str_count = ft_strcount(arr);
-	result = (char **)calloc(str_count + 2, sizeof(char *));
+	result = (char **)ft_calloc(str_count + 2, sizeof(char *));
 	if (!result)
 		return (NULL);
 	i = 0;
@@ -62,7 +62,7 @@ char **shorten_arr(char *del_str, char **arr)
 	j = 0;
 	str_count = ft_strcount(arr);
 	len = ft_strlen(del_str);
-	result = (char **)calloc(str_count, sizeof(char *));
+	result = (char **)ft_calloc(str_count, sizeof(char *));
 	if (!result)
 		return (NULL);
 	while (arr[i])

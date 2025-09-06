@@ -17,9 +17,9 @@ static int validate_command(t_tree_node *node, t_shell *shell)
 	else if (!ft_strncmp(cmd[0], "unset", 6))
 		status = unset(cmd[1], shell);
 	else if (!ft_strncmp(cmd[0], "env", 4))
-		env(shell->envp); //should return status
+		status = env(shell->envp); //should return status
 	else if (!ft_strncmp(cmd[0], "exit", 5))
-		ft_printf("%s: found\n", cmd[0]); //should return status
+		status = ft_printf("%s: found\n", cmd[0]); //should return status
 	else
 		status = call_external_command(cmd, shell);
 	return (status);
@@ -41,10 +41,11 @@ int execute_command_line(t_tree_node *node, t_shell *shell)
 {
     int status;
 
+	status = 0;
 	if (node->type == NODE_COMMAND)
         status = validate_command(node, shell);
     else if (node->type == NODE_PIPE)
-        printf("PIPE\n");
+        status = printf("PIPE\n");
     /* else if (node->type == NODE_VAR_ASSIGN)
 		assign_variable(node, shell); */
 	else if (node->type == NODE_AND || node->type == NODE_OR)

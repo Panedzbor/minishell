@@ -1,7 +1,9 @@
 #include "../includes/minishell.h"
 
+
 static char *find_command2(DIR *command_dir, char *cmd, char *path)
 {
+    //TODO : refactoring + free
     char *full_path;
     char *temp;
     struct dirent *info_dir;
@@ -48,6 +50,7 @@ char    **save_paths(void)
     if(!path_str)
         return (NULL);
     path_list = ft_split(path_str, ':');
+    //free (path_str)
     /*if (!path_list)
         return (NULL);*/ // not needed
     return (path_list);

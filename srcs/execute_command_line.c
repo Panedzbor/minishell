@@ -9,7 +9,7 @@ static int validate_command(t_tree_node *node, t_shell *shell)
 	if (!ft_strncmp(cmd[0], "echo", 5))
 		status = echo(cmd);
 	else if (!ft_strncmp(cmd[0], "cd", 3))
-		status = cd(cmd[1]);
+		status = cd(cmd[1], shell);
 	else if (!ft_strncmp(cmd[0], "pwd", 4))
 		status = pwd();
 	else if (!ft_strncmp(cmd[0], "export", 7))

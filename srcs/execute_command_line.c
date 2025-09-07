@@ -37,7 +37,7 @@ static int execute_logic_operator(t_tree_node *node, t_shell *shell)
 	return (status);
 }
 
-static int assign_variable(t_tree_node *node, t_shell *shell)
+/* static int assign_variable(t_tree_node *node, t_shell *shell)
 {
 	int i;
 
@@ -48,7 +48,7 @@ static int assign_variable(t_tree_node *node, t_shell *shell)
 		i++;
 	}
 	return (0);
-}
+} */
 
 int execute_command_line(t_tree_node *node, t_shell *shell)
 {
@@ -59,8 +59,6 @@ int execute_command_line(t_tree_node *node, t_shell *shell)
         status = validate_command(node, shell);
     else if (node->type == NODE_PIPE)
         status = printf("PIPE\n");
-    else if (node->type == NODE_VAR_ASSIGN)
-		status = assign_variable(node, shell);
 	else if (node->type == NODE_AND || node->type == NODE_OR)
 		status = execute_logic_operator(node, shell);
 	return (status);

@@ -152,7 +152,7 @@ static char *get_symbol(t_tree_node *node)
 		return ("[ >> ]");
 	else if (node->type == NODE_SUBSHELL)
 		return ("(SUBSHELL)");
-	else if (node->type == NODE_COMMAND || node->type == NODE_VAR_ASSIGN)
+	else if (node->type == NODE_COMMAND)
 	{
 		str = node->argv[0];
 		for (int i = 1; node->argv[i]; i++)

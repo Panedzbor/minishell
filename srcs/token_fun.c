@@ -63,8 +63,6 @@ void init_token_priority(t_priora *prior)
     prior->value[8] = 4;
     prior->type[9] = TOKEN_WORD;
     prior->value[9] = 5;
-    prior->type[10] = TOKEN_VAR_ASSIGN;
-    prior->value[10] = 5;
-    prior->type[11] = TOKEN_END_OF_LIST;
-    prior->value[11] = -1;
+    prior->type[10] = TOKEN_END_OF_LIST;
+    prior->value[10] = -1;
 }

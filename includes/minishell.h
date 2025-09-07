@@ -10,6 +10,7 @@
 # include <unistd.h>
 # include "get_next_line/get_next_line.h"
 # include "libft/libft.h"
+# include <limits.h>
 
 typedef enum e_token_type
 {
@@ -76,7 +77,7 @@ typedef struct s_shell
 void		add_token(t_token **head, char *value, t_token_type type, t_priora priority_map);
 t_token 	*analyze_parenthesis(t_token *tokens, int parenth_open);
 int    		call_external_command(char **command, t_shell *shell);
-int	    	cd(const char *path);
+int			cd(const char *path, t_shell *shell);
 void		check_if_token_sequence(t_token **priora, t_token **priora_end, t_token_type cur_token_type);
 int     	check_operator(char *token);
 int	    	check_process(pid_t pid);

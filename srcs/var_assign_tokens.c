@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static int detect_assignment(char *token)
+/* static int detect_assignment(char *token)
 {
     char *pos;
 
@@ -9,9 +9,9 @@ static int detect_assignment(char *token)
         return (0);
     return (1);
 
-}
+} */
 
-static int delete_token(t_token **current, t_token **head)
+/* static int delete_token(t_token **current, t_token **head)
 {
     t_token *to_del;
     
@@ -30,9 +30,9 @@ static int delete_token(t_token **current, t_token **head)
     free(to_del->value);
     free(to_del);
     return (1);
-}
+} */
 
-static int loop_through_subsequent_tokens(t_token **current, t_token **head)
+/* static int loop_through_subsequent_tokens(t_token **current, t_token **head)
 {
     t_token *subsequent;
     t_token_type stt;
@@ -53,9 +53,9 @@ static int loop_through_subsequent_tokens(t_token **current, t_token **head)
         subsequent = subsequent->next;
     }
     return (del);
-}
+} */
 
-static void remove_ignored_assignments(t_token **list)
+/* static void remove_ignored_assignments(t_token **list)
 {
     t_token *current;
     int     token_deleted;
@@ -69,9 +69,9 @@ static void remove_ignored_assignments(t_token **list)
         if (!token_deleted)
             current = current->next;
     }
-}
+} */
 
-void find_variable_assignments(t_token **token)
+/* void find_variable_assignments(t_token **token)
 {
     t_token *current;
     int     type;
@@ -96,4 +96,4 @@ void find_variable_assignments(t_token **token)
         current = current->next;
     }
     remove_ignored_assignments(token);
-}
+} */

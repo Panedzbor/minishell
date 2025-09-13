@@ -5,6 +5,7 @@ static int validate_command(t_tree_node *node, t_shell *shell)
 	int status;
 	char **cmd;
 
+
 	cmd = node->argv;
 	if (!ft_strncmp(cmd[0], "echo", 5))
 		status = echo(cmd);
@@ -25,15 +26,15 @@ static int validate_command(t_tree_node *node, t_shell *shell)
 	return (status);
 }
 
-static int execute_logic_operator(t_tree_node *node, t_shell *shell)
+static int execute_logic_operator(t_tree_node *node, t_shell *shell, int fd_in, int fd_out)
 {
 	int status;
 
-	status = execute_command_line(node->left, shell);
+	status = execute_command_line(node->left, shell, fd_in, fd_out);
 	if (status == 0 && node->type == NODE_AND)
-		status = execute_command_line(node->right, shell);
+		status = execute_command_line(node->right, shell, fd_in, fd_out);
 	else if (status != 0 && node->type == NODE_OR)
-		status = execute_command_line(node->right, shell);
+		status = execute_command_line(node->right, shell, fd_in, fd_out);
 	return (status);
 }
 
@@ -50,7 +51,63 @@ static int execute_logic_operator(t_tree_node *node, t_shell *shell)
 	return (0);
 } */
 
-int execute_command_line(t_tree_node *node, t_shell *shell)
+static int execute_pipe(t_tree_node *node, t_shell *shell, int fd_in, int fd_out)
+{
+	int status;
+	int fd[2];
+	pid_t pid1;
+	pid_t pid2;
+	// (void) fd_in; (void) fd_out;
+fprintf(stderr, "entered Pipe\n");fflush(stderr);
+	if (pipe(fd) == -1)
+	{
+		perror("pipe");
+		return (-1);
+	}
+	pid1 = fork();
+	if (pid1 < 0)
+	{
+		perror("fork");
+		return (-1);
+	}
+	else if (pid1 == 0)
+	{
+		fprintf(stderr, "fork1\n");fflush(stderr);
+		close(fd[0]);
+		dup2(fd_in, STDIN_FILENO);
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+		status = execute_command_line(node->left, shell, STDIN_FILENO, STDOUT_FILENO);
+		exit(status);
+	}
+	pid2 = fork();
+	if (pid2 < 0)
+	{
+		perror("fork");
+		return (-1);
+	}
+	else if (pid2 == 0)
+	{
+		fprintf(stderr, "fork2\n");fflush(stderr);
+		close(fd[1]);
+		dup2(fd[0], STDIN_FILENO);
+		dup2(fd_out, STDOUT_FILENO);
+		close(fd[0]);
+		status = execute_command_line(node->right, shell, STDIN_FILENO, STDOUT_FILENO);
+		exit(status);
+	}
+	close(fd[0]);
+	close(fd[1]);
+	waitpid(pid1, &status, 0);
+	if (WIFEXITED(status) && WEXITSTATUS(status)) //делать полную проверку сигналов
+		return (WEXITSTATUS(status));
+	waitpid(pid2, &status, 0);
+	if (WIFEXITED(status) && WEXITSTATUS(status))
+		return (WEXITSTATUS(status));
+	return (WEXITSTATUS(status));
+}
+
+int execute_command_line(t_tree_node *node, t_shell *shell, int fd_in, int fd_out)
 {
     int status;
 
@@ -58,8 +115,8 @@ int execute_command_line(t_tree_node *node, t_shell *shell)
 	if (node->type == NODE_COMMAND)
         status = validate_command(node, shell);
     else if (node->type == NODE_PIPE)
-        status = printf("PIPE\n");
+        status = execute_pipe(node, shell, fd_in, fd_out);
 	else if (node->type == NODE_AND || node->type == NODE_OR)
-		status = execute_logic_operator(node, shell);
+		status = execute_logic_operator(node, shell, fd_in, fd_out);
 	return (status);
 }

@@ -71,6 +71,24 @@ char    **save_paths(void)
 //     return (i);
 // }
 
+int check_process(pid_t pid)
+{
+	int status;
+
+	status = 0;
+	if (pid < 0)
+	{
+		printf("Fork failed\n");
+		status = -1;
+		//exit(1);
+	}
+	else if (pid > 0)
+	{
+		wait(&status);
+		status = WEXITSTATUS(status);
+	}
+	return (status);
+}
 
 pid_t subprocess(int *status)
 {

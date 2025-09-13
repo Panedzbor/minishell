@@ -1,16 +1,16 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stdio.h>
 # include <dirent.h>
 # include <fcntl.h>
+# include "get_next_line/get_next_line.h"
+# include <limits.h>
+# include "libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <stdio.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include "get_next_line/get_next_line.h"
-# include "libft/libft.h"
-# include <limits.h>
 
 typedef enum e_token_type
 {
@@ -84,7 +84,7 @@ void		delete_var(char *var_name, char ***var_store);
 t_token		*divide_tokens(t_token *start, t_token *end, t_token **left, t_token **right);
 int	    	echo(char **command);
 int    		env(char ** envp);
-int			execute_command_line(t_tree_node *node, t_shell *shell);
+int			execute_command_line(t_tree_node *node, t_shell *shell, int fd_in, int fd_out);
 char		**extend_arr( char *ext_str, char **arr);
 int			export(char *var_input, t_shell *shell);
 t_token		*find_lowest_priority(t_token *start, t_token *end);

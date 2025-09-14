@@ -80,11 +80,11 @@ int check_process(pid_t pid)
 	{
 		printf("Fork failed\n");
 		status = -1;
-		//exit(1);
+		//exit(1); //launch error handler here
 	}
 	else if (pid > 0)
 	{
-		wait(&status);
+		waitpid(pid, &status, 0);
 		status = WEXITSTATUS(status);
 	}
 	return (status);

@@ -29,8 +29,11 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	// предлагаю засунуть это в отдельную функцию
 	shell.envp = ft_copy_envp(envp);
 	shell.local_vars = NULL;
+	shell.std_out = STDOUT_FILENO;
+	//
 	while (1)
 	{
 		input = readline("Minishell: ");
@@ -38,7 +41,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!input)
 			continue ;
 		tree = parser(input);
-		execute_command_line(tree, &shell, STDIN_FILENO, STDOUT_FILENO);
+		execute_command_line(tree, &shell, STDIN_FILENO, STDOUT_FILENO, 0);
 		//draw_tree(tree);
 		//test_print_shell_vars(&shell);
 	}

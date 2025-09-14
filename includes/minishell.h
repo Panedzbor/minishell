@@ -70,7 +70,6 @@ typedef struct s_shell
 {
 	char		**envp;
 	char		**local_vars;
-	int	std_out;
 } t_shell;
 
 void		add_token(t_token **head, char *value, t_token_type type, t_priora priority_map);

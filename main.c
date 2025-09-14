@@ -29,11 +29,9 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	// предлагаю засунуть это в отдельную функцию
+
 	shell.envp = ft_copy_envp(envp);
 	shell.local_vars = NULL;
-	shell.std_out = STDOUT_FILENO;
-	//
 	while (1)
 	{
 		input = readline("Minishell: ");

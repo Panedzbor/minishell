@@ -70,6 +70,7 @@ typedef struct s_shell
 {
 	char		**envp;
 	char		**local_vars;
+	int	std_out;
 } t_shell;
 
 void		add_token(t_token **head, char *value, t_token_type type, t_priora priority_map);
@@ -84,7 +85,7 @@ void		delete_var(char *var_name, char ***var_store);
 t_token		*divide_tokens(t_token *start, t_token *end, t_token **left, t_token **right);
 int	    	echo(char **command);
 int    		env(char ** envp);
-int			execute_command_line(t_tree_node *node, t_shell *shell, int fd_in, int fd_out);
+int			execute_command_line(t_tree_node *node, t_shell *shell, int fd_in, int fd_out, int sub_pipe);
 char		**extend_arr( char *ext_str, char **arr);
 int			export(char *var_input, t_shell *shell);
 t_token		*find_lowest_priority(t_token *start, t_token *end);

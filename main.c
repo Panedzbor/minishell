@@ -29,6 +29,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+
 	shell.envp = ft_copy_envp(envp);
 	shell.local_vars = NULL;
 	while (1)
@@ -38,7 +39,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!input)
 			continue ;
 		tree = parser(input);
-		execute_command_line(tree, &shell);
+		execute_command_line(tree, &shell, 0);
 		//draw_tree(tree);
 		//test_print_shell_vars(&shell);
 	}

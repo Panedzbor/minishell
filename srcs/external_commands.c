@@ -71,15 +71,33 @@ char    **save_paths(void)
 //     return (i);
 // }
 
+static int check_and_wait_for_pid(pid_t pid)
+{
+	int status;
 
-pid_t subprocess(int *status)
+	status = 0;
+	if (pid < 0)
+	{
+		printf("Fork failed\n");
+		status = -1;
+		//exit(1); //launch error handler here
+	}
+	else if (pid > 0)
+	{
+		waitpid(pid, &status, 0); //maybe better to use like in pipe (wait_for_subprocess)
+		status = WEXITSTATUS(status);
+	}
+	return (status);
+}
+
+static pid_t fork_and_get_pid(int *status)
 {
     pid_t   pid;
 
     pid = fork();
     if (!pid)
-        return (0);
-    *status = check_process(pid);
+        return (0);//лишнее действие?
+    *status = check_and_wait_for_pid(pid);
     return (pid);
 }
 
@@ -91,7 +109,7 @@ int call_external_command(char **command, t_shell *shell)
     int     status;
     
     status = 0;
-    if (!subprocess(&status))
+    if (!fork_and_get_pid(&status))
     {
         path_list = save_paths();
         if(!path_list)

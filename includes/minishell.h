@@ -42,6 +42,7 @@ typedef enum e_node_type
 {
 	NODE_AND,
 	NODE_COMMAND,
+	NODE_FILENAME,
 	NODE_OR,
 	NODE_PIPE,
 	NODE_REDIRECT_IN,		  //<

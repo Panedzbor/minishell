@@ -1,0 +1,30 @@
+#include "../includes/minishell.h"
+
+static char **ft_copy_envp(char **envp)
+{
+	int count = 0;
+    char **result;
+    int i;
+
+	while (envp[count])
+        count++;
+	result = (char **)ft_calloc((count + 1), sizeof(char *));
+    if (!result)
+        return (NULL);
+	 i = 0;
+    while (i < count)
+    {
+        result[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	result[count] = NULL;
+    return (result);
+}
+
+void init_shell(t_shell *shell, char **envp)
+{
+    shell->envp = ft_copy_envp(envp);
+	shell->local_vars = NULL;
+	shell->default_input_stream = dup(STDIN_FILENO);
+	shell->default_output_stream = dup(STDOUT_FILENO);
+}

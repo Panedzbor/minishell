@@ -71,6 +71,8 @@ typedef struct s_shell
 {
 	char		**envp;
 	char		**local_vars;
+	int			default_input_stream;
+	int			default_output_stream;
 } t_shell;
 
 void		add_token(t_token **head, char *value, t_token_type type, t_priora priority_map);
@@ -85,19 +87,24 @@ void		delete_var(char *var_name, char ***var_store);
 t_token		*divide_tokens(t_token *start, t_token *end, t_token **left, t_token **right);
 int	    	echo(char **command);
 int    		env(char ** envp);
-int			execute_command_line(t_tree_node *node, t_shell *shell, int sub_pipe);
+int			execute_command_line(t_tree_node *node, t_shell *shell, int sub_pipe, int streams);
 int			execute_pipe(t_tree_node *node, t_shell *shell, int sub_pipe);
+int			execute_redirection(t_tree_node *node, t_shell *shell, int streams);
 char		**extend_arr( char *ext_str, char **arr);
 int			export(char *var_input, t_shell *shell);
 t_token		*find_lowest_priority(t_token *start, t_token *end);
+int			get_info_about_stream(int info_about_streams, char stream);
 int			get_token_priority(t_token_type type, t_priora priority_map);
 char		*get_var_value(char *var_name, t_shell *shell);
+void		init_shell(t_shell *shell, char **envp);
 void		init_token_priority(t_priora *prior);
 int			is_symbol_oper(char с);
 t_token		*lexer(char *input);
 int			open_file(char *filename, int flags);
+void		overwrite_stream(char stream, int *info, int new_fd);
 t_tree_node *parser(char *input);
 int			pwd(void);
+void		reset_streams(t_shell shell);
 int			run_cmd_in_current_process(int fd_to_duplicate, int fd[2], t_tree_node *node, t_shell *shell);
 int			search_var(char *var_name, char **var_store);
 void		set_var(char *var_name, char ***var_store);

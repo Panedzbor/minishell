@@ -26,14 +26,14 @@ int run_cmd_in_current_process(int fd_to_duplicate, int fd[2], t_tree_node *node
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
-		status = execute_command_line(node->left, shell, 1);
+		status = execute_command_line(node->left, shell, 1, 0/*?*/);
 	}
 	else
 	{
 		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
-		status = execute_command_line(node->right, shell, 1);
+		status = execute_command_line(node->right, shell, 1, 0);
 	}
 	return (status);
 }

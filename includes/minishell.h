@@ -95,6 +95,7 @@ char		*get_var_value(char *var_name, t_shell *shell);
 void		init_token_priority(t_priora *prior);
 int			is_symbol_oper(char с);
 t_token		*lexer(char *input);
+int			open_file(char *filename, int flags);
 t_tree_node *parser(char *input);
 int			pwd(void);
 int			run_cmd_in_current_process(int fd_to_duplicate, int fd[2], t_tree_node *node, t_shell *shell);

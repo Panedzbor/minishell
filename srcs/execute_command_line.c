@@ -51,44 +51,88 @@ static int execute_logic_operator(t_tree_node *node, t_shell *shell, int sub_pip
 	return (0);
 } */
 
-static void extract_states_of_fd(int states_of_fd, int *input_state, int *output_state)
+static int get_info_about_stream(int info_about_streams, char stream)
 {
-	*input_state = states_of_fd >> 1;
-	*output_state = states_of_fd & 1;
+	if (stream == 'I')
+		return (info_about_streams >> 1);
+	else if (stream == 'O')
+		return (info_about_streams & 1);
 }
 
-static int stream_is_overwritten(t_tree_node *node, int input, int output)
+
+int open_file(char *filename, int flags)
 {
-	if (node->type == NODE_REDIRECT_IN && input)
-		return (1);
-	if (node->type == NODE_REDIRECT_OUT && output)
-		return (1);
-	if (node->type == NODE_REDIRECT_OUT_APPEND && output)
-		return (1);
-	return (0);
+	int fd;
+
+	fd = open(filename, flags);
+	if (fd == -1)
+	{
+		perror("error on opening the file\n");
+		return (-1);// enter error handler here
+	}
+	return (fd);
 }
 
-static void overwrite_stream(t_tree_node *node, t_shell *shell, int states_of_fd)
+static void overwrite_stream(char stream, int *info, int new_fd)
 {
+	if (stream == 'I')
+	{
+		dup2(new_fd, STDIN_FILENO);
+		*info += 2;
+	}
+	else
+	{
+		dup2(new_fd, STDIN_FILENO);
+		*info += 1;
+	}
+}
+
+static char get_direction(t_node_type type)
+{
+	if (type == NODE_REDIRECT_IN || type == NODE_REDIRECT_IN_MANUAL)
+		return ('I');
+	return ('O');
+}
+
+void redirect_input(t_tree_node *node, char *filename, int *info_about_streams)
+{
+	int stream_overwritten;
+	int fd;
+	
+	fd = open_file(filename, O_RDONLY);
+	stream_overwritten = get_info_about_stream(*info_about_streams, 'I');
+	if (!stream_overwritten)
+		overwrite_stream('I', info_about_streams, fd);
+}
+
+void redirect_output(t_tree_node *node, char *filename, int *info_about_streams)
+{
+	int stream_overwritten;
+	int fd;
+	
+	if (node->type == NODE_REDIRECT_OUT)
+		fd = open_file(filename, O_WRONLY | O_CREAT | O_TRUNC);
+	else if(node->type == NODE_REDIRECT_OUT_APPEND)
+		fd = open_file(filename, O_WRONLY | O_CREAT | O_APPEND);
+	stream_overwritten = get_info_about_stream(*info_about_streams, 'O');
+	if (!stream_overwritten)
+		overwrite_stream('O', info_about_streams, fd);
+}
+
+static int execute_redirection(t_tree_node *node, t_shell *shell, int *streams)
+{
+	int status;
+	char direction;
 	char *filename;
 
-	filename = execute_command_line(node->right, shell, 0);
-	if (node->type == NODE_REDIRECT_IN)
-		dup2()/// stopped here!
-}
-
-static int execute_redirection(t_tree_node *node, t_shell *shell, int states_of_fd)
-{
-	int input_state;
-	int output_state;
-
-	input_state = 0;
-	output_state = 0;
-	extract_states_of_fd(states_of_fd, &input_state, &output_state);
-	if (!stream_is_overwritten(node, input_state, output_state))
-	{
-		overwrite_stream(node, shell, states_of_fd);
-	}
+	filename = execute_command_line(node->right, shell, 0);//TODO
+	direction = get_direction(node->type);
+	if (direction == 'I')
+		redirect_input(node, filename, streams);
+	else if (direction == 'O')
+		redirect_output(node, filename, streams);
+	status = execute_command_line(node->left, shell, 0);
+	return (status);
 }
 
 int execute_command_line(t_tree_node *node, t_shell *shell, int sub_pipe)
@@ -104,7 +148,7 @@ int execute_command_line(t_tree_node *node, t_shell *shell, int sub_pipe)
 		status = execute_logic_operator(node, shell, sub_pipe);
 	else if (node->type == NODE_REDIRECT_IN || node->type == NODE_REDIRECT_IN_MANUAL
 			|| node->type == NODE_REDIRECT_OUT || node->type == NODE_REDIRECT_OUT_APPEND)
-		status = execute_redirection(node, shell, states_of_fds);
+		status = execute_redirection(node, shell, &fd_flags_encoded);
 	else if (node->type == NODE_FILENAME)
 	{
 

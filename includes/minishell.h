@@ -12,6 +12,8 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+# define heredoc_file "../objects/here_doc_input.txt" 
+
 typedef enum e_token_type
 {
 	TOKEN_AND,
@@ -22,7 +24,7 @@ typedef enum e_token_type
 	TOKEN_QUOTE,
 	TOKEN_QUOTE_DBL,
 	TOKEN_REDIRECT_IN,		  //<
-	TOKEN_REDIRECT_IN_MANUAL,  //<<
+	TOKEN_REDIRECT_HERE_DOC,  //<<
 	TOKEN_REDIRECT_OUT,		  //>
 	TOKEN_REDIRECT_OUT_APPEND,
 	TOKEN_WORD,
@@ -46,7 +48,7 @@ typedef enum e_node_type
 	NODE_OR,
 	NODE_PIPE,
 	NODE_REDIRECT_IN,		  //<
-	NODE_REDIRECT_IN_MANUAL,  //<<
+	NODE_REDIRECT_HERE_DOC,  //<<
 	NODE_REDIRECT_OUT,		  //>
 	NODE_REDIRECT_OUT_APPEND, //>>
 	NODE_SUBSHELL

@@ -1,0 +1,61 @@
+#include "../includes/minishell.h"
+
+static char get_direction(t_node_type type)
+{
+	if (type == NODE_REDIRECT_IN || type == NODE_REDIRECT_IN_MANUAL)
+		return ('I');
+	return ('O');
+}
+
+static void redirect_input(/* t_tree_node *node,  */char *filename, int *info_about_streams)
+{
+	int fd;
+	int stream_overwritten;
+	
+	fd = open_file(filename, O_RDONLY);
+	stream_overwritten = get_info_about_stream(*info_about_streams, 'I');
+	if (!stream_overwritten)
+		overwrite_stream('I', info_about_streams, fd);
+}
+
+static void redirect_output(t_tree_node *node, char *filename, int *info_about_streams)
+{
+	int fd;
+	int stream_overwritten;
+	
+	if (node->type == NODE_REDIRECT_OUT)
+		fd = open_file(filename, O_RDWR | O_CREAT | O_TRUNC);
+	else if(node->type == NODE_REDIRECT_OUT_APPEND)
+		fd = open_file(filename, O_RDWR | O_CREAT | O_APPEND);
+	stream_overwritten = get_info_about_stream(*info_about_streams, 'O');
+	if (!stream_overwritten)
+		overwrite_stream('O', info_about_streams, fd);
+}
+
+static char *process_filename_node(t_tree_node *node)
+{
+	char *filename;
+	
+	// Step 1: go through expansions
+	
+	// Step 2:
+	// if no expansions:
+	filename = node->argv[0];
+	return (filename);
+}
+
+int execute_redirection(t_tree_node *node, t_shell *shell, int streams)
+{
+	int status;
+	char direction;
+	char *filename;
+
+	filename = process_filename_node(node->right);
+	direction = get_direction(node->type);
+	if (direction == 'I')
+		redirect_input(/* node,  */filename, &streams);
+	else if (direction == 'O')
+		redirect_output(node, filename, &streams);
+	status = execute_command_line(node->left, shell, 0/*?*/, streams);
+	return (status);
+}

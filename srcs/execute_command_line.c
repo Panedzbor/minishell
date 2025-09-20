@@ -30,11 +30,11 @@ static int execute_logic_operator(t_tree_node *node, t_shell *shell, int sub_pip
 {
 	int status;
 
-	status = execute_command_line(node->left, shell, sub_pipe);
+	status = execute_command_line(node->left, shell, sub_pipe, 0/*?*/);
 	if (status == 0 && node->type == NODE_AND)
-		status = execute_command_line(node->right, shell, sub_pipe);
+		status = execute_command_line(node->right, shell, sub_pipe, 0);
 	else if (status != 0 && node->type == NODE_OR)
-		status = execute_command_line(node->right, shell, sub_pipe);
+		status = execute_command_line(node->right, shell, sub_pipe, 0);
 	return (status);
 }
 
@@ -51,7 +51,7 @@ static int execute_logic_operator(t_tree_node *node, t_shell *shell, int sub_pip
 	return (0);
 } */
 
-int execute_command_line(t_tree_node *node, t_shell *shell, int sub_pipe)
+int execute_command_line(t_tree_node *node, t_shell *shell, int sub_pipe, int streams)
 {
     int status;
 
@@ -62,5 +62,8 @@ int execute_command_line(t_tree_node *node, t_shell *shell, int sub_pipe)
         status = execute_pipe(node, shell, sub_pipe);
 	else if (node->type == NODE_AND || node->type == NODE_OR)
 		status = execute_logic_operator(node, shell, sub_pipe);
+	else if (node->type == NODE_REDIRECT_IN || node->type == NODE_REDIRECT_IN_MANUAL
+			|| node->type == NODE_REDIRECT_OUT || node->type == NODE_REDIRECT_OUT_APPEND)
+		status = execute_redirection(node, shell, streams);
 	return (status);
 }

@@ -35,8 +35,8 @@ static t_node_type define_node_type(t_token_type tt)
         return (NODE_PIPE);
     else if (tt == TOKEN_REDIRECT_IN)
         return (NODE_REDIRECT_IN);
-    else if (tt == TOKEN_REDIRECT_IN_MANUAL)
-        return (NODE_REDIRECT_IN_MANUAL);
+    else if (tt == TOKEN_REDIRECT_HERE_DOC)
+        return (NODE_REDIRECT_HERE_DOC);
     else if (tt == TOKEN_REDIRECT_OUT)
         return (NODE_REDIRECT_OUT);
     else if (tt == TOKEN_REDIRECT_OUT_APPEND)

@@ -144,7 +144,7 @@ static char *get_symbol(t_tree_node *node)
 		return ("[ | ]");
 	else if (node->type == NODE_REDIRECT_IN)
 		return ("[ < ]");
-	else if (node->type == NODE_REDIRECT_IN_MANUAL)
+	else if (node->type == NODE_REDIRECT_HERE_DOC)
 		return ("[ << ]");
 	else if (node->type == NODE_REDIRECT_OUT)
 		return ("[ > ]");

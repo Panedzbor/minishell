@@ -63,7 +63,11 @@ t_tree_node *create_tree_node(t_token *token)
     if (!node)
         printf("Error!\n");
     node->type = define_node_type(token->token_type);
-    if (node->type == NODE_COMMAND)
+    if (token->prev && (token->prev->token_type == TOKEN_REDIRECT_IN
+        || token->prev->token_type == TOKEN_REDIRECT_OUT 
+        || token->prev->token_type == TOKEN_REDIRECT_OUT_APPEND))
+        node->type = NODE_FILENAME;
+    if (node->type == NODE_COMMAND || node->type == NODE_FILENAME)
         assign_value_to_argv(node, token);
     else
         node->argv = NULL;

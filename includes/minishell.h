@@ -8,11 +8,12 @@
 # include "libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <stdarg.h>
 # include <stdio.h>
 # include <sys/wait.h>
 # include <unistd.h>
 
-# define heredoc_file "../objects/here_doc_input.txt" 
+# define heredoc_file "./tmp/here_doc_input.txt" 
 
 typedef enum e_token_type
 {
@@ -83,6 +84,7 @@ int    		call_external_command(char **command, t_shell *shell);
 int			cd(const char *path, t_shell *shell);
 void		check_if_token_sequence(t_token **priora, t_token **priora_end, t_token_type cur_token_type);
 int     	check_operator(char *token);
+void		close_file(int fd);
 pid_t		create_subprocess(void);
 t_tree_node *create_tree_node(t_token *token);
 void		delete_var(char *var_name, char ***var_store);
@@ -95,6 +97,7 @@ int			execute_redirection(t_tree_node *node, t_shell *shell, int streams);
 char		**extend_arr( char *ext_str, char **arr);
 int			export(char *var_input, t_shell *shell);
 t_token		*find_lowest_priority(t_token *start, t_token *end);
+void		free_and_reset_ptrs(int amount, void **ptr, ...);
 int			get_info_about_stream(int info_about_streams, char stream);
 int			get_token_priority(t_token_type type, t_priora priority_map);
 char		*get_var_value(char *var_name, t_shell *shell);
@@ -108,6 +111,8 @@ t_tree_node *parser(char *input);
 int			pwd(void);
 void		reset_streams(t_shell shell);
 int			run_cmd_in_current_process(int fd_to_duplicate, int fd[2], t_tree_node *node, t_shell *shell);
+void		run_here_doc(char *stop_str_with_quotes, t_shell shell);
+int			same_string(char *str1, char *str2);
 int			search_var(char *var_name, char **var_store);
 void		set_var(char *var_name, char ***var_store);
 char		**shorten_arr(char *del_str, char **arr);

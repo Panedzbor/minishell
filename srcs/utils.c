@@ -30,3 +30,40 @@ int open_file(char *filename, int flags)
 	}
 	return (fd);
 }
+
+void	close_file(int fd)
+{
+	if (close(fd) == -1)
+		perror("Error on closing a file\n"); //run error handler here
+}
+
+void free_and_reset_ptrs(int amount, void **ptr, ...)
+{
+	va_list	args;
+	int i;
+
+	va_start(args, ptr);
+	i = 0;
+	while (i < amount)
+	{
+		if (i > 0)
+			ptr = va_arg(args, void **);
+		if (*ptr)
+		{
+			free(*ptr);
+			*ptr = NULL;
+		}
+		i++;
+	}
+	va_end(args);
+}
+
+int same_string(char *str1, char *str2)
+{
+	if (!str1 || !str2)
+		return (0);
+	if (ft_strlen(str1) == ft_strlen(str2) 
+			&& !ft_strncmp(str1, str2, ft_strlen(str1)))
+			return (1);
+	return (0);
+}

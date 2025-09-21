@@ -62,8 +62,8 @@ int execute_redirection(t_tree_node *node, t_shell *shell, int streams)
 		redirect_output(node, filename, &streams);
 	else if (direction == 'H')
 	{
-		run_here_doc(filename, *shell);
-		redirect_input(heredoc_file, &streams);
+		run_here_doc(filename, shell);
+		redirect_input(d_heredoc_file, &streams);
 	}
 	status = execute_command_line(node->left, shell, 0/*?*/, streams);
 	return (status);

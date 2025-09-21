@@ -11,9 +11,12 @@
 # include <stdarg.h>
 # include <stdio.h>
 # include <sys/wait.h>
+# include <termios.h>
 # include <unistd.h>
 
-# define heredoc_file "./tmp/here_doc_input.txt" 
+# define d_heredoc_file "./tmp/here_doc_input.txt" 
+
+typedef struct termios t_attr;
 
 typedef enum e_token_type
 {
@@ -74,8 +77,13 @@ typedef struct s_shell
 {
 	char		**envp;
 	char		**local_vars;
-	int			default_input_stream;
-	int			default_output_stream;
+	int			def_input_stream;
+	int			def_output_stream;
+	t_attr		def_attributes;
+	int			cur_input_stream;
+	int			cur_output_stream;
+	t_attr		cur_attributes;
+
 } t_shell;
 
 void		add_token(t_token **head, char *value, t_token_type type, t_priora priority_map);
@@ -111,8 +119,9 @@ t_tree_node *parser(char *input);
 int			pwd(void);
 void		reset_streams(t_shell shell);
 int			run_cmd_in_current_process(int fd_to_duplicate, int fd[2], t_tree_node *node, t_shell *shell);
-void		run_here_doc(char *stop_str_with_quotes, t_shell shell);
+void		run_here_doc(char *stop_str_with_quotes, t_shell *shell);
 int			same_string(char *str1, char *str2);
+void		save_streams(int input, int output, t_attr *attributes, t_attr *attrib_orig_lnk);
 int			search_var(char *var_name, char **var_store);
 void		set_var(char *var_name, char ***var_store);
 char		**shorten_arr(char *del_str, char **arr);

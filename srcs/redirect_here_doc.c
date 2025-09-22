@@ -17,51 +17,94 @@ static char *trim_quotes(char *str, int *quoted)
 	return (ft_strdup(str));
 }
 
-static char *join_new_line(char **old_input, char **new_line, int quoted)
+static void check_ptr(void *ptr)
 {
-	char *temp;
-	char *new_input;
+	if (!ptr)
+		return ; //run error handler
+}
 
-	temp = NULL;
-	new_input = NULL;
+static char *ms_strjoin(const char *s1, const char *s2)
+{
+	char *result;
+
+	result = ft_strjoin(s1, s2);
+	check_ptr(result);
+	return (result);
+}
+
+static char *ms_strdup(const char *str)
+{
+	char *result;
+
+	result = ft_strdup(str);
+	check_ptr(result);
+	return (result);
+}
+
+static char *expand_new_line(char *nl, int quoted)
+{
+	char *expanded;
+
 	if (!quoted)
 	{
-		// run variable expansion on new line;
+		//expanded = # var expansion func #;
+		expanded = ms_strdup(nl); //temporary
 	}
+	else
+		expanded = ms_strdup(nl);
+	return (expanded);
+}
+
+static char *join_new_line(char **old_input, char **new_line, int quoted)
+{
+	char *expanded;
+	char *nl_added;
+	char *new_input;
+
+	if (!(*new_line))
+		return (NULL);
+	new_input = NULL;
+	expanded = expand_new_line(*new_line, quoted);
+	nl_added = ms_strjoin(expanded, "\n");
 	if (*old_input)
-		temp = ft_strjoin(*old_input, "\n");
-	if (!temp && *old_input)
-		return (NULL); //run error handler here
-	if (temp)
-		new_input = ft_strjoin(temp, *new_line);
-	else if (*new_line)
-		new_input = ft_strdup(*new_line);
-	if (!new_input && *new_line)
-		return (NULL); //run error handler here
-	free_and_reset_ptrs(3, 
-						(void **)old_input, (void **)new_line, (void **)&temp);
+		new_input = ms_strjoin(*old_input, nl_added);
+	else
+		new_input = ms_strdup(nl_added);
+	free_and_reset_ptrs(2, (void **)old_input, (void **)new_line);
+	free_and_reset_ptrs(2, (void **)&expanded, (void **)&nl_added);
 	return (new_input);
 }
 
-static void save_input_to_file(char *input)
+static char *create_heredoc_filename(void)
+{
+	static unsigned int counter;
+	char *counter_str;
+
+	counter++;
+	counter_str = ft_itoa(counter);
+	check_ptr(counter_str);
+	return (ms_strjoin(d_heredoc_file, counter_str));
+}
+
+static char *save_input_to_file(char *input)
 {
 	int fd;
-
-	if (!input)
-		return ;
-	fd = open_file(d_heredoc_file, O_RDWR | O_CREAT | O_TRUNC);
-	ft_putstr_fd(input, fd);
-	ft_putstr_fd("\n", fd);
+	char *filename;
+	
+	filename = create_heredoc_filename();
+	fd = open_file(filename, O_RDWR | O_CREAT | O_TRUNC);
+	if (input)
+		ft_putstr_fd(input, fd);
 	close_file(fd);
+	return (filename);
 }
 
 void save_current_streams(t_shell *shell)
 {
-    //shell->cur_input_stream = dup(STDIN_FILENO);
-    dup2(STDIN_FILENO, shell->cur_input_stream);
-	//shell->cur_output_stream = dup(STDOUT_FILENO);
-    dup2(STDOUT_FILENO, shell->cur_output_stream);
-    tcgetattr(STDIN_FILENO, &shell->cur_attributes);
+    shell->cur_input_stream = dup(STDIN_FILENO);
+	shell->cur_output_stream = dup(STDOUT_FILENO);
+    if (isatty(STDIN_FILENO))
+    	tcgetattr(STDIN_FILENO, &shell->cur_attributes);
 }
 
 static void close_streams(t_shell *shell, char option)
@@ -80,35 +123,26 @@ static void close_streams(t_shell *shell, char option)
 
 static void set_streams(t_shell *shell, char option)
 {
-    //int tty_fd;
-    
     if (option == 'd')
     {
         dup2(shell->def_input_stream, STDIN_FILENO);
-        //dup2(shell->def_output_stream, STDOUT_FILENO);
-        tcsetattr(STDIN_FILENO, TCSANOW, &shell->def_attributes);
+        dup2(shell->def_output_stream, STDOUT_FILENO);
     }
     else if (option == 'c')
     {
         dup2(shell->cur_input_stream, STDIN_FILENO);
-        //dup2(shell->cur_output_stream, STDOUT_FILENO);
-        tcsetattr(STDIN_FILENO, TCSANOW, &shell->cur_attributes);
-        //close_streams(shell, 'c');
+        dup2(shell->cur_output_stream, STDOUT_FILENO);
+        close_streams(shell, 'c');
     }
-    // else if (option == 'n')
-    // {
-    //     tty_fd = open_file("/dev/tty", O_RDWR);
-    //     dup2(tty_fd, STDIN_FILENO);
-
-    // }
 }
 
-void run_here_doc(char *stop_str_with_quotes, t_shell *shell)
+char *run_here_doc(char *stop_str_with_quotes, t_shell *shell)
 {
 	char *stop_str;
 	int	quoted;
 	char *input_str;
 	char *new_line;
+	char *heredoc_file;
 
     save_current_streams(shell);
     set_streams(shell, 'd');
@@ -120,9 +154,12 @@ void run_here_doc(char *stop_str_with_quotes, t_shell *shell)
 	{
 		input_str = join_new_line(&input_str, &new_line, quoted);
 		new_line = readline("> ");
+		if (!new_line)
+			break;
 	}
 	free_and_reset_ptrs(1, (void **)&new_line);
-	save_input_to_file(input_str);
+	heredoc_file = save_input_to_file(input_str);
 	free_and_reset_ptrs(1, (void **)&input_str);
     set_streams(shell, 'c');
+	return (heredoc_file);
 }

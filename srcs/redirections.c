@@ -48,11 +48,21 @@ static char *process_filename_node(t_tree_node *node)
 	return (filename);
 }
 
+static void reset_here_doc_file(char *filename)
+{
+	int fd;
+
+	fd = open(filename, O_TRUNC);
+	close(fd);
+	unlink(filename);
+}
+
 int execute_redirection(t_tree_node *node, t_shell *shell, int streams)
 {
 	int status;
 	char direction;
 	char *filename;
+	char *heredoc_file;
 
 	filename = process_filename_node(node->right);
 	direction = get_direction(node->type);
@@ -62,9 +72,10 @@ int execute_redirection(t_tree_node *node, t_shell *shell, int streams)
 		redirect_output(node, filename, &streams);
 	else if (direction == 'H')
 	{
-		run_here_doc(filename, shell);
-		redirect_input(d_heredoc_file, &streams);
+		heredoc_file = run_here_doc(filename, shell);
+		redirect_input(heredoc_file, &streams);
 	}
 	status = execute_command_line(node->left, shell, 0/*?*/, streams);
+	reset_here_doc_file(heredoc_file);
 	return (status);
 }

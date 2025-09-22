@@ -14,7 +14,7 @@
 # include <termios.h>
 # include <unistd.h>
 
-# define d_heredoc_file "./tmp/here_doc_input.txt" 
+# define d_heredoc_file "./tmp/here_doc_input" 
 
 typedef struct termios t_attr;
 
@@ -119,7 +119,7 @@ t_tree_node *parser(char *input);
 int			pwd(void);
 void		reset_streams(t_shell shell);
 int			run_cmd_in_current_process(int fd_to_duplicate, int fd[2], t_tree_node *node, t_shell *shell);
-void		run_here_doc(char *stop_str_with_quotes, t_shell *shell);
+char		*run_here_doc(char *stop_str_with_quotes, t_shell *shell);
 int			same_string(char *str1, char *str2);
 void		save_streams(int input, int output, t_attr *attributes, t_attr *attrib_orig_lnk);
 int			search_var(char *var_name, char **var_store);

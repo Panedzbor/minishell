@@ -8,9 +8,15 @@
 # include "libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <stdarg.h>
 # include <stdio.h>
 # include <sys/wait.h>
+# include <termios.h>
 # include <unistd.h>
+
+# define d_heredoc_file "./tmp/here_doc_input" 
+
+typedef struct termios t_attr;
 
 typedef enum e_token_type
 {
@@ -22,7 +28,7 @@ typedef enum e_token_type
 	TOKEN_QUOTE,
 	TOKEN_QUOTE_DBL,
 	TOKEN_REDIRECT_IN,		  //<
-	TOKEN_REDIRECT_IN_MANUAL,  //<<
+	TOKEN_REDIRECT_HERE_DOC,  //<<
 	TOKEN_REDIRECT_OUT,		  //>
 	TOKEN_REDIRECT_OUT_APPEND,
 	TOKEN_WORD,
@@ -46,7 +52,7 @@ typedef enum e_node_type
 	NODE_OR,
 	NODE_PIPE,
 	NODE_REDIRECT_IN,		  //<
-	NODE_REDIRECT_IN_MANUAL,  //<<
+	NODE_REDIRECT_HERE_DOC,  //<<
 	NODE_REDIRECT_OUT,		  //>
 	NODE_REDIRECT_OUT_APPEND, //>>
 	NODE_SUBSHELL
@@ -62,7 +68,6 @@ typedef struct s_tree_node
 {
 	t_node_type type;
 	char **argv;
-	//char *file_name;
 	struct s_tree_node *left;
 	struct s_tree_node *right;
 } t_tree_node;
@@ -71,8 +76,13 @@ typedef struct s_shell
 {
 	char		**envp;
 	char		**local_vars;
-	int			default_input_stream;
-	int			default_output_stream;
+	int			def_input_stream;
+	int			def_output_stream;
+	t_attr		def_attributes;
+	int			cur_input_stream;
+	int			cur_output_stream;
+	t_attr		cur_attributes;
+
 } t_shell;
 
 void		add_token(t_token **head, char *value, t_token_type type, t_priora priority_map);
@@ -81,6 +91,10 @@ int    		call_external_command(char **command, t_shell *shell);
 int			cd(const char *path, t_shell *shell);
 void		check_if_token_sequence(t_token **priora, t_token **priora_end, t_token_type cur_token_type);
 int     	check_operator(char *token);
+void		check_ptr(void *ptr);
+void		close_file(int fd);
+void		close_streams(t_shell *shell, char option);
+void		collect_heredocs(t_tree_node *node, t_shell *shell);
 pid_t		create_subprocess(void);
 t_tree_node *create_tree_node(t_token *token);
 void		delete_var(char *var_name, char ***var_store);
@@ -93,6 +107,7 @@ int			execute_redirection(t_tree_node *node, t_shell *shell, int streams);
 char		**extend_arr( char *ext_str, char **arr);
 int			export(char *var_input, t_shell *shell);
 t_token		*find_lowest_priority(t_token *start, t_token *end);
+void		free_and_reset_ptrs(int amount, void **ptr, ...);
 int			get_info_about_stream(int info_about_streams, char stream);
 int			get_token_priority(t_token_type type, t_priora priority_map);
 char		*get_var_value(char *var_name, t_shell *shell);
@@ -100,16 +115,23 @@ void		init_shell(t_shell *shell, char **envp);
 void		init_token_priority(t_priora *prior);
 int			is_symbol_oper(char с);
 t_token		*lexer(char *input);
+char		*ms_strdup(const char *str);
+char		*ms_strjoin(const char *s1, const char *s2);
 int			open_file(char *filename, int flags);
 void		overwrite_stream(char stream, int *info, int new_fd);
 t_tree_node *parser(char *input);
 int			pwd(void);
 void		reset_streams(t_shell shell);
 int			run_cmd_in_current_process(int fd_to_duplicate, int fd[2], t_tree_node *node, t_shell *shell);
+char		*run_here_doc(char *stop_str_with_quotes, t_shell *shell);
+int			same_string(char *str1, char *str2);
+void		save_current_streams(t_shell *shell);
 int			search_var(char *var_name, char **var_store);
+void		set_streams(t_shell *shell, char option);
 void		set_var(char *var_name, char ***var_store);
 char		**shorten_arr(char *del_str, char **arr);
 void		tokenize_operator(char **str, t_token **token_list, t_priora priority_map);
+char		*trim_quotes(char *str, int *quoted);
 int			unset(char *var_name, t_shell *shell);
 void		wait_for_subprocess(pid_t pid);
 

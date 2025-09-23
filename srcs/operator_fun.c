@@ -38,7 +38,7 @@ static t_token_type get_token_type(char *str)
 	if (ft_strncmp(str, "||", 2) == 0 && str[2] == '\0')
 		return TOKEN_OR;
 	if (ft_strncmp(str, "<<", 2) == 0 && str[2] == '\0')
-		return TOKEN_REDIRECT_IN_MANUAL;
+		return TOKEN_REDIRECT_HERE_DOC;
 	if (ft_strncmp(str, ">>", 2) == 0 && str[2] == '\0')
 		return TOKEN_REDIRECT_OUT_APPEND;
 	if (ft_strncmp(str, "|", 1) == 0 && str[1] == '\0')

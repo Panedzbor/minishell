@@ -18,15 +18,29 @@ int	check_operator(char *token)
 	return (0);
 }
 
-int open_file(char *filename, int flags)
+int same_string(char *str1, char *str2)
 {
-	int fd;
+	if (!str1 || !str2)
+		return (0);
+	if (ft_strlen(str1) == ft_strlen(str2) 
+			&& !ft_strncmp(str1, str2, ft_strlen(str1)))
+			return (1);
+	return (0);
+}
 
-	fd = open(filename, flags, 0644);//TODO replace hardcoded permission code with umask
-	if (fd == -1)
+char *trim_quotes(char *str, int *quoted)
+{
+	size_t len;
+
+	len = ft_strlen(str);
+	if (len > 1)
 	{
-		perror("error on opening the file\n");
-		return (-1);// enter error handler here
+		if ((str[0] == '\"' && str[len - 1] == '\"')
+			|| (str[0] == '\'' && str[len - 1] == '\''))
+		{
+			*quoted = 1;
+			return (ft_substr(str, 1, len - 2));
+		}
 	}
-	return (fd);
+	return (ft_strdup(str));
 }

@@ -9,6 +9,7 @@ LRDFLAGS = -lreadline -lm
 
 #SRC_DIR = srcs
 OBJ_DIR = objs
+TMP_DIR = tmp
 LIBFT = includes/libft/libft.a
 
 SRCS = main.c $(wildcard srcs/*.c)
@@ -24,8 +25,10 @@ $(LIBFT):
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
+$(TMP_DIR):
+	mkdir -p $(TMP_DIR)
 
-$(NAME): $(OBJ_DIR) $(OBJS)
+$(NAME): $(OBJ_DIR) $(OBJS) $(TMP_DIR)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LRDFLAGS) -o $(NAME)
 
 test: CFLAGS = $(TFLAGS)
@@ -42,6 +45,7 @@ clean:
 
 fclean: clean
 	$(MAKE) fclean -C includes/libft
+	rm -rf $(TMP_DIR)
 	rm -f $(NAME)
 
 re: fclean all

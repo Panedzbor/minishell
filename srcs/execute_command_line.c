@@ -62,7 +62,7 @@ int execute_command_line(t_tree_node *node, t_shell *shell, int sub_pipe, int st
         status = execute_pipe(node, shell, sub_pipe);
 	else if (node->type == NODE_AND || node->type == NODE_OR)
 		status = execute_logic_operator(node, shell, sub_pipe);
-	else if (node->type == NODE_REDIRECT_IN || node->type == NODE_REDIRECT_IN_MANUAL
+	else if (node->type == NODE_REDIRECT_IN || node->type == NODE_REDIRECT_HERE_DOC
 			|| node->type == NODE_REDIRECT_OUT || node->type == NODE_REDIRECT_OUT_APPEND)
 		status = execute_redirection(node, shell, streams);
 	return (status);

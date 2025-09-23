@@ -155,9 +155,9 @@ char *run_here_doc(char *stop_str_with_quotes, t_shell *shell)
 		input_str = join_new_line(&input_str, &new_line, quoted);
 		new_line = readline("> ");
 		if (!new_line)
-			break;
+			break ;
 	}
-	free_and_reset_ptrs(1, (void **)&new_line);
+	free_and_reset_ptrs(2, (void **)&new_line, (void **)&stop_str);
 	heredoc_file = save_input_to_file(input_str);
 	free_and_reset_ptrs(1, (void **)&input_str);
     set_streams(shell, 'c');

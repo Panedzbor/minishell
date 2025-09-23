@@ -26,3 +26,11 @@ void reset_streams(t_shell shell)
 	dup2(shell.def_input_stream, STDIN_FILENO);
 	dup2(shell.def_output_stream, STDOUT_FILENO);
 }
+
+void save_current_streams(t_shell *shell)
+{
+    shell->cur_input_stream = dup(STDIN_FILENO);
+	shell->cur_output_stream = dup(STDOUT_FILENO);
+    if (isatty(STDIN_FILENO))
+    	tcgetattr(STDIN_FILENO, &shell->cur_attributes);
+}

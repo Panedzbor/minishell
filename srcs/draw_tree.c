@@ -3,7 +3,7 @@
 
 static void save_matrix(t_tree_node *tree, int depth, int width, t_tree_node *matrix[][width]);
 static void save_matrix_val(t_tree_node *tree, int level, int depth, int width, t_tree_node *matrix[][width], int *index_state);
-// static void print_matrix(int depth, int width, t_tree_node *matrix[][width]);
+static void print_matrix(int depth, int width, t_tree_node *matrix[][width]);
 static void print_line(int max_nodes_line, int field, int level, int depth, t_tree_node *matrix[][max_nodes_line], FILE *file);
 static void init_slashes(char *str, int len);
 static char *get_symbol(t_tree_node *node);
@@ -22,7 +22,7 @@ void draw_tree(t_tree_node *tree)
 	t_tree_node *matrix[depth + 1][width];
 
 	save_matrix(tree, depth, width, matrix);
-	/* print_matrix(depth, width, matrix); */
+	print_matrix(depth, width, matrix);
 
 	for (int level = 0; level <= depth; level++)
 		print_line(width, field, level, depth, matrix, file);
@@ -70,21 +70,21 @@ static void save_matrix_val(t_tree_node *tree, int level, int depth, int width, 
 }
 
 // *** DO NOT DELETE! ***
-// static void print_matrix(int depth, int width, t_tree_node *matrix[][width])
-// {
-// 	for (int i = 0; i <= depth; i++)
-// 	{
-// 		int nodes_cur_line = (int)pow(2, i);
-// 		for (int j = 0; j < nodes_cur_line; j++)
-// 		{
-// 			if (matrix[i][j])
-// 				printf("%s ", get_symbol(matrix[i][j]));
-// 			else
-// 				printf("[_empt_] ");
-// 		}
-// 		printf("\n");
-// 	}
-// }
+static void print_matrix(int depth, int width, t_tree_node *matrix[][width])
+{
+	for (int i = 0; i <= depth; i++)
+	{
+		int nodes_cur_line = (int)pow(2, i);
+		for (int j = 0; j < nodes_cur_line; j++)
+		{
+			if (matrix[i][j])
+				printf("%s ", get_symbol(matrix[i][j]));
+			else
+				printf("[_empt_] ");
+		}
+		printf("\n");
+	}
+}
 // *** DO NOT DELETE! ***
 
 static void print_line(int max_nodes_line, int field, int level, int depth, t_tree_node *matrix[][max_nodes_line], FILE *file)
@@ -144,7 +144,7 @@ static char *get_symbol(t_tree_node *node)
 		return ("[ | ]");
 	else if (node->type == NODE_REDIRECT_IN)
 		return ("[ < ]");
-	else if (node->type == NODE_REDIRECT_IN_MANUAL)
+	else if (node->type == NODE_REDIRECT_HERE_DOC)
 		return ("[ << ]");
 	else if (node->type == NODE_REDIRECT_OUT)
 		return ("[ > ]");
@@ -152,7 +152,7 @@ static char *get_symbol(t_tree_node *node)
 		return ("[ >> ]");
 	else if (node->type == NODE_SUBSHELL)
 		return ("(SUBSHELL)");
-	else if (node->type == NODE_COMMAND)
+	else if (node->type == NODE_COMMAND || node->type == NODE_FILENAME)
 	{
 		str = node->argv[0];
 		for (int i = 1; node->argv[i]; i++)

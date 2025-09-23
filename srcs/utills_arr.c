@@ -11,6 +11,7 @@ static int ft_strcount(char **arr)
 		i++;
 	return (i);
 }
+
 static void free_arr(char **arr)
 {
 	int len;
@@ -25,6 +26,7 @@ static void free_arr(char **arr)
 	}
 	free(arr);
 }
+
 char **extend_arr(char *ext_str, char **arr)
 {
 	char **result;

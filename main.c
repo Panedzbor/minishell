@@ -11,13 +11,15 @@ int	main(int argc, char **argv, char **envp)
 	init_shell(&shell, envp);
 	while (1)
 	{
-		input = readline("Minishell: ");
+		input = readline("Minishell: ");//TODO multiline input
 		add_history((const char*)input);
-		if (!input)
+		if (!input || same_string(input, ""))
 			continue ;
 		tree = parser(input);
-		execute_command_line(tree, &shell, 0, 0);
+		free(input);
 		//draw_tree(tree);
+		collect_heredocs(tree, &shell);
+		execute_command_line(tree, &shell, 0, 0);
 		//test_print_shell_vars(&shell);
 		reset_streams(shell);
 	}

@@ -77,6 +77,6 @@ t_tree_node *parser(char *input)
 	if (!analyze_parenthesis(tokens, 0))
 		printf("Error\n");
 	tree = fill_tree(tokens, NULL);
-	//free tokens
+	//free tokens - free tokens in the end of program or make duplicates of their values!
 	return (tree);
 }

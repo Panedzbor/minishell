@@ -1,46 +1,5 @@
 #include "../includes/minishell.h"
 
-static char *trim_quotes(char *str, int *quoted)
-{
-	size_t len;
-
-	len = ft_strlen(str);
-	if (len > 1)
-	{
-		if ((str[0] == '\"' && str[len - 1] == '\"')
-			|| (str[0] == '\'' && str[len - 1] == '\''))
-		{
-			*quoted = 1;
-			return (ft_substr(str, 1, len - 2));
-		}
-	}
-	return (ft_strdup(str));
-}
-
-static void check_ptr(void *ptr)
-{
-	if (!ptr)
-		return ; //run error handler
-}
-
-static char *ms_strjoin(const char *s1, const char *s2)
-{
-	char *result;
-
-	result = ft_strjoin(s1, s2);
-	check_ptr(result);
-	return (result);
-}
-
-static char *ms_strdup(const char *str)
-{
-	char *result;
-
-	result = ft_strdup(str);
-	check_ptr(result);
-	return (result);
-}
-
 static char *expand_new_line(char *nl, int quoted)
 {
 	char *expanded;
@@ -97,43 +56,6 @@ static char *save_input_to_file(char *input)
 		ft_putstr_fd(input, fd);
 	close_file(fd);
 	return (filename);
-}
-
-void save_current_streams(t_shell *shell)
-{
-    shell->cur_input_stream = dup(STDIN_FILENO);
-	shell->cur_output_stream = dup(STDOUT_FILENO);
-    if (isatty(STDIN_FILENO))
-    	tcgetattr(STDIN_FILENO, &shell->cur_attributes);
-}
-
-static void close_streams(t_shell *shell, char option)
-{
-    if (option == 'd')
-    {
-        close(shell->def_input_stream);
-        close(shell->def_output_stream);
-    }
-    else if(option == 'c')
-    {
-        close(shell->cur_input_stream);
-        close(shell->cur_output_stream);
-    }
-}
-
-static void set_streams(t_shell *shell, char option)
-{
-    if (option == 'd')
-    {
-        dup2(shell->def_input_stream, STDIN_FILENO);
-        dup2(shell->def_output_stream, STDOUT_FILENO);
-    }
-    else if (option == 'c')
-    {
-        dup2(shell->cur_input_stream, STDIN_FILENO);
-        dup2(shell->cur_output_stream, STDOUT_FILENO);
-        close_streams(shell, 'c');
-    }
 }
 
 char *run_here_doc(char *stop_str_with_quotes, t_shell *shell)

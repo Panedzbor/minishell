@@ -25,6 +25,8 @@ void init_shell(t_shell *shell, char **envp)
 {
     shell->envp = ft_copy_envp(envp);
 	shell->local_vars = NULL;
+    shell->tokens = NULL;
+    shell->tree = NULL;
 	shell->def_input_stream = dup(STDIN_FILENO);
 	shell->def_output_stream = dup(STDOUT_FILENO);
     tcgetattr(STDIN_FILENO, &shell->def_attributes);

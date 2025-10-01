@@ -27,9 +27,9 @@ typedef enum e_token_type
 	TOKEN_PIPE,
 	TOKEN_QUOTE,
 	TOKEN_QUOTE_DBL,
-	TOKEN_REDIRECT_IN,		  //<
-	TOKEN_REDIRECT_HERE_DOC,  //<<
-	TOKEN_REDIRECT_OUT,		  //>
+	TOKEN_REDIRECT_IN,
+	TOKEN_REDIRECT_HERE_DOC,
+	TOKEN_REDIRECT_OUT, 
 	TOKEN_REDIRECT_OUT_APPEND,
 	TOKEN_WORD,
 	TOKEN_END_OF_LIST
@@ -51,10 +51,10 @@ typedef enum e_node_type
 	NODE_FILENAME,
 	NODE_OR,
 	NODE_PIPE,
-	NODE_REDIRECT_IN,		  //<
-	NODE_REDIRECT_HERE_DOC,  //<<
-	NODE_REDIRECT_OUT,		  //>
-	NODE_REDIRECT_OUT_APPEND, //>>
+	NODE_REDIRECT_IN,
+	NODE_REDIRECT_HERE_DOC,
+	NODE_REDIRECT_OUT,
+	NODE_REDIRECT_OUT_APPEND,
 	NODE_SUBSHELL
 } t_node_type;
 
@@ -76,13 +76,15 @@ typedef struct s_shell
 {
 	char		**envp;
 	char		**local_vars;
+	t_token		*tokens;
+	t_tree_node *tree;
 	int			def_input_stream;
 	int			def_output_stream;
 	t_attr		def_attributes;
 	int			cur_input_stream;
 	int			cur_output_stream;
 	t_attr		cur_attributes;
-
+	int			status_code;
 } t_shell;
 
 void		add_token(t_token **head, char *value, t_token_type type, t_priora priority_map);
@@ -92,6 +94,8 @@ int			cd(const char *path, t_shell *shell);
 void		check_if_token_sequence(t_token **priora, t_token **priora_end, t_token_type cur_token_type);
 int     	check_operator(char *token);
 void		check_ptr(void *ptr);
+void		clean_minishell(t_shell *shell);
+void		clean_session(t_shell *shell);
 void		close_file(int fd);
 void		close_streams(t_shell *shell, char option);
 void		collect_heredocs(t_tree_node *node, t_shell *shell);
@@ -107,6 +111,7 @@ int			execute_redirection(t_tree_node *node, t_shell *shell, int streams);
 char		**extend_arr( char *ext_str, char **arr);
 int			export(char *var_input, t_shell *shell);
 t_token		*find_lowest_priority(t_token *start, t_token *end);
+void		free_arr(char **arr);
 void		free_and_reset_ptrs(int amount, void **ptr, ...);
 int			get_info_about_stream(int info_about_streams, char stream);
 int			get_token_priority(t_token_type type, t_priora priority_map);
@@ -115,6 +120,8 @@ void		init_shell(t_shell *shell, char **envp);
 void		init_token_priority(t_priora *prior);
 int			is_symbol_oper(char с);
 t_token		*lexer(char *input);
+int 		ms_err(char *err_message, int status, int fd, t_shell *shell);
+int			ms_ex_err(char *err_message, int status, int fd, t_shell *shell);
 char		*ms_strdup(const char *str);
 char		*ms_strjoin(const char *s1, const char *s2);
 int			open_file(char *filename, int flags);

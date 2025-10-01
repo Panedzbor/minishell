@@ -12,7 +12,7 @@ static int ft_strcount(char **arr)
 	return (i);
 }
 
-static void free_arr(char **arr)
+void free_arr(char **arr)
 {
 	int len;
 	int i;

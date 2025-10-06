@@ -1,12 +1,56 @@
 #include "../includes/minishell.h"
 
+static char *remove_quotes(char *str)
+{
+	char *result;
+	int i;
+	int j;
+	
+	if(!str)
+		return (NULL);
+	result = malloc(ft_strlen(str) + 1);
+	if(!result)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (str[i])
+    {
+      	if (str[i] == '"' || str[i] == '\'')
+			i++;
+		else
+		{
+		result[j] = str[i];
+		i++;
+		j++;
+		}	
+	}
+	result[j] = '\0';
+	return (result);
+}	
+static void remove_quotes_from_argv(char **argv)
+{
+    int i;
+    char *new_arg;
+
+    i = 0;
+    while (argv[i])
+    {
+        new_arg = remove_quotes(argv[i]);
+        if (new_arg)
+        {
+            free(argv[i]);
+            argv[i] = new_arg;
+        }
+        i++;
+    }
+}
 static int validate_command(t_tree_node *node, t_shell *shell)
 {
 	int status;
 	char **cmd;
 
-
 	cmd = node->argv;
+	remove_quotes_from_argv(node->argv);
 	if (!ft_strncmp(cmd[0], "echo", 5))
 		status = echo(cmd);
 	else if (!ft_strncmp(cmd[0], "cd", 3))

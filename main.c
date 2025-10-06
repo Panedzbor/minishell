@@ -15,12 +15,13 @@ int	main(int argc, char **argv, char **envp)
 		add_history((const char*)input);
 		if (!input || same_string(input, ""))
 			continue ;
-		tree = parser(input);
+		tree = parser(input, &shell);
 		free(input);
 		//draw_tree(tree);
 		collect_heredocs(tree, &shell);
 		execute_command_line(tree, &shell, 0, 0);
 		//test_print_shell_vars(&shell);
+		clean_session(&shell);
 		reset_streams(shell);
 	}
 	return (0);

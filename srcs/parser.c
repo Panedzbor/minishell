@@ -67,12 +67,13 @@ static t_tree_node *fill_tree(t_token *start, t_token *end)
     return (tree);
 }
 
-t_tree_node *parser(char *input)
+t_tree_node *parser(char *input, t_shell *shell)
 {
 	t_token *tokens;
 	t_tree_node *tree;
 
 	tokens = lexer(input);
+	expand_tokens(tokens, shell);
 	//test_print_tokens(tokens);
 	if (!analyze_parenthesis(tokens, 0))
 		printf("Error\n");

@@ -2,7 +2,7 @@
 
 char *get_exp_var_val(char *var_name, t_shell *shell)
 {
-	char *value;
+	char	*value;
 
 	if (!var_name)
 		return (NULL);
@@ -15,9 +15,9 @@ char *get_exp_var_val(char *var_name, t_shell *shell)
 
 static int expand_var_len(char *str, int i, t_shell *shell, size_t *res_len)
 {
-	char *var_nam;
-	char *var_val;
-	size_t name_len;
+	char	*var_nam;
+	char	*var_val;
+	size_t	name_len;
 
 	var_nam = get_exp_var_nam(str, i + 1, &name_len);
 	if (!var_nam)
@@ -37,9 +37,11 @@ static int expand_var_len(char *str, int i, t_shell *shell, size_t *res_len)
 }
 size_t calc_res_len(char *str, t_shell *shell)
 {
-	size_t res_len = ft_strlen(str);
-	int i = 0;
+	size_t	res_len;
+	int	i;
 
+	i = 0;
+	res_len = ft_strlen(str);
 	while (str[i])
 	{
 		if (str[i] == '$')

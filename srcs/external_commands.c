@@ -1,7 +1,7 @@
 #include "../includes/minishell.h"
 
 
-static char *find_command2(DIR *command_dir, char *cmd, char *path)
+static char *search_in_dir(DIR *command_dir, char *cmd, char *path)
 {
     //TODO : refactoring + free
     char *full_path;
@@ -36,7 +36,7 @@ static char *find_command(char *cmd, char *path)
     command_dir = opendir(path);
     if(!command_dir)
         return (NULL);
-    result = find_command2(command_dir, cmd, path);
+    result = search_in_dir(command_dir, cmd, path);
     closedir(command_dir);
     return (result);
 }

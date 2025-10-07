@@ -57,6 +57,8 @@ char *get_var(char *var_name, char **var_store)
 	{
 		len = ft_strlen(var_store[i]) - var_len;
 		result = (ft_substr(var_store[i], var_len, len));
+		if(!result)
+			return(NULL);
 		return(result);
 	}
 	return (NULL);

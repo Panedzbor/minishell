@@ -67,17 +67,17 @@ static t_tree_node *fill_tree(t_token *start, t_token *end)
     return (tree);
 }
 
-t_tree_node *parser(char *input, t_shell *shell)
+void parser(char *input, t_shell *shell)
 {
 	t_token *tokens;
 	t_tree_node *tree;
 
 	tokens = lexer(input);
 	expand_tokens(tokens, shell);
-	//test_print_tokens(tokens);
+	shell->tokens = tokens;
 	if (!analyze_parenthesis(tokens, 0))
 		printf("Error\n");
-	tree = fill_tree(tokens, NULL);
-	//free tokens - free tokens in the end of program or make duplicates of their values!
-	return (tree);
+	if(shell->tokens)
+		tree = fill_tree(tokens, NULL);
+	shell->tree = tree;
 }

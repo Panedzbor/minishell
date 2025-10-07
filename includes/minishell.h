@@ -132,7 +132,7 @@ char		*ms_strdup(const char *str);
 char		*ms_strjoin(const char *s1, const char *s2);
 int			open_file(char *filename, int flags);
 void		overwrite_stream(char stream, int *info, int new_fd);
-t_tree_node *parser(char *input, t_shell *shell);
+void 		parser(char *input, t_shell *shell);
 int			pwd(void);
 void		reset_streams(t_shell shell);
 int			run_cmd_in_current_process(int fd_to_duplicate, int fd[2], t_tree_node *node, t_shell *shell);

@@ -30,15 +30,15 @@ static void free_tree(t_tree_node *tree)
 
 void clean_session(t_shell *shell)
 {
-    if (shell->tokens)
-    {
-        free_token(shell->tokens);
-        shell->tokens = NULL;
-    }
     if (shell->tree)
     {
         free_tree(shell->tree);
         shell->tree = NULL;
+    }
+    if (shell->tokens)
+    {
+        free_token(shell->tokens);
+        shell->tokens = NULL;
     }
     if (shell->cur_input_stream > 0)
         close(shell->cur_input_stream);

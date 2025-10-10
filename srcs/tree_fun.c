@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static void assign_value_to_argv(t_tree_node *node, t_token *token)
+static void	assign_value_to_argv(t_tree_node *node, t_token *token)
 {
     t_token_type type;
     t_token *temp;
@@ -25,7 +25,7 @@ static void assign_value_to_argv(t_tree_node *node, t_token *token)
     }
     node->argv[count] = NULL;
 }
-static t_node_type define_node_type(t_token_type tt)
+static t_node_type	define_node_type(t_token_type tt)
 {
     if (tt == TOKEN_AND)
         return (NODE_AND);
@@ -48,14 +48,14 @@ static t_node_type define_node_type(t_token_type tt)
     return (0);
 }
 
-static t_token *subshell_trim(t_token *start, t_token *end, t_token **left)
+static t_token	*subshell_trim(t_token *start, t_token *end, t_token **left)
 {
     left[0] = start->next;
     left[1] = end->prev;
     return (start);
 }
 
-t_tree_node *create_tree_node(t_token *token)
+t_tree_node	*create_tree_node(t_token *token)
 {
     t_tree_node *node;
 
@@ -74,10 +74,10 @@ t_tree_node *create_tree_node(t_token *token)
     return (node);
 }
 
-t_token *divide_tokens(t_token *start, t_token *end, t_token **left, t_token **right)
+t_token	*divide_tokens(t_token *start, t_token *end, t_token **left, t_token **right)
 {
-    t_token *priora;
-    t_token *priora_end;
+    t_token	*priora;
+    t_token	*priora_end;
 
     priora_end = NULL;
     priora = find_lowest_priority(start, end);

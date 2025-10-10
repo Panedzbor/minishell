@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static char *check_name(char *var_name)
+static	char *check_name(char *var_name)
 {
 	char 	*name;
 	char	*variable;
@@ -17,7 +17,7 @@ static char *check_name(char *var_name)
 		return ft_strdup(var_name);
 }
 
-int search_var(char *var_name, char **var_store)
+int	search_var(char *var_name, char **var_store)
 {
 	size_t	i;
 	size_t	var_len;
@@ -44,12 +44,12 @@ int search_var(char *var_name, char **var_store)
 	free(name);
 	return (-1);
 }
-char *get_var(char *var_name, char **var_store)
+char	*get_var(char *var_name, char **var_store)
 {
 	size_t	var_len;
 	size_t	len;
 	char    *result;
-    int     i;
+	int     i;
 
 	var_len = ft_strlen(var_name) + 1;
 	i = search_var(var_name, var_store);
@@ -64,9 +64,9 @@ char *get_var(char *var_name, char **var_store)
 	return (NULL);
 }
 
-void set_var(char *variable, char ***var_store)
+void	set_var(char *variable, char ***var_store)
 {  
-    int i;
+    int	i;
 
     i = search_var(variable, *var_store);
     if(i >= 0)
@@ -78,7 +78,7 @@ void set_var(char *variable, char ***var_store)
         *var_store = extend_arr(variable, *var_store);
 }
 
-void delete_var(char *var_name, char ***var_store)
+void	delete_var(char *var_name, char ***var_store)
 {
 	int	i;
 

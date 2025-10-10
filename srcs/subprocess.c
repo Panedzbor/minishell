@@ -1,8 +1,8 @@
 #include "../includes/minishell.h"
 
-pid_t create_subprocess(void)
+pid_t	create_subprocess(void)
 {
-	pid_t pid;
+	pid_t	pid;
 
 	pid = fork();
 	if (pid < 0)
@@ -13,9 +13,9 @@ pid_t create_subprocess(void)
 	return (pid);
 }
 
-void wait_for_subprocess(pid_t pid)
+void	wait_for_subprocess(pid_t pid)
 {
-	int status;
+	int	status;
 	
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status) && WEXITSTATUS(status)) //делать полную проверку сигналов

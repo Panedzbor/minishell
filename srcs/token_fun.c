@@ -1,9 +1,9 @@
 #include "../includes/minishell.h"
 
-void add_token(t_token **head, char *value, t_token_type type, t_priora prior_map)
+void	add_token(t_token **head, char *value, t_token_type type, t_priora prior_map)
 {
-    t_token *token;
-    t_token *tmp_token;
+    t_token	*token;
+    t_token	*tmp_token;
 
     token = malloc(sizeof(t_token));
     if(!token)
@@ -27,9 +27,9 @@ void add_token(t_token **head, char *value, t_token_type type, t_priora prior_ma
         token->prev = tmp_token;
 }
 
-int get_token_priority(t_token_type type, t_priora priority_map)
+int	get_token_priority(t_token_type type, t_priora priority_map)
 {
-    int i;
+    int	i;
 
     i = 0;
     while (priority_map.value[i] > 0)
@@ -41,7 +41,7 @@ int get_token_priority(t_token_type type, t_priora priority_map)
     return (-1);
 }
 
-void init_token_priority(t_priora *prior)
+void	init_token_priority(t_priora *prior)
 {
     prior->type[0] = TOKEN_AND;
     prior->value[0] = 1;

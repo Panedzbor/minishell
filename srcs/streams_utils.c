@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void close_streams(t_shell *shell, char option)
+void	close_streams(t_shell *shell, char option)
 {
     if (option == 'd')
     {
@@ -14,7 +14,7 @@ void close_streams(t_shell *shell, char option)
     }
 }
 
-void set_streams(t_shell *shell, char option)
+void	set_streams(t_shell *shell, char option)
 {
     if (option == 'd')
     {

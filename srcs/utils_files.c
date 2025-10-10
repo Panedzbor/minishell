@@ -2,13 +2,14 @@
 
 int open_file(char *filename, int flags)
 {
-	int fd;
+	int	fd;
 
 	fd = open(filename, flags, 0644);//TODO replace hardcoded permission code with umask
 	if (fd == -1)
 	{
 		perror("error on opening the file\n");
-		return (-1);// enter error handler here
+		return (-1);
+	// enter error handler here
 	}
 	return (fd);
 }
@@ -16,5 +17,6 @@ int open_file(char *filename, int flags)
 void	close_file(int fd)
 {
 	if (close(fd) == -1)
-		perror("Error on closing a file\n"); //run error handler here
+		perror("Error on closing a file\n"); 
+	//run error handler here
 }

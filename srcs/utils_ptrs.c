@@ -1,9 +1,9 @@
 #include "../includes/minishell.h"
 
-void free_and_reset_ptrs(int amount, void **ptr, ...)
+void	free_and_reset_ptrs(int amount, void **ptr, ...)
 {
 	va_list	args;
-	int i;
+	int		i;
 
 	va_start(args, ptr);
 	i = 0;
@@ -21,8 +21,9 @@ void free_and_reset_ptrs(int amount, void **ptr, ...)
 	va_end(args);
 }
 
-void check_ptr(void *ptr)
+void	check_ptr(void *ptr)
 {
 	if (!ptr)
-		return ; //run error handler
+		return ;
+	//run error handler;
 }

@@ -20,7 +20,7 @@ static void assign_value_to_argv(t_tree_node *node, t_token *token)
     count = 0;
     while (token->token_type == type)
     {
-        node->argv[count++] = token->value;
+        node->argv[count++] = ft_strdup(token->value);
         token = token->next;
     }
     node->argv[count] = NULL;

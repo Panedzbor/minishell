@@ -1,8 +1,14 @@
 #include "../includes/minishell.h"
 
+static void add_var(char *var_input, t_shell *shell)
+{
+	set_var(var_input, &shell->local_vars);
+	set_var(var_input, &shell->envp);
+}
+
 int env(char **envp)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (envp[i])
@@ -19,15 +25,11 @@ int unset(char *var_name, t_shell *shell)
 	delete_var(var_name, &shell->envp);
 	return (0);
 }
-static void add_var(char *var_input, t_shell *shell)
-{
-	set_var(var_input, &shell->local_vars);
-	set_var(var_input, &shell->envp);
-}
+
 int export(char *var_input, t_shell *shell)
 {
-	int i;
-	char *var;
+	int	i;
+	char	*var;
 
 	if (ft_strchr(var_input, '='))
 		add_var(var_input, shell);
@@ -42,6 +44,8 @@ int export(char *var_input, t_shell *shell)
 		else
 		{
 			var = ft_strjoin(var_input, "=");
+			if(!var)
+				return (1);
 			add_var(var, shell);
 			free(var);
 		}

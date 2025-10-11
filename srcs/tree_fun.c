@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static void	assign_value_to_argv(t_tree_node *node, t_token *token)
+static int	assign_value_to_argv(t_tree_node *node, t_token *token)
 {
     t_token_type type;
     t_token *temp;
@@ -15,8 +15,8 @@ static void	assign_value_to_argv(t_tree_node *node, t_token *token)
         temp = temp->next;
     }
     node->argv = (char **)ft_calloc(count + 1, sizeof(char *));
-    if (!node->argv)
-        printf ("Error!\n");
+    if (!check_alloc(node->argv))
+		return (0);
     count = 0;
     while (token->token_type == type)
     {
@@ -24,6 +24,7 @@ static void	assign_value_to_argv(t_tree_node *node, t_token *token)
         token = token->next;
     }
     node->argv[count] = NULL;
+    return (1);
 }
 static t_node_type	define_node_type(t_token_type tt)
 {
@@ -58,19 +59,23 @@ static t_token	*subshell_trim(t_token *start, t_token *end, t_token **left)
 t_tree_node	*create_tree_node(t_token *token)
 {
     t_tree_node *node;
+    int ret;
 
+    ret = 1;
     node = (t_tree_node*)ft_calloc(1, sizeof(t_tree_node));
     if (!node)
         printf("Error!\n");
     node->type = define_node_type(token->token_type);
     if (token->prev && (token->prev->token_type == TOKEN_REDIRECT_IN
-        || token->prev->token_type == TOKEN_REDIRECT_OUT 
+        || token->prev->token_type == TOKEN_REDIRECT_OUT
         || token->prev->token_type == TOKEN_REDIRECT_OUT_APPEND))
         node->type = NODE_FILENAME;
     if (node->type == NODE_COMMAND || node->type == NODE_FILENAME)
-        assign_value_to_argv(node, token);
+        ret = assign_value_to_argv(node, token);
     else
         node->argv = NULL;
+    if (!ret)
+        return (NULL);
     return (node);
 }
 

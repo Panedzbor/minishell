@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static int free_cd(char *oldpwd)
+static int	free_cd(char *oldpwd)
 {
 	free(oldpwd);
 	return (1);
@@ -8,8 +8,8 @@ static int free_cd(char *oldpwd)
 
 int	cd(const char *path, t_shell *shell)
 {
-	char *oldpwd;
-	char *result;
+	char	*oldpwd;
+	char	*result;
 
 	if (!path)
 	{
@@ -36,7 +36,9 @@ int	cd(const char *path, t_shell *shell)
 
 int	pwd(void)
 {
-	char *cwd = getcwd(NULL, 0);
+	char	*cwd;
+
+	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		return (1);
 	printf("%s\n", cwd);
@@ -68,9 +70,10 @@ int	echo(char **command)
 		printf("\n");
 	return (0);
 }
-int ms_cd(char **cmd, t_shell *shell)
+
+int	ms_cd(char **cmd, t_shell *shell)
 {
-	if(cmd[1] && cmd[2])
+	if (cmd[1] && cmd[2])
 		return (ms_err("exit: too many arguments\n", 2, d_err, shell));
 	return (cd(cmd[1], shell));
 }

@@ -35,7 +35,7 @@ int	main(int argc, char **argv, char **envp)
 		free(input);
 		collect_heredocs(shell.tree, &shell);
 		shell.status_code = execute_command_line(shell.tree, &shell, 0, 0);
-		clean_session(&shell);
+		//clean_session(&shell);
 		reset_streams(shell);
 	}
 	return (0);

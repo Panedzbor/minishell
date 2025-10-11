@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static	char *check_name(char *var_name)
+static char	*check_name(char *var_name)
 {
 	char 	*name;
 	char	*variable;

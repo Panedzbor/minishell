@@ -54,12 +54,13 @@ int execute_pipe(t_tree_node *node, t_shell *shell, int sub_pipe)
 	pid_t pid1;
 	pid_t pid2;
 
+	status = 0;
 	create_pipe(fd);
 	pid1 = create_subprocess();
 	if (pid1 == 0)
 		run_pipeline_stage(STDOUT_FILENO, fd, node, shell);
 	if (!sub_pipe)
-	{	
+	{
 		pid2 = create_subprocess();
 		if (pid2 == 0)
 			run_pipeline_stage(STDIN_FILENO, fd, node, shell);

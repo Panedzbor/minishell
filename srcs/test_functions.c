@@ -13,11 +13,10 @@ void test_print_tokens(t_token *head)
     }
 }
 
-
 void    test_analyze_parent(t_token *token)
 {
 	t_token *current;
-	
+
 	current = token;
 	for (; current->token_type != TOKEN_END_OF_LIST; current = current->next)
 		printf("%5s ", current->value);
@@ -27,6 +26,7 @@ void    test_analyze_parent(t_token *token)
 		printf("%5ld ", current->priority);
 	printf("\n");
 }
+
 void test_print_shell_vars(t_shell *shell)
 {
     int i;

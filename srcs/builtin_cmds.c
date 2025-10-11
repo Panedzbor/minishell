@@ -22,7 +22,8 @@ int	cd(const char *path, t_shell *shell)
 		return (1);
 	if (chdir(path))
 	{
-		printf("cd: %s: No such file or directory\n", path);
+		perror("cd");
+		//printf("cd: %s: No such file or directory\n", path);
 		return (free_cd(oldpwd));
 	}
 	result = ft_strjoin("OLDPWD=", oldpwd);
@@ -67,4 +68,31 @@ int	echo(char **command)
 	if (ft_strncmp(command[1], "-n", 3))
 		printf("\n");
 	return (0);
+}
+int ms_exit(char **cmd, t_shell *sh)
+{
+		int	status;
+		int	i;
+
+		i = 0;
+		printf("exit\n");
+		if(cmd[1] && cmd[2])
+			return (ms_err("exit: too many arguments\n", 2, d_err, sh));
+		if (cmd[1])
+		{
+			if(cmd[1][i] == '+')
+				i++;
+			while(cmd[1][i] && (ft_isdigit(cmd[1][i]) != 0))
+				i++;
+			if(cmd[1][i] == '\0')
+			{
+				status = ft_atoi(cmd[1]);
+			}
+			else
+				return (ms_err(" numeric argument required", 2, d_err, sh));
+		}
+		else
+			status = sh->status_code;
+		clean_minishell(sh);
+		exit(status);
 }

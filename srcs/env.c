@@ -1,14 +1,15 @@
 #include "../includes/minishell.h"
+
 static int	check_valid_name(char *name)
 {
 	int	i;
 
 	i = 0;
 	if (name[0] == '=' || ft_isdigit(name[0]))
-		return(0);
-	while(name[i] != '=' && name[i])
+		return (0);
+	while (name[i] != '=' && name[i])
 	{
-		if(valid_var_char(name[i]))
+		if (valid_var_char(name[i]))
 			i++;
 		else
 			return (0);
@@ -16,13 +17,13 @@ static int	check_valid_name(char *name)
 	return (1);
 }
 
-static void add_var(char *var_input, t_shell *shell)
+static void	add_var(char *var_input, t_shell *shell)
 {
 	set_var(var_input, &shell->local_vars);
 	set_var(var_input, &shell->envp);
 }
 
-int env(char **envp)
+int	env(char **envp)
 {
 	int	i;
 
@@ -35,7 +36,7 @@ int env(char **envp)
 	return (0);
 }
 
-int unset(char *var_name, t_shell *shell)
+int	unset(char *var_name, t_shell *shell)
 {
 	if (!var_name)
 		return (0);
@@ -44,12 +45,12 @@ int unset(char *var_name, t_shell *shell)
 	return (0);
 }
 
-int export(char *var_input, t_shell *shell)
+int	export(char *var_input, t_shell *shell)
 {
-	int	i;
+	int		i;
 	char	*var;
 
-	if(!check_valid_name(var_input))
+	if (!check_valid_name(var_input))
 		return (ms_err(" not a valid identifier", 1, d_err, shell));
 	if (ft_strchr(var_input, '='))
 		add_var(var_input, shell);
@@ -64,7 +65,7 @@ int export(char *var_input, t_shell *shell)
 		else
 		{
 			var = ft_strjoin(var_input, "=");
-			if(!var)
+			if (!var)
 				return (1);
 			add_var(var, shell);
 			free(var);

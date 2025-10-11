@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static int copy_var_value(char *result, int pos, char *var_value)
+static int	copy_var_value(char *result, int pos, char *var_value)
 {
 	int	len;
 	int	i;
@@ -17,12 +17,12 @@ static int copy_var_value(char *result, int pos, char *var_value)
 	return (pos + len);
 }
 
-static int handle_var(char *str, int *str_pos, char *result, t_shell *shell)
+static int	handle_var(char *str, int *str_pos, char *result, t_shell *shell)
 {
 	char	*var_nam;
 	char	*var_val;
 	size_t	name_len;
-	int	res_pos;
+	int		res_pos;
 
 	res_pos = 0;
 	var_nam = get_exp_var_nam(str, *str_pos + 1, &name_len);
@@ -42,17 +42,17 @@ static int handle_var(char *str, int *str_pos, char *result, t_shell *shell)
 	return (res_pos);
 }
 
-static void increment(char *str, char *result, int *str_pos, int *res_pos)
+static void	increment(char *str, char *result, int *str_pos, int *res_pos)
 {
 	result[*res_pos] = str[*str_pos];
 	(*res_pos)++;
 	(*str_pos)++;
 }
 
-static void build_result(char *str, char *result, t_shell *shell)
+static void	build_result(char *str, char *result, t_shell *shell)
 {
-	int	str_pos;
-	int	res_pos;
+	int		str_pos;
+	int		res_pos;
 	char	quote;
 
 	str_pos = 0;
@@ -78,7 +78,7 @@ static void build_result(char *str, char *result, t_shell *shell)
 	result[res_pos] = '\0';
 }
 
-char *expand_variables(char *str, t_shell *shell)
+char	*expand_variables(char *str, t_shell *shell)
 {
 	char	*result;
 	size_t	res_len;

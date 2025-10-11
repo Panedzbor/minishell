@@ -27,3 +27,13 @@ void	check_ptr(void *ptr)
 		return ;
 	//run error handler;
 }
+
+void *check_alloc(void *ptr)
+{
+	if (!ptr)
+    {
+        ft_putstr_fd("Error during memory allocation\n", STDERR_FILENO);
+		return (NULL);
+    }
+	return (ptr);
+}

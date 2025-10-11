@@ -49,29 +49,69 @@ static void redirect_output(t_tree_node *node, char *filename, int *info_about_s
 //	return (filename);
 //}
 
-//static int count_args(char *args)
-//{
-//	int i;
+static int count_args(char **args)
+{
+	int i;
 
-//	i = 0;
-//	while (args[i])
-//		i++;
-//	return (i);
-//}
+	i = 0;
+	while (args[i])
+		i++;
+	return (i);
+}
 
-//static void move_args(t_tree_node *node)
-//{
-//	int i;
-//	int len;
+static char **realloc_arg_mem(int llen, int rlen)
+{
+	char **temp;
 
-//	len = count_args(node->right->argv);
-//	i = 1;
-//	while (node->right->argv[i])
-//	{
+	temp = (char **)ft_calloc(llen + rlen + 1, sizeof(char *));
+    if (!check_alloc(temp))
+		return (NULL);
+	return (temp);
+}
 
-//		i++;
-//	}
-//}
+static void copy_arr(char **src, int src_strt, char **dest, int dest_strt)
+{
+	int s;
+	int d;
+
+	s = src_strt;
+	d = dest_strt;
+	while (src[s])
+	{
+		dest[d] = src[s];
+		s++;
+		d++;
+	}
+}
+
+char **dupl_arr(char **arr, int len)
+{
+	int i;
+
+	i = 0;
+	
+}
+
+static int move_args(t_tree_node *node)
+{
+	int rlen;
+	int llen;
+	char **temp;
+	char **dupl;
+
+	rlen = count_args(node->right->argv + 1);
+	llen = count_args(node->left->argv);
+	temp = realloc_arg_mem(llen, rlen);
+	if (!temp)
+		return (0);
+	copy_arr(node->left->argv, 0, temp, 0);
+	dupl = dupl_arr(node->right->argv + 1, rlen + 1);
+	copy_arr(node->right->argv, llen, temp, 1);
+	temp[llen + rlen] = NULL;
+	free(node->left->argv);
+	node->left->argv = temp;
+	return (1);
+}
 
 int execute_redirection(t_tree_node *node, t_shell *shell, int streams)
 {
@@ -87,7 +127,8 @@ int execute_redirection(t_tree_node *node, t_shell *shell, int streams)
 		redirect_input(filename, &streams, 'H');
 	else if (direction == 'O')
 		redirect_output(node, filename, &streams);
-	//move_args(node);
+	if (!move_args(node))
+		return (13);
 	status = execute_command_line(node->left, shell, 0, streams);
 	if (direction == 'H')
 		unlink(filename);

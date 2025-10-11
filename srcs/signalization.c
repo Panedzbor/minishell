@@ -5,12 +5,12 @@ extern/* volatile */	sig_atomic_t g_sig;
 void save_sig(int sig)
 {
 	write(STDOUT_FILENO, "\n", 1);
+	stop_exec();
 	g_sig = sig;
 }
 
 void stop_exec(void)
 {
-	printf("stop eshkere\n");
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();

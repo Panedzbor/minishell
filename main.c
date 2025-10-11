@@ -14,16 +14,11 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		if (g_sig == SIGINT)
+		if (g_sig)
 		{
 			stop_exec();
 		}
-
-		printf("gsig %d/n", g_sig);
-
 		input = readline("minishell: ");
-
-
 		add_history((const char*)input);
 		if (!input)
 		{

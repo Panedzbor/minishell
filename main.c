@@ -31,6 +31,7 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		parser(input, &shell);
+		//draw_tree(shell.tree);
 		free(input);
 		collect_heredocs(shell.tree, &shell);
 		shell.status_code = execute_command_line(shell.tree, &shell, 0, 0);

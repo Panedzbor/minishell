@@ -1,5 +1,7 @@
 #include "includes/minishell.h"
 
+sig_atomic_t g_sig;
+
 int	main(int argc, char **argv, char **envp)
 {
 	char *input;
@@ -8,18 +10,30 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	init_shell(&shell, envp);
+	signal(SIGINT, save_sig);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		input = readline("minishell: ");//TODO multiline input
+		if (g_sig)
+		{
+			stop_exec();
+		}
+		input = readline("minishell: ");
 		add_history((const char*)input);
-		if (!input || same_string(input, ""))
+		if (!input)
+		{
+			printf("exit\n");
+			break ;
+		}
+		if (same_string(input, ""))
+		{
+			free(input);
 			continue ;
+		}
 		parser(input, &shell);
 		free(input);
-		//draw_tree(tree);
 		collect_heredocs(shell.tree, &shell);
-		execute_command_line(shell.tree, &shell, 0, 0);
-		//test_print_shell_vars(&shell);
+		shell.status_code = execute_command_line(shell.tree, &shell, 0, 0);
 		clean_session(&shell);
 		reset_streams(shell);
 	}

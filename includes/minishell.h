@@ -128,6 +128,7 @@ void		init_shell(t_shell *shell, char **envp);
 void		init_token_priority(t_priora *prior);
 int			is_symbol_oper(char с);
 t_token		*lexer(char *input);
+int			ms_cd(char **cmd, t_shell *shell);
 int			ms_err(char *err_message, int status, int fd, t_shell *shell);
 int			ms_exit(char **cmd, t_shell *shell);
 int			ms_ex_err(char *err_message, int status, int fd, t_shell *shell);

@@ -94,6 +94,7 @@ t_token		*analyze_parenthesis(t_token *tokens, int parenth_open);
 size_t		calc_res_len(char *str, t_shell *shell);
 int			call_external_command(char **command, t_shell *shell);
 int			cd(const char *path, t_shell *shell);
+void		*check_alloc(void *ptr);
 void		check_if_token_sequence(t_token **priora, t_token **priora_end, t_token_type cur_token_type);
 int			check_operator(char *token);
 void		check_ptr(void *ptr);

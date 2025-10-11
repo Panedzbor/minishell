@@ -8,13 +8,14 @@
 # include "libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
 # include <stdarg.h>
 # include <stdio.h>
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
 
-# define d_heredoc_file "./tmp/here_doc_input" 
+# define d_heredoc_file "./tmp/here_doc_input"
 
 typedef struct termios t_attr;
 
@@ -29,7 +30,7 @@ typedef enum e_token_type
 	TOKEN_QUOTE_DBL,
 	TOKEN_REDIRECT_IN,
 	TOKEN_REDIRECT_HERE_DOC,
-	TOKEN_REDIRECT_OUT, 
+	TOKEN_REDIRECT_OUT,
 	TOKEN_REDIRECT_OUT_APPEND,
 	TOKEN_WORD,
 	TOKEN_END_OF_LIST
@@ -139,10 +140,12 @@ int			run_cmd_in_current_process(int fd_to_duplicate, int fd[2], t_tree_node *no
 char		*run_here_doc(char *stop_str_with_quotes, t_shell *shell);
 int			same_string(char *str1, char *str2);
 void		save_current_streams(t_shell *shell);
+void		save_sig(int sig);
 int			search_var(char *var_name, char **var_store);
 void		set_streams(t_shell *shell, char option);
 void		set_var(char *var_name, char ***var_store);
 char		**shorten_arr(char *del_str, char **arr);
+void		stop_exec(void);
 void		tokenize_operator(char **str, t_token **token_list, t_priora priority_map);
 char		*trim_quotes(char *str, int *quoted);
 int			unset(char *var_name, t_shell *shell);

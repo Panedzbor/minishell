@@ -72,6 +72,7 @@ void parser(char *input, t_shell *shell)
 	t_token *tokens;
 	t_tree_node *tree;
 
+	tree = NULL;
 	tokens = lexer(input);
 	expand_tokens(tokens, shell);
 	shell->tokens = tokens;

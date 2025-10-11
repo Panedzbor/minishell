@@ -1,13 +1,13 @@
 #include "../includes/minishell.h"
 
-static int valid_var_char(char c)
+int	valid_var_char(char c)
 {
-	if (isalnum(c) || c == '_')
+	if (ft_isalnum(c) || c == '_')
 		return (1);
 	return (0);
 }
 
-static char *get_spec_var_nam(char c, size_t *name_len)
+static char	*get_spec_var_nam(char c, size_t *name_len)
 {
 	char	*var_name;
 
@@ -22,7 +22,7 @@ static char *get_spec_var_nam(char c, size_t *name_len)
 	return (var_name);
 }
 
-static char *get_norm_var_nam(char *str, int pos, size_t *name_len)
+static char	*get_norm_var_nam(char *str, int pos, size_t *name_len)
 {
 	size_t	len;
 	size_t	i;
@@ -50,9 +50,9 @@ static char *get_norm_var_nam(char *str, int pos, size_t *name_len)
 	return (var_name);
 }
 
-char *get_exp_var_nam(char *str, int pos, size_t *name_len)
+char	*get_exp_var_nam(char *str, int pos, size_t *name_len)
 {
-	char *var_name;
+	char	*var_name;
 
 	var_name = get_spec_var_nam(str[pos], name_len);
 	if (var_name)

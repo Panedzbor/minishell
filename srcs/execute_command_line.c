@@ -64,11 +64,7 @@ static int validate_command(t_tree_node *node, t_shell *shell)
 	else if (!ft_strncmp(cmd[0], "env", 4))
 		status = env(shell->envp);
 	else if (!ft_strncmp(cmd[0], "exit", 5))
-	{
-		status = printf("Exit\n");
-		clean_minishell(shell);
-		exit(1);
-	}
+		status = ms_exit(cmd, shell);
 	else
 		status = call_external_command(cmd, shell);
 	return (status);

@@ -138,6 +138,7 @@ int			open_file(char *filename, int flags);
 void		overwrite_stream(char stream, int *info, int new_fd);
 void		parser(char *input, t_shell *shell);
 int			pwd(void);
+void		remove_quotes_from_argv(char **argv);
 void		reset_streams(t_shell shell);
 int			run_cmd_in_current_process(int fd_to_duplicate, int fd[2], t_tree_node *node, t_shell *shell);
 char		*run_here_doc(char *stop_str_with_quotes, t_shell *shell);

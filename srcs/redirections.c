@@ -84,20 +84,20 @@ static void copy_arr(char **src, int src_strt, char **dest, int dest_strt)
 	}
 }
 
-char **dupl_arr(char **arr, int len)
+/*char **dupl_arr(char **arr, int len)
 {
 	int i;
 
 	i = 0;
-	
-}
+
+}*/
 
 static int move_args(t_tree_node *node)
 {
 	int rlen;
 	int llen;
 	char **temp;
-	char **dupl;
+	//char **dupl;
 
 	rlen = count_args(node->right->argv + 1);
 	llen = count_args(node->left->argv);
@@ -105,7 +105,7 @@ static int move_args(t_tree_node *node)
 	if (!temp)
 		return (0);
 	copy_arr(node->left->argv, 0, temp, 0);
-	dupl = dupl_arr(node->right->argv + 1, rlen + 1);
+	//dupl = dupl_arr(node->right->argv + 1, rlen + 1);
 	copy_arr(node->right->argv, llen, temp, 1);
 	temp[llen + rlen] = NULL;
 	free(node->left->argv);

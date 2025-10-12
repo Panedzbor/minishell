@@ -181,6 +181,7 @@ int execute_redirection(t_tree_node *node, t_shell *shell, int streams)
 	if (!move_args(node))
 		return (13);
 	status = execute_command_line(node->left, shell, 0, streams);
+	reset_streams(*shell);
 	close(result);
 	if (direction == 'H')
 		unlink(filename);

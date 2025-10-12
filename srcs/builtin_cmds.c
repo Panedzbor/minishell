@@ -52,7 +52,7 @@ int	echo(char **command)
 
 	if (!command[1])
 	{
-		printf("\n");
+		ft_printf("\n");
 		return (0);
 	}
 	if (!ft_strncmp(command[1], "-n", 3))
@@ -61,13 +61,13 @@ int	echo(char **command)
 		i = 1;
 	while (command[i])
 	{
-		printf("%s", command[i]);
+		ft_printf("%s", command[i]);
 		if (command[i + 1])
-			printf(" ");
+			ft_printf(" ");
 		i++;
 	}
 	if (ft_strncmp(command[1], "-n", 3))
-		printf("\n");
+		ft_printf("\n");
 	return (0);
 }
 

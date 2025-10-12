@@ -1,35 +1,22 @@
 #include "includes/minishell.h"
 
-sig_atomic_t g_sig;
+volatile sig_atomic_t g_sig = 0;
 
 int	main(int argc, char **argv, char **envp)
 {
-	char *input;
-	t_shell shell;
+	char	*input;
+	t_shell	shell;
 
 	(void)argc;
 	(void)argv;
 	init_shell(&shell, envp);
-	signal(SIGINT, save_sig);
-	signal(SIGQUIT, SIG_IGN);
+	set_signals();
 	while (1)
 	{
-		if (g_sig)
-		{
-			stop_exec();
-		}
 		input = readline("minishell: ");
-		add_history((const char*)input);
-		if (!input)
-		{
-			printf("exit\n");
-			break ;
-		}
-		if (same_string(input, ""))
-		{
-			free(input);
+		if (process_input(&input, &shell))
 			continue ;
-		}
+		add_history((const char *)input);
 		parser(input, &shell);
 		free(input);
 		collect_heredocs(shell.tree, &shell);
@@ -39,4 +26,3 @@ int	main(int argc, char **argv, char **envp)
 	}
 	return (0);
 }
-

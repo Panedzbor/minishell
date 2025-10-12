@@ -33,4 +33,5 @@ void	init_shell(t_shell *shell, char **envp)
 	shell->def_input_stream = dup(STDIN_FILENO);
 	shell->def_output_stream = dup(STDOUT_FILENO);
 	tcgetattr(STDIN_FILENO, &shell->def_attributes);
+	shell->status_code = 0;
 }

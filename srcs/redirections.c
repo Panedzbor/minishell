@@ -49,7 +49,7 @@ static void redirect_output(t_tree_node *node, char *filename, int *info_about_s
 //	return (filename);
 //}
 
-static int count_args(char **args)
+/* static int count_args(char **args)
 {
 	int i;
 
@@ -57,19 +57,19 @@ static int count_args(char **args)
 	while (args[i])
 		i++;
 	return (i);
-}
+} */
 
-static char **realloc_arg_mem(int llen, int rlen)
+static char **alloc_arg_mem(int size)
 {
 	char **temp;
 
-	temp = (char **)ft_calloc(llen + rlen + 1, sizeof(char *));
+	temp = (char **)ft_calloc(size + 1, sizeof(char *));
     if (!check_alloc(temp))
 		return (NULL);
 	return (temp);
 }
 
-static void copy_arr(char **src, int src_strt, char **dest, int dest_strt)
+static void ft_copy_arr(char **src, int src_strt, char **dest, int dest_strt)
 {
 	int s;
 	int d;
@@ -97,16 +97,19 @@ static int move_args(t_tree_node *node)
 	int rlen;
 	int llen;
 	char **temp;
-	//char **dupl;
+	char **dupl;
 
-	rlen = count_args(node->right->argv + 1);
-	llen = count_args(node->left->argv);
-	temp = realloc_arg_mem(llen, rlen);
+	rlen = ft_arr_el_count((void **)node->right->argv + 1);
+	if (!rlen)
+		return (1);
+	llen = ft_arr_el_count((void **)node->left->argv);
+	temp = alloc_arg_mem(llen + rlen);
 	if (!temp)
 		return (0);
-	copy_arr(node->left->argv, 0, temp, 0);
-	//dupl = dupl_arr(node->right->argv + 1, rlen + 1);
-	copy_arr(node->right->argv, llen, temp, 1);
+	ft_copy_arr(node->left->argv, 0, temp, 0);
+	dupl = ft_charrdup(node->right->argv + 1);
+	ft_copy_arr(dupl, 0, temp, llen);
+	free(dupl);
 	temp[llen + rlen] = NULL;
 	free(node->left->argv);
 	node->left->argv = temp;

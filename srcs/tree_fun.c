@@ -63,10 +63,11 @@ t_tree_node	*create_tree_node(t_token *token)
 
     ret = 1;
     node = (t_tree_node*)ft_calloc(1, sizeof(t_tree_node));
-    if (!node)
-        printf("Error!\n");
+    if (!check_alloc(node))
+        return (NULL);
     node->type = define_node_type(token->token_type);
-    if (token->prev && (token->prev->token_type == TOKEN_REDIRECT_IN
+    if (token->prev 
+        && (token->prev->token_type == TOKEN_REDIRECT_IN
         || token->prev->token_type == TOKEN_REDIRECT_OUT
         || token->prev->token_type == TOKEN_REDIRECT_OUT_APPEND))
         node->type = NODE_FILENAME;

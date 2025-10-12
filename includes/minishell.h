@@ -11,6 +11,7 @@
 # include <signal.h>
 # include <stdarg.h>
 # include <stdio.h>
+# include <sys/stat.h>
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
@@ -96,6 +97,7 @@ t_token		*analyze_parenthesis(t_token *tokens, int parenth_open);
 size_t		calc_res_len(char *str, t_shell *shell);
 int			call_external_command(char **command, t_shell *shell);
 int			cd(const char *path, t_shell *shell);
+void		*check_alloc(void *ptr);
 void		check_if_token_sequence(t_token **priora, t_token **priora_end, t_token_type cur_token_type);
 int			check_operator(char *token);
 void		check_ptr(void *ptr);
@@ -120,6 +122,8 @@ int			export(char *var_input, t_shell *shell);
 t_token		*find_lowest_priority(t_token *start, t_token *end);
 void		free_arr(char **arr);
 void		free_and_reset_ptrs(int amount, void **ptr, ...);
+int			ft_arr_el_count(void **arr);
+char		**ft_charrdup(char **arr);
 char		*get_exp_var_nam(char *str, int pos, size_t *name_len);
 char		*get_exp_var_val(char *var_name, t_shell *shell);
 int			get_info_about_stream(int info_about_streams, char stream);

@@ -10,7 +10,7 @@ static char	**ft_copy_envp(char **envp)
 	while (envp[count])
 		count++;
 	result = (char **)ft_calloc((count + 1), sizeof(char *));
-	if (!result)
+	if (!check_alloc(result))
 		return (NULL);
 	i = 0;
 	while (i < count)
@@ -34,4 +34,5 @@ void	init_shell(t_shell *shell, char **envp)
 	shell->def_output_stream = dup(STDOUT_FILENO);
 	shell->status_code = 0;
 	tcgetattr(STDIN_FILENO, &shell->def_attributes);
+	shell->status_code = 0;
 }

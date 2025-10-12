@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static int	ft_strcount(char **arr)
+int	ft_arr_el_count(void **arr)
 {
 	int	i;
 
@@ -18,7 +18,7 @@ void	free_arr(char **arr)
 	int	i;
 
 	i = 0;
-	len = ft_strcount(arr);
+	len = ft_arr_el_count((void **)arr);
 	while (i < len)
 	{
 		free(arr[i]);
@@ -33,7 +33,7 @@ char	**extend_arr(char *ext_str, char **arr)
 	int		str_count;
 	int		i;
 
-	str_count = ft_strcount(arr);
+	str_count = ft_arr_el_count((void **)arr);
 	result = (char **)ft_calloc(str_count + 2, sizeof(char *));
 	if (!result)
 		return (NULL);
@@ -62,7 +62,7 @@ char	**shorten_arr(char *del_str, char **arr)
 
 	i = 0;
 	j = 0;
-	str_count = ft_strcount(arr);
+	str_count = ft_arr_el_count((void **)arr);
 	len = ft_strlen(del_str);
 	result = (char **)ft_calloc(str_count, sizeof(char *));
 	if (!result)
@@ -79,4 +79,26 @@ char	**shorten_arr(char *del_str, char **arr)
 	result[j] = NULL;
 	free_arr(arr);
 	return (result);
+}
+
+char	**ft_charrdup(char **arr)
+{
+	int		count;
+	char	**dupl;
+	int		i;
+
+	count = 0;
+	while (arr[count])
+		count++;
+	dupl = (char **)ft_calloc((count + 1), sizeof(char *));
+	if (!check_alloc(dupl))
+		return (NULL);
+	i = 0;
+	while (i < count)
+	{
+		dupl[i] = ft_strdup(arr[i]);
+		i++;
+	}
+	dupl[count] = NULL;
+	return (dupl);
 }

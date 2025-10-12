@@ -116,13 +116,28 @@ static int move_args(t_tree_node *node)
 	return (1);
 }
 
+static int check_file(char *filename)
+{
+	struct stat info;
+	
+	if (stat(filename, &info) == -1)
+	{
+		perror(" ");
+		return (0);
+	}
+	return (1);
+}
+
 int execute_redirection(t_tree_node *node, t_shell *shell, int streams)
 {
 	int status;
 	char direction;
 	char *filename;
 
+	remove_quotes_from_argv(node->right->argv);
 	filename = node->right->argv[0];
+	if (!check_file(filename))
+		return (1);
 	direction = get_direction(node->type);
 	if (direction == 'I')
 		redirect_input(filename, &streams, 'I');

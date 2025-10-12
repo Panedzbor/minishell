@@ -11,6 +11,7 @@
 # include <signal.h>
 # include <stdarg.h>
 # include <stdio.h>
+# include <sys/stat.h>
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>

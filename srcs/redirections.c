@@ -15,7 +15,7 @@ static int check_file(char *filename)
 	
 	if (stat(filename, &info) == -1)
 	{
-		perror(" ");
+		perror(filename);
 		return (0);
 	}
 	return (1);
@@ -57,7 +57,7 @@ static int check_folder(char *filename)
 	if (access(folder_name, F_OK) == -1)
 	{
 		free(folder_name);
-		perror(" ");
+		perror(filename);
 		return (0);
 	}
 	free(folder_name);

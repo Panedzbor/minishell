@@ -6,7 +6,7 @@ static char *remove_quotes(char *str)
 	char *start;
 	char quote;
 
-	result = malloc(ft_strlen(str) + 1);
+	result = (char *)malloc(ft_strlen(str) + 1);
 	start = result;
 	if (!result)
 		return (NULL);

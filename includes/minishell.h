@@ -18,6 +18,8 @@
 # define d_heredoc_file "./tmp/here_doc_input"
 # define d_err STDERR_FILENO
 
+extern volatile	sig_atomic_t g_sig;
+
 typedef struct termios t_attr;
 
 typedef enum e_token_type
@@ -137,6 +139,7 @@ char		*ms_strjoin(const char *s1, const char *s2);
 int			open_file(char *filename, int flags);
 void		overwrite_stream(char stream, int *info, int new_fd);
 void		parser(char *input, t_shell *shell);
+int			process_input(char **input, t_shell *shell);
 int			pwd(void);
 void		remove_quotes_from_argv(char **argv);
 void		reset_streams(t_shell shell);
@@ -144,8 +147,8 @@ int			run_cmd_in_current_process(int fd_to_duplicate, int fd[2], t_tree_node *no
 char		*run_here_doc(char *stop_str_with_quotes, t_shell *shell);
 int			same_string(char *str1, char *str2);
 void		save_current_streams(t_shell *shell);
-void		save_sig(int sig);
 int			search_var(char *var_name, char **var_store);
+void		set_signals(void);
 void		set_streams(t_shell *shell, char option);
 void		set_var(char *var_name, char ***var_store);
 char		**shorten_arr(char *del_str, char **arr);

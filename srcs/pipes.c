@@ -5,7 +5,8 @@ static void create_pipe(int fd[2])
 	if (pipe(fd) == -1)
 	{
 		perror("pipe");
-		return ;//launch error handler here
+		//return ;//launch error handler here
+		exit(1);
 	}
 }
 
@@ -14,6 +15,7 @@ static void run_pipeline_stage(int fd_to_duplicate, int fd[2], t_tree_node *node
 	int status;
 	//fprintf(stderr, "fork\n");
 	status = run_cmd_in_current_process(fd_to_duplicate, fd, node, shell);
+	clean_minishell(shell);
 	exit(status);
 }
 

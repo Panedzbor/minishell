@@ -5,6 +5,8 @@ static void	free_token(t_token *token)
 	t_token *current;
 	t_token *next;
 
+	if(!token)
+		return ;
 	current = token;
 	while (current)
 	{
@@ -31,6 +33,8 @@ static void	free_tree(t_tree_node *tree)
 
 void	clean_session(t_shell *shell)
 {
+	if(!shell)
+		return ;
 	if (shell->tree)
 	{
 		free_tree(shell->tree);
@@ -41,9 +45,9 @@ void	clean_session(t_shell *shell)
 		free_token(shell->tokens);
 		shell->tokens = NULL;
 	}
-	if (shell->cur_input_stream > 0)
+	if (shell->cur_input_stream > 2)
 		close(shell->cur_input_stream);
-	if (shell->cur_output_stream > 0)
+	if (shell->cur_output_stream > 2)
 		close(shell->cur_output_stream);
 }
 
@@ -60,8 +64,9 @@ void	clean_minishell(t_shell *shell)
 		free_arr(shell->local_vars);
 		shell->local_vars = NULL;
 	}
-	if (shell->def_input_stream > 0)
+	if (shell->def_input_stream > 2)
 		close(shell->def_input_stream);
-	if (shell->def_output_stream > 0)
+	if (shell->def_output_stream > 2)
 		close(shell->def_output_stream);
+	rl_clear_history();
 }

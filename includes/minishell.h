@@ -71,10 +71,10 @@ typedef struct s_priorities
 
 typedef struct s_tree_node
 {
-	t_node_type type;
-	char **argv;
-	struct s_tree_node *left;
-	struct s_tree_node *right;
+	t_node_type			type;
+	char				**argv;
+	struct s_tree_node	*left;
+	struct s_tree_node	*right;
 } t_tree_node;
 
 typedef struct s_shell

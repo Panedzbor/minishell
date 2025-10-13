@@ -13,7 +13,7 @@ int	main(int argc, char **argv, char **envp)
 	set_signals();
 	while (1)
 	{
-		input = readline("minishell: ");
+		input = readline("minishell> ");
 		if (process_input(&input, &shell))
 			continue ;
 		add_history((const char *)input);

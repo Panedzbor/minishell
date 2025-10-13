@@ -31,8 +31,6 @@ static int expand_var_len(char *str, int i, t_shell *shell, size_t *res_len)
 	}
 	else
 		*res_len -= (1 + name_len);
-	if (var_val && ft_strncmp(var_nam, "?", 1) == 0 && ft_strlen(var_nam) == 1)
-		free(var_val);
 	free(var_nam);
 	return (i + 1 + name_len);
 }

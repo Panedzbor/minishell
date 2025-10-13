@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-int is_symbol_oper(char c)
+int	is_symbol_oper(char c)
 {
 	if ((c == '>') || (c == '<'))
 		return (1);
@@ -8,7 +8,7 @@ int is_symbol_oper(char c)
 		return (1);
 	return (0);
 }
-static int check_double(char *str)
+static int	check_double(char *str)
 {
 	if (str[0] && str [1])
 	{
@@ -17,7 +17,7 @@ static int check_double(char *str)
 	}
 	return (0);
 }
-static int check_triple(char *str)
+static int	check_triple(char *str)
 {
 	if (str[1] && str[2])
 	{
@@ -31,7 +31,7 @@ static int check_triple(char *str)
 	return (0);
 }
 
-static t_token_type get_token_type(char *str)
+static	t_token_type get_token_type(char *str)
 {
 	if (ft_strncmp(str, "&&", 2) == 0 && str[2] == '\0')
 		return TOKEN_AND;
@@ -50,7 +50,7 @@ static t_token_type get_token_type(char *str)
 	return TOKEN_WORD;
 }
 
-void tokenize_operator(char **str, t_token **token_list, t_priora priority_map)
+void	tokenize_operator(char **str, t_token **token_list, t_priora priority_map)
 {
 	char *ptr;
 	char op[3];

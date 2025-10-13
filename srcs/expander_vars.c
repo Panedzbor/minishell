@@ -39,8 +39,6 @@ static int	handle_var(char *str, int *str_pos, char *result, t_shell *shell)
 		res_pos = copy_var_value(result, res_pos, var_val);
 		free(var_val);
 	}
-	if (var_val && ft_strncmp(var_nam, "?", 1) == 0 && ft_strlen(var_nam) == 1)
-		free(var_val);
 	free(var_nam);
 	*str_pos += 1 + name_len;
 	return (res_pos);

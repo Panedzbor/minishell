@@ -107,7 +107,7 @@ int call_external_command(char **command, t_shell *shell)
     char    **path_list;
     size_t  i;
     int     status;
-    
+
     status = 0;
     if (!fork_and_get_pid(&status))
     {
@@ -122,7 +122,7 @@ int call_external_command(char **command, t_shell *shell)
                 execve(full_path, command, shell->envp);
             i++;
         }
-        ft_printf("%s: command not found\n", command[0]);
+        ft_putstr_fd(" command not found\n", d_err);
         exit(127);
     }
     return (status);

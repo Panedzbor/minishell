@@ -1,8 +1,8 @@
 #include "../includes/minishell.h"
 
-void *collect_heredocs(t_tree_node *node, t_shell *shell)
+void	*collect_heredocs(t_tree_node *node, t_shell *shell)
 {
-	char *heredoc_file;
+	char	*heredoc_file;
 
 	if (node->left)
 		collect_heredocs(node->left, shell);
@@ -20,7 +20,7 @@ void *collect_heredocs(t_tree_node *node, t_shell *shell)
 		return (NULL);
 	}
 	if (node->right && node->right->argv && node->right->argv[0])
-        free(node->right->argv[0]);
+		free(node->right->argv[0]);
 	node->right->argv[0] = heredoc_file;
 	return (heredoc_file);
 }

@@ -67,18 +67,24 @@ static t_tree_node *fill_tree(t_token *start, t_token *end)
     return (tree);
 }
 
-void parser(char *input, t_shell *shell)
+int parser(char *input, t_shell *shell)
 {
-	t_token *tokens;
 	t_tree_node *tree;
 
 	tree = NULL;
-	tokens = lexer(input);
-	expand_tokens(tokens, shell);
-	shell->tokens = tokens;
-	if (!analyze_parenthesis(tokens, 0))
-		printf("Error\n");
+	if(lexer(input, shell))
+	{
+		clean_session(shell);
+		return (1);
+	}
+	expand_tokens(shell->tokens, shell);
+	if (!analyze_parenthesis(shell->tokens, 0))
+	{
+		clean_session(shell);
+		return (1);
+	}
 	if(shell->tokens)
-		tree = fill_tree(tokens, NULL);
+		tree = fill_tree(shell->tokens, NULL);
 	shell->tree = tree;
+	return (0);
 }

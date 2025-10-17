@@ -22,11 +22,7 @@ static int	check_triple(char *str)
 	if (str[1] && str[2])
 	{
 		if (str[1] == str[0] && str[2] == str[0])
-		{
-			ft_printf("Error: triple operator");
-			// add free;
 			return (1);
-		}
 	}
 	return (0);
 }
@@ -50,7 +46,7 @@ static	t_token_type get_token_type(char *str)
 	return TOKEN_WORD;
 }
 
-void	tokenize_operator(char **str, t_token **token_list, t_priora priority_map)
+int	tokenize_oper(char **str, t_token **token_list, t_priora priority_map)
 {
 	char *ptr;
 	char op[3];
@@ -59,7 +55,7 @@ void	tokenize_operator(char **str, t_token **token_list, t_priora priority_map)
 	len = 0;
 	ptr = *str;
 	if (check_triple(ptr))
-		return;
+		return (1);
 	else if (check_double(ptr))
 	{
 		op[0] = ptr[0];
@@ -76,4 +72,5 @@ void	tokenize_operator(char **str, t_token **token_list, t_priora priority_map)
 		len = 1;
 	}
 	*str = ptr + len;
+	return (0);
 }

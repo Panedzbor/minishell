@@ -3,7 +3,6 @@
 
 # include <dirent.h>
 # include <fcntl.h>
-# include "get_next_line/get_next_line.h"
 # include <limits.h>
 # include "libft/libft.h"
 # include <readline/readline.h>
@@ -162,18 +161,11 @@ void		set_signals(void);
 void		set_streams(t_shell *shell, char option);
 void		set_var(char *var_name, char ***var_store);
 char		**shorten_arr(char *del_str, char **arr);
-void		stop_exec(void);
 int			tokenize_oper(char **str, t_token **token_list, t_priora prior_map);
 char		*trim_quotes(char *str, int *quoted);
 int			unset(char *var_name, t_shell *shell);
 int			valid_token_order(t_token *list);
 int			valid_var_char(char c);
 void		wait_for_subprocess(pid_t pid);
-
-//test
-void    test_analyze_parent(t_token *token);
-void	test_print_tokens(t_token *head);
-void	test_print_shell_vars(t_shell *shell);
-void 	draw_tree(t_tree_node *tree);
 
 #endif

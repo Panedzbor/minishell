@@ -17,7 +17,8 @@ int	main(int argc, char **argv, char **envp)
 		if (process_input(&input, &shell))
 			continue ;
 		add_history((const char *)input);
-		parser(input, &shell);
+		if (parser(input, &shell))
+			continue;
 		//draw_tree(shell.tree);
 		free(input);
 		collect_heredocs(shell.tree, &shell);

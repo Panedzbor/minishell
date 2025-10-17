@@ -2,9 +2,9 @@
 
 static char get_direction(t_node_type type)
 {
-	if (type == NODE_REDIRECT_IN)
+	if (type == NODE_REDIR_IN)
 		return ('I');
-	else if (type == NODE_REDIRECT_HERE_DOC)
+	else if (type == NODE_REDIR_HERE_DOC)
 		return ('H');
 	return ('O');
 }
@@ -72,9 +72,9 @@ static int redirect_output(t_tree_node *node, char *filename, int *info_about_st
 	if (!check_folder(filename))
 		return (-1);
 	fd = 0;
-	if (node->type == NODE_REDIRECT_OUT)
+	if (node->type == NODE_REDIR_OUT)
 		fd = open_file(filename, O_RDWR | O_CREAT | O_TRUNC);
-	else if(node->type == NODE_REDIRECT_OUT_APPEND)
+	else if(node->type == NODE_REDIR_OUT_APPEND)
 		fd = open_file(filename, O_RDWR | O_CREAT | O_APPEND);
 	if (fd == -1)
 		return (-1);

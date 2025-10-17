@@ -142,13 +142,13 @@ static char *get_symbol(t_tree_node *node)
 		return ("[ || ]");
 	else if (node->type == NODE_PIPE)
 		return ("[ | ]");
-	else if (node->type == NODE_REDIRECT_IN)
+	else if (node->type == NODE_REDIR_IN)
 		return ("[ < ]");
-	else if (node->type == NODE_REDIRECT_HERE_DOC)
+	else if (node->type == NODE_REDIR_HERE_DOC)
 		return ("[ << ]");
-	else if (node->type == NODE_REDIRECT_OUT)
+	else if (node->type == NODE_REDIR_OUT)
 		return ("[ > ]");
-	else if (node->type == NODE_REDIRECT_OUT_APPEND)
+	else if (node->type == NODE_REDIR_OUT_APPEND)
 		return ("[ >> ]");
 	else if (node->type == NODE_SUBSHELL)
 		return ("(SUBSHELL)");

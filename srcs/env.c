@@ -67,7 +67,7 @@ int	export(char *var_input, t_shell *shell)
 	if (!var_input)
 		return (env(shell->envp));
 	if (!check_valid_name(var_input))
-		return (ms_err(" not a valid identifier", 1, d_err, shell));
+		return (ms_err(" not a valid identifier", 1, D_ERR, shell));
 	if (ft_strchr(var_input, '='))
 	{
 		set_var(var_input, &shell->local_vars);

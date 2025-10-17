@@ -83,12 +83,12 @@ int	lexer(char *input, t_shell *shell)
 		else if (is_symbol_oper(*ptr))
 		{
 			if (tokenize_oper(&ptr, &shell->tokens, prior_map))
-				return (ms_err("error unexpected token\n", 1, d_err, shell));
+				return (ms_err("error unexpected token\n", 1, D_ERR, shell));
 		}
 		else if (is_parenth(*ptr))
 			tokenize_parenth(&ptr, &shell->tokens, prior_map);
 		else if (tokenize_word(&ptr, &shell->tokens, prior_map))
-			return (ms_err("error unclosed quotes\n", 1, d_err, shell));
+			return (ms_err("error unclosed quotes\n", 1, D_ERR, shell));
 	}
 	add_token(&shell->tokens, NULL, TOKEN_END_OF_LIST, prior_map);
 	return (0);

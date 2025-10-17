@@ -30,7 +30,7 @@ static char	*create_heredoc_filename(void)
 	counter_str = ft_itoa(counter);
 	if (!counter_str)
 		return (NULL);
-	filename = ms_strjoin(d_heredoc_file, counter_str);
+	filename = ms_strjoin(D_HEREDOC_FILE, counter_str);
 	free(counter_str);
 	if (!filename)
 		return (NULL);

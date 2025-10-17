@@ -74,6 +74,6 @@ int	echo(char **command)
 int	ms_cd(char **cmd, t_shell *shell)
 {
 	if (cmd[1] && cmd[2])
-		return (ms_err("exit: too many arguments\n", 2, d_err, shell));
+		return (ms_err("exit: too many arguments\n", 2, D_ERR, shell));
 	return (cd(cmd[1], shell));
 }

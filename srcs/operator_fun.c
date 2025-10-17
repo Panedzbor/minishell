@@ -34,19 +34,19 @@ static	t_token_type get_token_type(char *str)
 	if (ft_strncmp(str, "||", 2) == 0 && str[2] == '\0')
 		return TOKEN_OR;
 	if (ft_strncmp(str, "<<", 2) == 0 && str[2] == '\0')
-		return TOKEN_REDIRECT_HERE_DOC;
+		return TOKEN_REDIR_HERE_DOC;
 	if (ft_strncmp(str, ">>", 2) == 0 && str[2] == '\0')
-		return TOKEN_REDIRECT_OUT_APPEND;
+		return TOKEN_REDIR_OUT_APPEND;
 	if (ft_strncmp(str, "|", 1) == 0 && str[1] == '\0')
 		return TOKEN_PIPE;
 	if (ft_strncmp(str, "<", 1) == 0 && str[1] == '\0')
-		return TOKEN_REDIRECT_IN;
+		return TOKEN_REDIR_IN;
 	if (ft_strncmp(str, ">", 1) == 0 && str[1] == '\0')
-		return TOKEN_REDIRECT_OUT;
+		return TOKEN_REDIR_OUT;
 	return TOKEN_WORD;
 }
 
-int	tokenize_oper(char **str, t_token **token_list, t_priora priority_map)
+int	tokenize_oper(char **str, t_token **token_list, t_priora prior_map)
 {
 	char *ptr;
 	char op[3];
@@ -61,14 +61,14 @@ int	tokenize_oper(char **str, t_token **token_list, t_priora priority_map)
 		op[0] = ptr[0];
 		op[1] = ptr[1];
 		op[2] = '\0';
-		add_token(token_list, op, get_token_type(op), priority_map);
+		add_token(token_list, op, get_token_type(op), prior_map);
 		len = 2;
 	}
 	else
 	{
 		op[0] = ptr[0];
 		op[1] = '\0';
-		add_token(token_list, op, get_token_type(op), priority_map);
+		add_token(token_list, op, get_token_type(op), prior_map);
 		len = 1;
 	}
 	*str = ptr + len;

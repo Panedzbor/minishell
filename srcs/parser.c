@@ -10,7 +10,8 @@ static t_token *find_list_end(t_token *start)
 	return (current);
 }
 
-void check_if_token_sequence(t_token **priora, t_token **priora_end, t_token_type cur_token_type)
+void is_token_seq(t_token **priora, t_token **priora_end, 
+			t_token_type cur_token_type)
 {
 	t_token *temp;
 
@@ -88,7 +89,7 @@ int parser(char *input, t_shell *shell)
 		if (valid_token_order(shell->tokens))
 			tree = fill_tree(shell->tokens, NULL);
 		else
-			return (ms_err("error unexpected token\n", 1, d_err, shell));
+			return (ms_err("error unexpected token\n", 1, D_ERR, shell));
 	}
 	shell->tree = tree;
 	return (0);

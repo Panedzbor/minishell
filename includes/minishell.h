@@ -105,7 +105,7 @@ void		clean_minishell(t_shell *shell);
 void		clean_session(t_shell *shell);
 void		close_file(int fd);
 void		close_streams(t_shell *shell, char option);
-void		collect_heredocs(t_tree_node *node, t_shell *shell);
+void		*collect_heredocs(t_tree_node *node, t_shell *shell);
 pid_t		create_subprocess(void);
 t_tree_node *create_tree_node(t_token *token);
 void		delete_var(char *var_name, char ***var_store);

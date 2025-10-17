@@ -20,7 +20,8 @@ int	main(int argc, char **argv, char **envp)
 		parser(input, &shell);
 		//draw_tree(shell.tree);
 		free(input);
-		collect_heredocs(shell.tree, &shell);
+		if (!collect_heredocs(shell.tree, &shell))
+			continue ;
 		shell.status_code = execute_command_line(shell.tree, &shell, 0, 0);
 		clean_session(&shell);
 		reset_streams(shell);

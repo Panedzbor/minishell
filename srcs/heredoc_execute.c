@@ -1,44 +1,30 @@
 #include "../includes/minishell.h"
 
-static char *expand_new_line(char *nl, int quoted)
+static char	*join_new_line(char **old_input, char **new_line, int quoted)
 {
-	char *expanded;
-
-	if (!quoted)
-	{
-		//expanded = # var expansion func #;
-		expanded = ms_strdup(nl); //temporary
-	}
-	else
-		expanded = ms_strdup(nl);
-	return (expanded);
-}
-
-static char *join_new_line(char **old_input, char **new_line, int quoted)
-{
-	char *expanded;
-	char *nl_added;
-	char *new_input;
+	char	*dupl;
+	char	*nl_added;
+	char	*new_input;
 
 	if (!(*new_line))
 		return (NULL);
 	new_input = NULL;
-	expanded = expand_new_line(*new_line, quoted);
-	nl_added = ms_strjoin(expanded, "\n");
+	dupl = ms_strdup(*new_line);
+	nl_added = ms_strjoin(dupl, "\n");
 	if (*old_input)
 		new_input = ms_strjoin(*old_input, nl_added);
 	else
 		new_input = ms_strdup(nl_added);
 	free_and_reset_ptrs(2, (void **)old_input, (void **)new_line);
-	free_and_reset_ptrs(2, (void **)&expanded, (void **)&nl_added);
+	free_and_reset_ptrs(2, (void **)&dupl, (void **)&nl_added);
 	return (new_input);
 }
 
-static char *create_heredoc_filename(void)
+static char	*create_heredoc_filename(void)
 {
-	static unsigned int counter;
-	char *counter_str;
-	char *filename;
+	static unsigned int	counter;
+	char				*counter_str;
+	char				*filename;
 
 	counter++;
 	counter_str = ft_itoa(counter);
@@ -51,10 +37,10 @@ static char *create_heredoc_filename(void)
 	return (filename);
 }
 
-static char *save_input_to_file(char *input)
+static char	*save_input_to_file(char *input)
 {
-	int fd;
-	char *filename;
+	int		fd;
+	char	*filename;
 
 	filename = create_heredoc_filename();
 	if (!filename)
@@ -66,16 +52,16 @@ static char *save_input_to_file(char *input)
 	return (filename);
 }
 
-char *run_here_doc(char *stop_str_with_quotes, t_shell *shell)
+char	*run_here_doc(char *stop_str_with_quotes, t_shell *shell)
 {
-	char *stop_str;
-	int	quoted;
-	char *input_str;
-	char *new_line;
-	char *heredoc_file;
+	char	*stop_str;
+	int		quoted;
+	char	*input_str;
+	char	*new_line;
+	char	*heredoc_file;
 
-    save_current_streams(shell);
-    set_streams(shell, 'd');
+	save_current_streams(shell);
+	set_streams(shell, 'd');
 	new_line = NULL;
 	input_str = NULL;
 	quoted = 0;
@@ -90,6 +76,6 @@ char *run_here_doc(char *stop_str_with_quotes, t_shell *shell)
 	free_and_reset_ptrs(2, (void **)&new_line, (void **)&stop_str);
 	heredoc_file = save_input_to_file(input_str);
 	free_and_reset_ptrs(1, (void **)&input_str);
-    set_streams(shell, 'c');
+	set_streams(shell, 'c');
 	return (heredoc_file);
 }

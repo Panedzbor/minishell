@@ -22,6 +22,7 @@ static int	assign_value_to_argv(t_tree_node *node, t_token *token)
     {
         node->argv[count++] = ft_strdup(token->value);
         token = token->next;
+        //free(token->value);
     }
     node->argv[count] = NULL;
     return (1);
@@ -66,7 +67,7 @@ t_tree_node	*create_tree_node(t_token *token)
     if (!check_alloc(node))
         return (NULL);
     node->type = define_node_type(token->token_type);
-    if (token->prev 
+    if (token->prev
         && (token->prev->token_type == TOKEN_REDIRECT_IN
         || token->prev->token_type == TOKEN_REDIRECT_OUT
         || token->prev->token_type == TOKEN_REDIRECT_OUT_APPEND))

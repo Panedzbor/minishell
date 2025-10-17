@@ -35,14 +35,14 @@ static t_node_type	define_node_type(t_token_type tt)
         return (NODE_OR);
     else if (tt == TOKEN_PIPE)
         return (NODE_PIPE);
-    else if (tt == TOKEN_REDIRECT_IN)
-        return (NODE_REDIRECT_IN);
-    else if (tt == TOKEN_REDIRECT_HERE_DOC)
-        return (NODE_REDIRECT_HERE_DOC);
-    else if (tt == TOKEN_REDIRECT_OUT)
-        return (NODE_REDIRECT_OUT);
-    else if (tt == TOKEN_REDIRECT_OUT_APPEND)
-        return (NODE_REDIRECT_OUT_APPEND);
+    else if (tt == TOKEN_REDIR_IN)
+        return (NODE_REDIR_IN);
+    else if (tt == TOKEN_REDIR_HERE_DOC)
+        return (NODE_REDIR_HERE_DOC);
+    else if (tt == TOKEN_REDIR_OUT)
+        return (NODE_REDIR_OUT);
+    else if (tt == TOKEN_REDIR_OUT_APPEND)
+        return (NODE_REDIR_OUT_APPEND);
     else if (tt == TOKEN_PAREN_LEFT)
         return (NODE_SUBSHELL);
     else if (tt == TOKEN_WORD)
@@ -68,9 +68,9 @@ t_tree_node	*create_tree_node(t_token *token)
         return (NULL);
     node->type = define_node_type(token->token_type);
     if (token->prev
-        && (token->prev->token_type == TOKEN_REDIRECT_IN
-        || token->prev->token_type == TOKEN_REDIRECT_OUT
-        || token->prev->token_type == TOKEN_REDIRECT_OUT_APPEND))
+        && (token->prev->token_type == TOKEN_REDIR_IN
+        || token->prev->token_type == TOKEN_REDIR_OUT
+        || token->prev->token_type == TOKEN_REDIR_OUT_APPEND))
         node->type = NODE_FILENAME;
     if (node->type == NODE_COMMAND || node->type == NODE_FILENAME)
         ret = assign_value_to_argv(node, token);
@@ -81,14 +81,15 @@ t_tree_node	*create_tree_node(t_token *token)
     return (node);
 }
 
-t_token	*divide_tokens(t_token *start, t_token *end, t_token **left, t_token **right)
+t_token	*divide_tokens(t_token *start, t_token *end,
+                    t_token **left, t_token **right)
 {
     t_token	*priora;
     t_token	*priora_end;
 
     priora_end = NULL;
     priora = find_lowest_priority(start, end);
-    check_if_token_sequence(&priora, &priora_end, TOKEN_WORD);
+    is_token_seq(&priora, &priora_end, TOKEN_WORD);
     if (priora->token_type == TOKEN_PAREN_RIGH)
         return (subshell_trim(start, end, left));
     if (priora != start)

@@ -39,69 +39,51 @@ static char	*find_command(char *cmd, char *path)
 	return (result);
 }
 
-char	**save_paths(void)
+char	**save_paths(t_shell *shell)
 {
 	char	*path_str;
 	char	**path_list;
 
-	path_str = getenv("PATH");
+	path_str = get_var("PATH", shell->envp);
 	if (!path_str)
 		return (NULL);
 	path_list = ft_split(path_str, ':');
+	free(path_str);
 	return (path_list);
 }
 
-static int	check_and_wait_for_pid(pid_t pid)
+static void call_ext_cmd_rel_path(char **path_list, char **cmd, t_shell *shell)
 {
-	int	status;
-
-	status = 0;
-	if (pid < 0)
+	char	*full_path;
+	int i;
+	
+	i = 0;
+	while (path_list[i])
 	{
-		ft_putstr_fd("failed process fork", STDOUT_FILENO);
-		status = -1;
+		full_path = find_command(cmd[0], path_list[i]);
+		if (full_path)
+			execve(full_path, cmd, shell->envp);
+		i++;
 	}
-	else if (pid > 0)
-	{
-		waitpid(pid, &status, 0);
-		status = WEXITSTATUS(status);
-	}
-	return (status);
-}
-
-static pid_t	fork_and_get_pid(int *status)
-{
-	pid_t	pid;
-
-	pid = fork();
-	*status = check_and_wait_for_pid(pid);
-	return (pid);
 }
 
 int	call_external_command(char **command, t_shell *shell)
 {
-	char	*full_path;
+	
 	char	**path_list;
-	size_t	i;
 	int		status;
 
 	status = 0;
 	if (!fork_and_get_pid(&status))
 	{
-		path_list = save_paths();
+		path_list = save_paths(shell);
 		if (!path_list)
 			return (-1);
-		i = 0;
-		while (path_list[i])
-		{
-			full_path = find_command(command[0], path_list[i]);
-			if (full_path)
-				execve(full_path, command, shell->envp);
-			else
-				execve(command[0], command, shell->envp);
-			i++;
-		}
-		ft_putstr_fd("command not found\n", d_err);
+		call_ext_cmd_rel_path(path_list, command, shell);
+		execve(command[0], command, shell->envp);
+		free_arr(path_list);	
+		ft_putstr_fd("command not found\n", D_ERR);
+		clean_minishell(shell);
 		exit(127);
 	}
 	return (status);

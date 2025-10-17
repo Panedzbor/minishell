@@ -49,13 +49,13 @@ void	init_token_priority(t_priora *prior)
     prior->value[1] = 1;
     prior->type[2] = TOKEN_PIPE;
     prior->value[2] = 2;
-    prior->type[3] = TOKEN_REDIRECT_IN;
+    prior->type[3] = TOKEN_REDIR_IN;
     prior->value[3] = 3;
-    prior->type[4] = TOKEN_REDIRECT_HERE_DOC;
+    prior->type[4] = TOKEN_REDIR_HERE_DOC;
     prior->value[4] = 3;
-    prior->type[5] = TOKEN_REDIRECT_OUT;
+    prior->type[5] = TOKEN_REDIR_OUT;
     prior->value[5] = 3;
-    prior->type[6] = TOKEN_REDIRECT_OUT_APPEND;
+    prior->type[6] = TOKEN_REDIR_OUT_APPEND;
     prior->value[6] = 3;
     prior->type[7] = TOKEN_PAREN_LEFT;
     prior->value[7] = 4;

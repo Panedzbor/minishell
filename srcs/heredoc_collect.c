@@ -6,7 +6,7 @@ void	*collect_heredocs(t_tree_node *node, t_shell *shell)
 
 	if (node->left)
 		collect_heredocs(node->left, shell);
-	if (node->type != NODE_REDIRECT_HERE_DOC)
+	if (node->type != NODE_REDIR_HERE_DOC)
 	{
 		if (node->right)
 			collect_heredocs(node->right, shell);

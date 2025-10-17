@@ -43,7 +43,7 @@ static void	tokenize_parenth(char **str, t_token **tokens, t_priora prior_map)
 	*str = ptr + 1;
 }
 
-static void	tokenize_word(char **str, t_token **tokens, t_priora priority_map)
+static int	tokenize_word(char **str, t_token **tokens, t_priora priority_map)
 {
 	char	*start;
 	char	*result;
@@ -57,22 +57,22 @@ static void	tokenize_word(char **str, t_token **tokens, t_priora priority_map)
 	if (!quote)
 		result = ft_substr(start, 0, *str - start);
 	else
-		printf ("quote error\n");
+		return (1);
 	if (result)
 	{
 		add_token(tokens, result, TOKEN_WORD, priority_map);
 		free(result);
 	}
+	return (0);
 }
 
-t_token	*lexer(char *input)
+int	lexer(char *input, t_shell *shell)
 {
-	t_token		*token_list;
+	t_token		*list;
 	char		*ptr;
-	t_priora	priority_map;
+	t_priora	prior_map;
 
-	init_token_priority(&priority_map);
-	token_list = NULL;
+	init_token_priority(&prior_map);
 	ptr = input;
 	while (*ptr)
 	{
@@ -81,13 +81,14 @@ t_token	*lexer(char *input)
 			ptr++;
 			continue ;
 		}
-		else if (is_symbol_oper(*ptr))
-			tokenize_operator(&ptr, &token_list, priority_map);
+		else if (is_symbol_oper(*ptr) 
+			&& tokenize_oper(&ptr, &shell->tokens, prior_map))
+			return (ms_err("error unexpected token\n", 1, d_err, shell));
 		else if (is_parenth(*ptr))
-			tokenize_parenth(&ptr, &token_list, priority_map);
-		else
-			tokenize_word(&ptr, &token_list, priority_map);
+			tokenize_parenth(&ptr, &shell->tokens, prior_map);
+		else if (tokenize_word(&ptr, &shell->tokens, prior_map))
+			return (ms_err("error unclosed quotes\n", 1, d_err, shell));
 	}
-	add_token(&token_list, NULL, TOKEN_END_OF_LIST, priority_map);
-	return (token_list);
+	add_token(&list, NULL, TOKEN_END_OF_LIST, prior_map);
+	return (0);
 }

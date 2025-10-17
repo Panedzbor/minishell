@@ -10,7 +10,7 @@ int	is_symbol_oper(char c)
 }
 static int	check_double(char *str)
 {
-	if (str[0] && str [1])
+	if (str[0] && str[1])
 	{
 		if (str[0] == str[1])
 			return (1);

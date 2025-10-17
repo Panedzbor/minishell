@@ -80,9 +80,11 @@ int	lexer(char *input, t_shell *shell)
 			ptr++;
 			continue ;
 		}
-		else if (is_symbol_oper(*ptr) 
-			&& tokenize_oper(&ptr, &shell->tokens, prior_map))
-			return (ms_err("error unexpected token\n", 1, d_err, shell));
+		else if (is_symbol_oper(*ptr))
+		{
+			if (tokenize_oper(&ptr, &shell->tokens, prior_map))
+				return (ms_err("error unexpected token\n", 1, d_err, shell));
+		}
 		else if (is_parenth(*ptr))
 			tokenize_parenth(&ptr, &shell->tokens, prior_map);
 		else if (tokenize_word(&ptr, &shell->tokens, prior_map))

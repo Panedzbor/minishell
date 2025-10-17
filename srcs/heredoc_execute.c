@@ -38,19 +38,27 @@ static char *create_heredoc_filename(void)
 {
 	static unsigned int counter;
 	char *counter_str;
+	char *filename;
 
 	counter++;
 	counter_str = ft_itoa(counter);
-	check_ptr(counter_str);
-	return (ms_strjoin(d_heredoc_file, counter_str));
+	if (!counter_str)
+		return (NULL);
+	filename = ms_strjoin(d_heredoc_file, counter_str);
+	free(counter_str);
+	if (!filename)
+		return (NULL);
+	return (filename);
 }
 
 static char *save_input_to_file(char *input)
 {
 	int fd;
 	char *filename;
-	
+
 	filename = create_heredoc_filename();
+	if (!filename)
+		return (NULL);
 	fd = open_file(filename, O_RDWR | O_CREAT | O_TRUNC);
 	if (input)
 		ft_putstr_fd(input, fd);

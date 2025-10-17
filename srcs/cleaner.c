@@ -2,10 +2,10 @@
 
 static void	free_token(t_token *token)
 {
-	t_token *current;
-	t_token *next;
+	t_token	*current;
+	t_token	*next;
 
-	if(!token)
+	if (!token)
 		return ;
 	current = token;
 	while (current)
@@ -21,7 +21,7 @@ static void	free_token(t_token *token)
 static void	free_tree(t_tree_node *tree)
 {
 	if (!tree)
-		return;
+		return ;
 	if (tree->left)
 		free_tree(tree->left);
 	if (tree->right)
@@ -33,7 +33,7 @@ static void	free_tree(t_tree_node *tree)
 
 void	clean_session(t_shell *shell)
 {
-	if(!shell)
+	if (!shell)
 		return ;
 	if (shell->tree)
 	{

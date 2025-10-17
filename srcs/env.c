@@ -38,32 +38,33 @@ int	unset(char *var_name, t_shell *shell)
 	delete_var(var_name, &shell->envp);
 	return (0);
 }
+
 static int	export_no_equal(char *var_input, t_shell *shell)
 {
 	int		i;
-    char	*var;
+	char	*var;
 
-    i = search_var(var_input, shell->local_vars);
-    if (i >= 0)
-    {
-        var = shell->local_vars[i];
-        set_var(var, &shell->envp);
-    }
-    else
-    {
-        var = ft_strjoin(var_input, "=");
-        if (!var)
-            return (1);
-        set_var(var_input, &shell->local_vars);
-        set_var(var_input, &shell->envp);
-        free(var);
-    }
-    return (0);
+	i = search_var(var_input, shell->local_vars);
+	if (i >= 0)
+	{
+		var = shell->local_vars[i];
+		set_var(var, &shell->envp);
+	}
+	else
+	{
+		var = ft_strjoin(var_input, "=");
+		if (!var)
+			return (1);
+		set_var(var_input, &shell->local_vars);
+		set_var(var_input, &shell->envp);
+		free(var);
+	}
+	return (0);
 }
 
 int	export(char *var_input, t_shell *shell)
 {
-	if(!var_input)
+	if (!var_input)
 		return (env(shell->envp));
 	if (!check_valid_name(var_input))
 		return (ms_err(" not a valid identifier", 1, d_err, shell));

@@ -1,8 +1,8 @@
 #include "../includes/minishell.h"
 
-char *get_exp_var_val(char *var_name, t_shell *shell)
+char	*get_exp_var_val(char *var_name, t_shell *shell)
 {
-	char *value;
+	char	*value;
 
 	if (!var_name)
 		return (NULL);
@@ -13,11 +13,11 @@ char *get_exp_var_val(char *var_name, t_shell *shell)
 	return (value);
 }
 
-static int expand_var_len(char *str, int i, t_shell *shell, size_t *res_len)
+static int	expand_var_len(char *str, int i, t_shell *shell, size_t *res_len)
 {
-	char *var_nam;
-	char *var_val;
-	size_t name_len;
+	char		*var_nam;
+	char		*var_val;
+	size_t		name_len;
 
 	var_nam = get_exp_var_nam(str, i + 1, &name_len);
 	if (!var_nam)
@@ -35,11 +35,11 @@ static int expand_var_len(char *str, int i, t_shell *shell, size_t *res_len)
 	return (i + 1 + name_len);
 }
 
-size_t calc_res_len(char *str, t_shell *shell)
+size_t	calc_res_len(char *str, t_shell *shell)
 {
-	size_t res_len;
-	int i;
-	char quote;
+	size_t	res_len;
+	int		i;
+	char	quote;
 
 	i = 0;
 	quote = 0;

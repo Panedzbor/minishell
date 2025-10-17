@@ -11,10 +11,10 @@ static char	*check_name(char *var_name)
 	{
 		var_len = variable - var_name;
 		name = ft_substr(var_name, 0, var_len);
-		return name;
+		return (name);
 	}
 	else
-		return ft_strdup(var_name);
+		return (ft_strdup(var_name));
 }
 
 int	search_var(char *var_name, char **var_store)
@@ -32,11 +32,11 @@ int	search_var(char *var_name, char **var_store)
 	var_len = ft_strlen(variable);
 	while (var_store[i])
 	{
-		if	(ft_strncmp(variable, var_store[i], var_len) == 0)
+		if (ft_strncmp(variable, var_store[i], var_len) == 0)
 		{
 			free(variable);
 			free(name);
-			return i;
+			return (i);
 		}
 		i++;
 	}
@@ -44,6 +44,7 @@ int	search_var(char *var_name, char **var_store)
 	free(name);
 	return (-1);
 }
+
 char	*get_var(char *var_name, char **var_store)
 {
 	size_t	var_len;

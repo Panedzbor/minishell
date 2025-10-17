@@ -17,12 +17,6 @@ static int	check_valid_name(char *name)
 	return (1);
 }
 
-static void	add_var(char *var_input, t_shell *shell)
-{
-	set_var(var_input, &shell->local_vars);
-	set_var(var_input, &shell->envp);
-}
-
 int	env(char **envp)
 {
 	int	i;
@@ -44,32 +38,41 @@ int	unset(char *var_name, t_shell *shell)
 	delete_var(var_name, &shell->envp);
 	return (0);
 }
+static int	export_no_equal(char *var_input, t_shell *shell)
+{
+	int		i;
+    char	*var;
+
+    i = search_var(var_input, shell->local_vars);
+    if (i >= 0)
+    {
+        var = shell->local_vars[i];
+        set_var(var, &shell->envp);
+    }
+    else
+    {
+        var = ft_strjoin(var_input, "=");
+        if (!var)
+            return (1);
+        set_var(var_input, &shell->local_vars);
+        set_var(var_input, &shell->envp);
+        free(var);
+    }
+    return (0);
+}
 
 int	export(char *var_input, t_shell *shell)
 {
-	int		i;
-	char	*var;
-
+	if(!var_input)
+		return (env(shell->envp));
 	if (!check_valid_name(var_input))
 		return (ms_err(" not a valid identifier", 1, d_err, shell));
 	if (ft_strchr(var_input, '='))
-		add_var(var_input, shell);
-	else
 	{
-		i = search_var(var_input, shell->local_vars);
-		if (i >= 0)
-		{
-			var = shell->local_vars[i];
-			set_var(var, &shell->envp);
-		}
-		else
-		{
-			var = ft_strjoin(var_input, "=");
-			if (!var)
-				return (1);
-			add_var(var, shell);
-			free(var);
-		}
+		set_var(var_input, &shell->local_vars);
+		set_var(var_input, &shell->envp);
 	}
+	else
+		return (export_no_equal(var_input, shell));
 	return (0);
 }

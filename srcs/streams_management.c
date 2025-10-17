@@ -1,13 +1,13 @@
 #include "../includes/minishell.h"
 
-int get_info_about_stream(int info_about_streams, char stream)
+int	get_info_about_stream(int info_about_streams, char stream)
 {
 	if (stream == 'I')
 		return (info_about_streams >> 1);
 	return (info_about_streams & 1);
 }
 
-void overwrite_stream(char stream, int *info, int new_fd)
+void	overwrite_stream(char stream, int *info, int new_fd)
 {
 	if (stream == 'I')
 	{
@@ -21,16 +21,16 @@ void overwrite_stream(char stream, int *info, int new_fd)
 	}
 }
 
-void reset_streams(t_shell shell)
+void	reset_streams(t_shell shell)
 {
 	dup2(shell.def_input_stream, STDIN_FILENO);
 	dup2(shell.def_output_stream, STDOUT_FILENO);
 }
 
-void save_current_streams(t_shell *shell)
+void	save_current_streams(t_shell *shell)
 {
-    shell->cur_input_stream = dup(STDIN_FILENO);
+	shell->cur_input_stream = dup(STDIN_FILENO);
 	shell->cur_output_stream = dup(STDOUT_FILENO);
-    if (isatty(STDIN_FILENO))
-    	tcgetattr(STDIN_FILENO, &shell->cur_attributes);
+	if (isatty(STDIN_FILENO))
+		tcgetattr(STDIN_FILENO, &shell->cur_attributes);
 }

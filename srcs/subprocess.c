@@ -16,7 +16,7 @@ pid_t	create_subprocess(void)
 void	wait_for_subprocess(pid_t pid)
 {
 	int	status;
-	
+
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status) && WEXITSTATUS(status))
 		return ;

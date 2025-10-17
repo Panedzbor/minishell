@@ -2,108 +2,107 @@
 
 static int	assign_value_to_argv(t_tree_node *node, t_token *token)
 {
-    t_token_type type;
-    t_token *temp;
-    size_t count;
+	t_token_type	type;
+	t_token			*temp;
+	size_t			count;
 
-    type = token->token_type;
-    temp = token;
-    count = 0;
-    while (temp->token_type == type)
-    {
-        count++;
-        temp = temp->next;
-    }
-    node->argv = (char **)ft_calloc(count + 1, sizeof(char *));
-    if (!check_alloc(node->argv))
+	type = token->token_type;
+	temp = token;
+	count = 0;
+	while (temp->token_type == type)
+	{
+		count++;
+		temp = temp->next;
+	}
+	node->argv = (char **)ft_calloc(count + 1, sizeof(char *));
+	if (!check_alloc(node->argv))
 		return (0);
-    count = 0;
-    while (token->token_type == type)
-    {
-        node->argv[count++] = ft_strdup(token->value);
-        token = token->next;
-        //free(token->value);
-    }
-    node->argv[count] = NULL;
-    return (1);
+	count = 0;
+	while (token->token_type == type)
+	{
+		node->argv[count++] = ft_strdup(token->value);
+		token = token->next;
+	}
+	node->argv[count] = NULL;
+	return (1);
 }
+
 static t_node_type	define_node_type(t_token_type tt)
 {
-    if (tt == TOKEN_AND)
-        return (NODE_AND);
-    else if (tt == TOKEN_OR)
-        return (NODE_OR);
-    else if (tt == TOKEN_PIPE)
-        return (NODE_PIPE);
-    else if (tt == TOKEN_REDIR_IN)
-        return (NODE_REDIR_IN);
-    else if (tt == TOKEN_REDIR_HERE_DOC)
-        return (NODE_REDIR_HERE_DOC);
-    else if (tt == TOKEN_REDIR_OUT)
-        return (NODE_REDIR_OUT);
-    else if (tt == TOKEN_REDIR_OUT_APPEND)
-        return (NODE_REDIR_OUT_APPEND);
-    else if (tt == TOKEN_PAREN_LEFT)
-        return (NODE_SUBSHELL);
-    else if (tt == TOKEN_WORD)
-        return (NODE_COMMAND);
-    return (0);
+	if (tt == TOKEN_AND)
+		return (NODE_AND);
+	else if (tt == TOKEN_OR)
+		return (NODE_OR);
+	else if (tt == TOKEN_PIPE)
+		return (NODE_PIPE);
+	else if (tt == TOKEN_REDIR_IN)
+		return (NODE_REDIR_IN);
+	else if (tt == TOKEN_REDIR_HERE_DOC)
+		return (NODE_REDIR_HERE_DOC);
+	else if (tt == TOKEN_REDIR_OUT)
+		return (NODE_REDIR_OUT);
+	else if (tt == TOKEN_REDIR_OUT_APPEND)
+		return (NODE_REDIR_OUT_APPEND);
+	else if (tt == TOKEN_PAREN_LEFT)
+		return (NODE_SUBSHELL);
+	else if (tt == TOKEN_WORD)
+		return (NODE_COMMAND);
+	return (0);
 }
 
 static t_token	*subshell_trim(t_token *start, t_token *end, t_token **left)
 {
-    left[0] = start->next;
-    left[1] = end->prev;
-    return (start);
+	left[0] = start->next;
+	left[1] = end->prev;
+	return (start);
 }
 
 t_tree_node	*create_tree_node(t_token *token)
 {
-    t_tree_node *node;
-    int ret;
+	t_tree_node	*node;
+	int			ret;
 
-    ret = 1;
-    node = (t_tree_node*)ft_calloc(1, sizeof(t_tree_node));
-    if (!check_alloc(node))
-        return (NULL);
-    node->type = define_node_type(token->token_type);
-    if (token->prev
-        && (token->prev->token_type == TOKEN_REDIR_IN
-        || token->prev->token_type == TOKEN_REDIR_OUT
-        || token->prev->token_type == TOKEN_REDIR_OUT_APPEND))
-        node->type = NODE_FILENAME;
-    if (node->type == NODE_COMMAND || node->type == NODE_FILENAME)
-        ret = assign_value_to_argv(node, token);
-    else
-        node->argv = NULL;
-    if (!ret)
-        return (NULL);
-    return (node);
+	ret = 1;
+	node = (t_tree_node *)ft_calloc(1, sizeof(t_tree_node));
+	if (!check_alloc(node))
+		return (NULL);
+	node->type = define_node_type(token->token_type);
+	if (token->prev && (token->prev->token_type == TOKEN_REDIR_IN 
+			|| token->prev->token_type == TOKEN_REDIR_OUT 
+			|| token->prev->token_type == TOKEN_REDIR_OUT_APPEND))
+		node->type = NODE_FILENAME;
+	if (node->type == NODE_COMMAND || node->type == NODE_FILENAME)
+		ret = assign_value_to_argv(node, token);
+	else
+		node->argv = NULL;
+	if (!ret)
+		return (NULL);
+	return (node);
 }
 
 t_token	*divide_tokens(t_token *start, t_token *end,
-                    t_token **left, t_token **right)
+			t_token **left, t_token **right)
 {
-    t_token	*priora;
-    t_token	*priora_end;
+	t_token	*priora;
+	t_token	*priora_end;
 
-    priora_end = NULL;
-    priora = find_lowest_priority(start, end);
-    is_token_seq(&priora, &priora_end, TOKEN_WORD);
-    if (priora->token_type == TOKEN_PAREN_RIGH)
-        return (subshell_trim(start, end, left));
-    if (priora != start)
-    {
-        left[0] = start;
-        left[1] = priora->prev;
-    }
-    if (priora != end && priora_end != end)
-    {
-        if (!priora_end)
-            right[0] = priora->next;
-        else
-            right[0] = priora_end->next;
-        right[1] = end;
-    }
-    return (priora);
+	priora_end = NULL;
+	priora = find_lowest_priority(start, end);
+	is_token_seq(&priora, &priora_end, TOKEN_WORD);
+	if (priora->token_type == TOKEN_PAREN_RIGH)
+		return (subshell_trim(start, end, left));
+	if (priora != start)
+	{
+		left[0] = start;
+		left[1] = priora->prev;
+	}
+	if (priora != end && priora_end != end)
+	{
+		if (!priora_end)
+			right[0] = priora->next;
+		else
+			right[0] = priora_end->next;
+		right[1] = end;
+	}
+	return (priora);
 }

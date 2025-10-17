@@ -8,25 +8,27 @@ static void	save_sig(int sig)
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
+
 void	set_signals(void)
 {
 	signal(SIGINT, save_sig);
 	signal(SIGQUIT, SIG_IGN);
 }
+
 static char	*trim(char *str)
 {
 	char	*start;
 	char	*end;
 
-	if(!str)
-		return(NULL);
+	if (!str)
+		return (NULL);
 	start = str;
 	while (*start && (*start == ' ' || *start == '\t'))
 		start++;
-	if(*start == '\0')
+	if (*start == '\0')
 	{
-	*str = '\0';
-	return (str);
+		*str = '\0';
+		return (str);
 	}
 	end = start + (ft_strlen(start) - 1);
 	while (end > start && (*end == ' ' || *end == '\t'))

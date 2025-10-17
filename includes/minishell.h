@@ -160,6 +160,7 @@ void		stop_exec(void);
 int			tokenize_oper(char **str, t_token **token_list, t_priora priority_map);
 char		*trim_quotes(char *str, int *quoted);
 int			unset(char *var_name, t_shell *shell);
+int			valid_token_order(t_token *list);
 int			valid_var_char(char c);
 void		wait_for_subprocess(pid_t pid);
 

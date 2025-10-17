@@ -66,3 +66,19 @@ void	init_token_priority(t_priora *prior)
     prior->type[10] = TOKEN_END_OF_LIST;
     prior->value[10] = -1;
 }
+
+int valid_token_order(t_token *list)
+{
+    t_token *cur;
+    if (list->token_type != TOKEN_WORD)
+        return (0);
+    cur = list;
+    while (cur->token_type != TOKEN_END_OF_LIST)
+    {
+        if (cur->token_type != TOKEN_WORD
+            && cur->next->token_type != TOKEN_WORD)
+                return (0);
+        cur = cur->next;
+    }
+    return (1);
+}

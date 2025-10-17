@@ -1,6 +1,6 @@
 #include "includes/minishell.h"
 
-volatile sig_atomic_t g_sig = 0;
+volatile sig_atomic_t	g_sig = 0;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -18,8 +18,7 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		add_history((const char *)input);
 		if (parser(input, &shell))
-			continue;
-		//draw_tree(shell.tree);
+			continue ;
 		free(input);
 		if (!collect_heredocs(shell.tree, &shell))
 			continue ;

@@ -8,6 +8,7 @@ int	is_symbol_oper(char c)
 		return (1);
 	return (0);
 }
+
 static int	check_double(char *str)
 {
 	if (str[0] && str[1])
@@ -17,6 +18,7 @@ static int	check_double(char *str)
 	}
 	return (0);
 }
+
 static int	check_triple(char *str)
 {
 	if (str[1] && str[2])
@@ -27,30 +29,30 @@ static int	check_triple(char *str)
 	return (0);
 }
 
-static	t_token_type get_token_type(char *str)
+static t_token_type	get_token_type(char *str)
 {
 	if (ft_strncmp(str, "&&", 2) == 0 && str[2] == '\0')
-		return TOKEN_AND;
+		return (TOKEN_AND);
 	if (ft_strncmp(str, "||", 2) == 0 && str[2] == '\0')
-		return TOKEN_OR;
+		return (TOKEN_OR);
 	if (ft_strncmp(str, "<<", 2) == 0 && str[2] == '\0')
-		return TOKEN_REDIR_HERE_DOC;
+		return (TOKEN_REDIR_HERE_DOC);
 	if (ft_strncmp(str, ">>", 2) == 0 && str[2] == '\0')
-		return TOKEN_REDIR_OUT_APPEND;
+		return (TOKEN_REDIR_OUT_APPEND);
 	if (ft_strncmp(str, "|", 1) == 0 && str[1] == '\0')
-		return TOKEN_PIPE;
+		return (TOKEN_PIPE);
 	if (ft_strncmp(str, "<", 1) == 0 && str[1] == '\0')
-		return TOKEN_REDIR_IN;
+		return (TOKEN_REDIR_IN);
 	if (ft_strncmp(str, ">", 1) == 0 && str[1] == '\0')
-		return TOKEN_REDIR_OUT;
-	return TOKEN_WORD;
+		return (TOKEN_REDIR_OUT);
+	return (TOKEN_WORD);
 }
 
 int	tokenize_oper(char **str, t_token **token_list, t_priora prior_map)
 {
-	char *ptr;
-	char op[3];
-	int len;
+	char	*ptr;
+	char	op[3];
+	int		len;
 
 	len = 0;
 	ptr = *str;

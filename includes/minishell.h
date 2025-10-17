@@ -98,6 +98,8 @@ size_t		calc_res_len(char *str, t_shell *shell);
 int			call_external_command(char **command, t_shell *shell);
 int			cd(const char *path, t_shell *shell);
 void		*check_alloc(void *ptr);
+int			check_file(char *filename);
+int			check_folder(char *filename);
 int			check_operator(char *token);
 void		check_ptr(void *ptr);
 void		clean_minishell(t_shell *shell);
@@ -138,6 +140,7 @@ void		is_token_seq(t_token **priora, t_token **priora_end,
 				t_token_type cur_token_type);
 int			is_symbol_oper(char c);
 int			lexer(char *input, t_shell *shell);
+int			move_args(t_tree_node *node);
 int			ms_cd(char **cmd, t_shell *shell);
 int			ms_err(char *err_message, int status, int fd, t_shell *shell);
 int			ms_exit(char **cmd, t_shell *shell);

@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static	t_token *check_closed_parenths(t_token *last, int parenth_open)
+static	t_token	*check_closed_parenths(t_token *last, int parenth_open)
 {
 	if (parenth_open)
 		return (NULL);

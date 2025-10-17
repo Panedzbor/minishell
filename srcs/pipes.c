@@ -5,7 +5,6 @@ static void	create_pipe(int fd[2])
 	if (pipe(fd) == -1)
 	{
 		perror("pipe");
-		//return ;//launch error handler here
 		exit(1);
 	}
 }
@@ -13,7 +12,7 @@ static void	create_pipe(int fd[2])
 static void	run_pipe_stg(int fd_dup, int fd[2], t_tree_node *node, t_shell *sh)
 {
 	int	status;
-	//fprintf(stderr, "fork\n");
+
 	status = run_cmd_in_cur_proc(fd_dup, fd, node, sh);
 	clean_minishell(sh);
 	exit(status);
@@ -28,7 +27,7 @@ int	run_cmd_in_cur_proc(int fd_dup, int fd[2], t_tree_node *node, t_shell *sh)
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
-		status = execute_command_line(node->left, sh, 1, 0/*?*/);
+		status = execute_command_line(node->left, sh, 1, 0);
 	}
 	else
 	{

@@ -52,11 +52,11 @@ char	**save_paths(t_shell *shell)
 	return (path_list);
 }
 
-static void call_ext_cmd_rel_path(char **path_list, char **cmd, t_shell *shell)
+static void	call_ext_cmd_rel_path(char **path_list, char **cmd, t_shell *shell)
 {
 	char	*full_path;
-	int i;
-	
+	int		i;
+
 	i = 0;
 	while (path_list[i])
 	{
@@ -69,7 +69,6 @@ static void call_ext_cmd_rel_path(char **path_list, char **cmd, t_shell *shell)
 
 int	call_external_command(char **command, t_shell *shell)
 {
-	
 	char	**path_list;
 	int		status;
 
@@ -81,7 +80,7 @@ int	call_external_command(char **command, t_shell *shell)
 			return (-1);
 		call_ext_cmd_rel_path(path_list, command, shell);
 		execve(command[0], command, shell->envp);
-		free_arr(path_list);	
+		free_arr(path_list);
 		ft_putstr_fd("command not found\n", D_ERR);
 		clean_minishell(shell);
 		exit(127);

@@ -2,7 +2,6 @@
 
 static char	*search_in_dir(DIR *command_dir, char *cmd, char *path)
 {
-	// TODO : refactoring + free
 	char			*full_path;
 	char			*temp;
 	struct dirent	*info_dir;
@@ -49,27 +48,8 @@ char	**save_paths(void)
 	if (!path_str)
 		return (NULL);
 	path_list = ft_split(path_str, ':');
-	// free (path_str)
-	/*if (!path_list)
-		return (NULL);*/
-	// not needed
 	return (path_list);
 }
-
-// size_t  count_elements_for_argv(t_node *inp_node)
-// {
-//     size_t i;
-//     t_node  *next;
-
-//     i = 1;
-//     next = inp_node->next;
-//     while (next)
-//     {
-//         i++;
-//         next = inp_node->next;
-//     }
-//     return (i);
-// }
 
 static int	check_and_wait_for_pid(pid_t pid)
 {
@@ -78,14 +58,12 @@ static int	check_and_wait_for_pid(pid_t pid)
 	status = 0;
 	if (pid < 0)
 	{
-		printf("Fork failed\n");
+		ft_putstr_fd("failed process fork", STDOUT_FILENO);
 		status = -1;
-		// exit(1); //launch error handler here
 	}
 	else if (pid > 0)
 	{
 		waitpid(pid, &status, 0);
-		// maybe better to use like in pipe (wait_for_subprocess)
 		status = WEXITSTATUS(status);
 	}
 	return (status);
@@ -96,8 +74,6 @@ static pid_t	fork_and_get_pid(int *status)
 	pid_t	pid;
 
 	pid = fork();
-	if (!pid)
-		return (0); // лишнее действие?
 	*status = check_and_wait_for_pid(pid);
 	return (pid);
 }
@@ -121,9 +97,11 @@ int	call_external_command(char **command, t_shell *shell)
 			full_path = find_command(command[0], path_list[i]);
 			if (full_path)
 				execve(full_path, command, shell->envp);
+			else
+				execve(command[0], command, shell->envp);
 			i++;
 		}
-		ft_putstr_fd(" command not found\n", d_err);
+		ft_putstr_fd("command not found\n", d_err);
 		exit(127);
 	}
 	return (status);

@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static char	*join_new_line(char **old_input, char **new_line, int quoted)
+static char	*join_new_line(char **old_input, char **new_line)
 {
 	char	*dupl;
 	char	*nl_added;
@@ -68,7 +68,7 @@ char	*run_here_doc(char *stop_str_with_quotes, t_shell *shell)
 	stop_str = trim_quotes(stop_str_with_quotes, &quoted);
 	while (!same_string(new_line, stop_str))
 	{
-		input_str = join_new_line(&input_str, &new_line, quoted);
+		input_str = join_new_line(&input_str, &new_line);
 		new_line = readline("> ");
 		if (!new_line)
 			break ;

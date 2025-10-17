@@ -68,7 +68,6 @@ static int	tokenize_word(char **str, t_token **tokens, t_priora priority_map)
 
 int	lexer(char *input, t_shell *shell)
 {
-	t_token		*list;
 	char		*ptr;
 	t_priora	prior_map;
 
@@ -89,6 +88,6 @@ int	lexer(char *input, t_shell *shell)
 		else if (tokenize_word(&ptr, &shell->tokens, prior_map))
 			return (ms_err("error unclosed quotes\n", 1, d_err, shell));
 	}
-	add_token(&list, NULL, TOKEN_END_OF_LIST, prior_map);
+	add_token(&shell->tokens, NULL, TOKEN_END_OF_LIST, prior_map);
 	return (0);
 }

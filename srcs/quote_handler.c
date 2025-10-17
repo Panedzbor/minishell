@@ -1,10 +1,10 @@
 #include "../includes/minishell.h"
 
-static char *remove_quotes(char *str)
+static char	*remove_quotes(char *str)
 {
-	char *result;
-	char *start;
-	char quote;
+	char	*result;
+	char	*start;
+	char	quote;
 
 	result = (char *)malloc(ft_strlen(str) + 1);
 	start = result;
@@ -27,10 +27,11 @@ static char *remove_quotes(char *str)
 	*result = '\0';
 	return (start);
 }
-void remove_quotes_from_argv(char **argv)
+
+void	remove_quotes_from_argv(char **argv)
 {
-	int i;
-	char *new_arg;
+	int		i;
+	char	*new_arg;
 
 	i = 0;
 	while (argv[i])

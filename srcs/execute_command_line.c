@@ -38,10 +38,10 @@ static int	execute_logic_operator(t_tree_node *node, t_shell *sh, int sub_pipe)
 	return (status);
 }
 
-int	execute_command_line(t_tree_node *node, t_shell *sh, 
+int	execute_command_line(t_tree_node *node, t_shell *sh,
 					int sub_pipe, int streams)
 {
-	int status;
+	int	status;
 
 	status = 0;
 	if (node->type == NODE_COMMAND)
@@ -50,8 +50,8 @@ int	execute_command_line(t_tree_node *node, t_shell *sh,
 		status = execute_pipe(node, sh, sub_pipe);
 	else if (node->type == NODE_AND || node->type == NODE_OR)
 		status = execute_logic_operator(node, sh, sub_pipe);
-	else if (node->type == NODE_REDIR_IN || node->type == NODE_REDIR_HERE_DOC 
-	|| node->type == NODE_REDIR_OUT || node->type == NODE_REDIR_OUT_APPEND)
+	else if (node->type == NODE_REDIR_IN || node->type == NODE_REDIR_HERE_DOC
+		|| node->type == NODE_REDIR_OUT || node->type == NODE_REDIR_OUT_APPEND)
 		status = execute_redirection(node, sh, streams);
 	return (status);
 }
